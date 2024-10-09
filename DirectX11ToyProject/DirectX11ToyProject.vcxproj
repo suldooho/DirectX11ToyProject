@@ -131,12 +131,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Core\Device.h" />
     <ClInclude Include="DirectX11ToyProject.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Core\Device.cpp" />
     <ClCompile Include="DirectX11ToyProject.cpp" />
   </ItemGroup>
   <ItemGroup>
