@@ -3,7 +3,7 @@
 
 #include "framework.h"
 #include "DirectX11ToyProject.h"
-#include "../DirectX11ToyProject/Core/Device.h"
+#include "App.h"
 
 #define MAX_LOADSTRING 100
 
@@ -11,7 +11,7 @@
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
-Device g_device;
+App g_app;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -110,27 +110,32 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+   HWND hwnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+   
+   RECT rect;
+   GetClientRect(hwnd, &rect);
 
-   if (!hWnd)
+   unsigned int window_width = rect.right - rect.left;
+   unsigned int window_height = rect.bottom - rect.top;
+
+   if (!hwnd)
    {
       return FALSE;
    }
 
    try
    { 
-       g_device.Initialize();
+       g_app.Initialize(window_width, window_height, hwnd);
    }
    catch(std::string err_msg)
    { 
-       MessageBoxA(hWnd, err_msg.c_str(), NULL, NULL);
+       MessageBoxA(hwnd, err_msg.c_str(), NULL, NULL);
 
        return FALSE;
    }
 
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
+   ShowWindow(hwnd, nCmdShow);
+   UpdateWindow(hwnd);
 
    return TRUE;
 }
