@@ -1,17 +1,7 @@
 #include "SwapChain.h"
 #include "../framework.h"
 
-void SwapChain::CreateRenderTargetView()
-{ 
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> back_buffer;
-	d3d11_swap_chain_->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(back_buffer.GetAddressOf()));
-	HRESULT result = Device::GetInstace()->GetD3D11Device()->CreateRenderTargetView(back_buffer.Get(), 0, d3d11_render_target_view_.GetAddressOf());
-	 
-	if (result != S_OK)
-	{
-		throw std::string("Can Not Create Render Target View");
-	}
-}
+SwapChain* SwapChain::instance_ = nullptr;
 
 void SwapChain::Initialize(unsigned int window_width, unsigned int window_height, HWND hwnd)
 {
@@ -47,6 +37,9 @@ void SwapChain::Initialize(unsigned int window_width, unsigned int window_height
 	{
 		throw std::string("Can Not Create SwapChain");
 	}
+}
 
-	CreateRenderTargetView();
+IDXGISwapChain* SwapChain::GetDXGISwapChain() const
+{
+	return d3d11_swap_chain_.Get();
 }

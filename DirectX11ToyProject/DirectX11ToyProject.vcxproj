@@ -135,7 +135,7 @@
     <ClInclude Include="Core\Device.h" />
     <ClInclude Include="Core\SwapChain.h" />
     <ClInclude Include="DirectX11ToyProject.h" />
-    <ClInclude Include="FrameResources\DepthStencilView.h" />
+    <ClInclude Include="FrameResources\OutputMerger.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
@@ -145,7 +145,7 @@
     <ClCompile Include="Core\Device.cpp" />
     <ClCompile Include="Core\SwapChain.cpp" />
     <ClCompile Include="DirectX11ToyProject.cpp" />
-    <ClCompile Include="FrameResources\DepthStencilView.cpp" />
+    <ClCompile Include="FrameResources\OutputMerger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectX11ToyProject.rc" />

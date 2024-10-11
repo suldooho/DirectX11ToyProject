@@ -22,3 +22,4 @@
 #include <DirectXMath.h>
 
 #include "Core/Device.h"
+#include "Core/SwapChain.h"

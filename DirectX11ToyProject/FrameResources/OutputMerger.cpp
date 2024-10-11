@@ -1,7 +1,19 @@
-#include "DepthStencilView.h"
+#include "OutputMerger.h"
 #include "../framework.h"
 
-void DepthStencilView::Initialize(unsigned int client_width, unsigned int client_height)
+void OutputMerger::CreateRenderTargetView()
+{
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> back_buffer;
+	SwapChain::GetInstace()->GetDXGISwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(back_buffer.GetAddressOf()));
+	HRESULT result = Device::GetInstace()->GetD3D11Device()->CreateRenderTargetView(back_buffer.Get(), 0, d3d11_render_target_view_.GetAddressOf());
+
+	if (result != S_OK)
+	{
+		throw std::string("Can Not Create Render Target View");
+	}
+}
+
+void OutputMerger::CreateDepthStencilView(unsigned int client_width, unsigned int client_height)
 {
 	D3D11_TEXTURE2D_DESC depth_stencil_desc;
 	depth_stencil_desc.Width = client_width;
@@ -24,4 +36,10 @@ void DepthStencilView::Initialize(unsigned int client_width, unsigned int client
 	{
 		throw std::string("Can Not Create Depth Stencil View");
 	}
+}
+
+void OutputMerger::Initialize(unsigned int client_width, unsigned int client_height)
+{
+	CreateRenderTargetView();
+	CreateDepthStencilView(client_width, client_height);
 }

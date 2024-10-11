@@ -1,9 +1,8 @@
 #include "App.h"
 
 App::App() : window_width_(NULL), window_height_(NULL), hwnd_(NULL)
-{
-	swap_chain_ = std::make_unique<SwapChain>();
-	depth_stencil_view_ = std::make_unique<DepthStencilView>();
+{ 
+	output_merger_ = std::make_unique<OutputMerger>();
 }
 
 void App::Initialize(unsigned int window_width, unsigned int window_height, HWND hwnd)
@@ -13,6 +12,6 @@ void App::Initialize(unsigned int window_width, unsigned int window_height, HWND
 	hwnd_ = hwnd;
 
 	Device::GetInstace()->Initialize();
-	swap_chain_->Initialize(window_width_, window_height_, hwnd_);
-	depth_stencil_view_->Initialize(window_width_, window_height_);
+	SwapChain::GetInstace()->Initialize(window_width_, window_height_, hwnd); 
+	output_merger_->Initialize(window_width_, window_height_);
 } 

@@ -4,13 +4,30 @@
 class SwapChain
 {
 private:
-	Microsoft::WRL::ComPtr<class IDXGISwapChain> d3d11_swap_chain_;
-	Microsoft::WRL::ComPtr<class ID3D11RenderTargetView> d3d11_render_target_view_;
+	static SwapChain* instance_;
 
-private:
-	void CreateRenderTargetView();
+	SwapChain() = default;
+	~SwapChain() = default;
 
 public:
-	void Initialize(unsigned int window_width, unsigned int window_height, HWND hwnd);
+	SwapChain(const SwapChain&) = delete;
+	SwapChain& operator=(const SwapChain&) = delete;
+
+	static SwapChain* GetInstace()
+	{
+		if (instance_ == nullptr)
+		{
+			instance_ = new SwapChain();
+		}
+
+		return instance_;
+	}
+
+private:
+	Microsoft::WRL::ComPtr<class IDXGISwapChain> d3d11_swap_chain_; 
+
+public:
+	void Initialize(unsigned int window_width, unsigned int window_height, HWND hwnd); 
+	class IDXGISwapChain* GetDXGISwapChain() const;
 };
 
