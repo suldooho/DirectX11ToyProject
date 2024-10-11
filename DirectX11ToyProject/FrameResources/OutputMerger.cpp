@@ -38,8 +38,19 @@ void OutputMerger::CreateDepthStencilView(unsigned int client_width, unsigned in
 	}
 }
 
+void OutputMerger::CreateViewPort(unsigned int client_width, unsigned int client_height)
+{
+	d3d11_viewport_.get()->TopLeftX = 0.0f;
+	d3d11_viewport_.get()->TopLeftY = 0.0f;
+	d3d11_viewport_.get()->Width = static_cast<float>(client_width);
+	d3d11_viewport_.get()->Height = static_cast<float>(client_height);
+	d3d11_viewport_.get()->MinDepth = 0.0f;
+	d3d11_viewport_.get()->MaxDepth = 1.0f;
+}
+
 void OutputMerger::Initialize(unsigned int client_width, unsigned int client_height)
 {
 	CreateRenderTargetView();
 	CreateDepthStencilView(client_width, client_height);
+	CreateViewPort(client_width, client_height);
 }
