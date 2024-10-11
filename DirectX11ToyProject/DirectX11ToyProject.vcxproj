@@ -137,6 +137,9 @@
     <ClInclude Include="DirectX11ToyProject.h" />
     <ClInclude Include="FrameResources\OutputMerger.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Meshes\BoxMesh.h" />
+    <ClInclude Include="Meshes\Mesh.h" />
+    <ClInclude Include="Meshes\Vertices.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -146,6 +149,8 @@
     <ClCompile Include="Core\SwapChain.cpp" />
     <ClCompile Include="DirectX11ToyProject.cpp" />
     <ClCompile Include="FrameResources\OutputMerger.cpp" />
+    <ClCompile Include="Meshes\BoxMesh.cpp" />
+    <ClCompile Include="Meshes\Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectX11ToyProject.rc" />

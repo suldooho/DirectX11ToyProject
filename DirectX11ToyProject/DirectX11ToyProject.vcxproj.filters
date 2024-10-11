@@ -25,6 +25,12 @@
     <Filter Include="헤더 파일\FrameResources">
       <UniqueIdentifier>{8eaea42d-5082-4ca9-90aa-acac16be76f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Meshes">
+      <UniqueIdentifier>{bc818038-63ba-40f2-8257-d95128632804}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Meshes">
+      <UniqueIdentifier>{8ff37967-3ad2-461c-add7-20efda46685a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -51,6 +57,15 @@
     <ClInclude Include="FrameResources\OutputMerger.h">
       <Filter>헤더 파일\FrameResources</Filter>
     </ClInclude>
+    <ClInclude Include="Meshes\Mesh.h">
+      <Filter>헤더 파일\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshes\BoxMesh.h">
+      <Filter>헤더 파일\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshes\Vertices.h">
+      <Filter>헤더 파일\Meshes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX11ToyProject.cpp">
@@ -67,6 +82,12 @@
     </ClCompile>
     <ClCompile Include="FrameResources\OutputMerger.cpp">
       <Filter>소스 파일\FrameResources</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshes\Mesh.cpp">
+      <Filter>소스 파일\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshes\BoxMesh.cpp">
+      <Filter>소스 파일\Meshes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
