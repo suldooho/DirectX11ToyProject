@@ -1,7 +1,9 @@
 #pragma once
 #include "framework.h"
 #include "Core/SwapChain.h"
-#include "Core/Device.h"
+
+//TEST
+#include "FrameResources/DepthStencilView.h"
 
 class App
 {
@@ -16,6 +18,7 @@ public:
 private:
 	//std::unique_ptr<class Device> device_; //TEST Singleton
 	std::unique_ptr<SwapChain> swap_chain_;
+	std::unique_ptr<DepthStencilView> depth_stencil_view_; //TEST
 
 public:
 	void Initialize(unsigned int window_width, unsigned int window_height, HWND hwnd);

@@ -1,6 +1,5 @@
 #include "SwapChain.h"
 #include "../framework.h"
-#include "Device.h"
 
 void SwapChain::CreateRenderTargetView()
 { 

@@ -19,6 +19,12 @@
     <Filter Include="헤더 파일\Core">
       <UniqueIdentifier>{d57a1af9-9d06-41b6-8095-bed05e63fe9b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\FrameResources">
+      <UniqueIdentifier>{e1fa0499-32b3-4ed5-a761-0122a55ccbf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\FrameResources">
+      <UniqueIdentifier>{8eaea42d-5082-4ca9-90aa-acac16be76f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -42,6 +48,9 @@
     <ClInclude Include="App.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="FrameResources\DepthStencilView.h">
+      <Filter>헤더 파일\FrameResources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX11ToyProject.cpp">
@@ -55,6 +64,9 @@
     </ClCompile>
     <ClCompile Include="App.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameResources\DepthStencilView.cpp">
+      <Filter>소스 파일\FrameResources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
