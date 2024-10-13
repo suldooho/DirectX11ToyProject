@@ -31,6 +31,9 @@
     <Filter Include="헤더 파일\Meshes">
       <UniqueIdentifier>{8ff37967-3ad2-461c-add7-20efda46685a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HLSL">
+      <UniqueIdentifier>{342b4530-b5b1-4264-9fc2-9a9c8ed714d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -66,6 +69,9 @@
     <ClInclude Include="Meshes\Vertices.h">
       <Filter>헤더 파일\Meshes</Filter>
     </ClInclude>
+    <ClInclude Include="FrameResources\Shader.h">
+      <Filter>헤더 파일\FrameResources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX11ToyProject.cpp">
@@ -89,6 +95,9 @@
     <ClCompile Include="Meshes\BoxMesh.cpp">
       <Filter>소스 파일\Meshes</Filter>
     </ClCompile>
+    <ClCompile Include="FrameResources\Shader.cpp">
+      <Filter>소스 파일\FrameResources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectX11ToyProject.rc">
@@ -102,5 +111,10 @@
     <Image Include="DirectX11ToyProject.ico">
       <Filter>리소스 파일</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="HLSL\Color.hlsli">
+      <Filter>HLSL</Filter>
+    </None>
   </ItemGroup>
 </Project>

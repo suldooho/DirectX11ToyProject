@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -136,6 +136,7 @@
     <ClInclude Include="Core\SwapChain.h" />
     <ClInclude Include="DirectX11ToyProject.h" />
     <ClInclude Include="FrameResources\OutputMerger.h" />
+    <ClInclude Include="FrameResources\Shader.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Meshes\BoxMesh.h" />
     <ClInclude Include="Meshes\Mesh.h" />
@@ -149,6 +150,7 @@
     <ClCompile Include="Core\SwapChain.cpp" />
     <ClCompile Include="DirectX11ToyProject.cpp" />
     <ClCompile Include="FrameResources\OutputMerger.cpp" />
+    <ClCompile Include="FrameResources\Shader.cpp" />
     <ClCompile Include="Meshes\BoxMesh.cpp" />
     <ClCompile Include="Meshes\Mesh.cpp" />
   </ItemGroup>
@@ -158,6 +160,9 @@
   <ItemGroup>
     <Image Include="DirectX11ToyProject.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="HLSL\Color.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
