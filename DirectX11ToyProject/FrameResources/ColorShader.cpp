@@ -10,7 +10,10 @@ void ColorShader::Initialize()
 	};
 	unsigned int num_elements = ARRAYSIZE(input_element_desc);
 
-	CreateInputLayout(input_element_desc, num_elements);
-	CreateVertexShaderFromFile(L"../HLSL/Color.hlsli" , "VS");
-	CreatePixelShaderFromFile(L"../HLSL/Color.hlsli" , "PS");
+	wchar_t current_path[MAX_PATH];
+	GetCurrentDirectory(MAX_PATH, current_path);
+	std::wstring shader_file_path = std::wstring(current_path) + L"/HLSL/Color.hlsl";
+
+	CreateInputLayoutAndVertexShaderFromFile(shader_file_path.c_str(), "main", input_element_desc, num_elements);
+	CreatePixelShaderFromFile(shader_file_path.c_str(), "PS");
 }

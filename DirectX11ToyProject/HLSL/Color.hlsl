@@ -11,12 +11,12 @@ struct VS_OUTPUT
 };
 
 // 정점-쉐이더 
-VS_OUTPUT VS(VS_INPUT input)
+VS_OUTPUT main(VS_INPUT input)
 {
     VS_OUTPUT output = (VS_OUTPUT) 0;
-    output.position = mul(input.position, gmtxWorld);
-    output.position = mul(output.position, gmtxView);
-    output.position = mul(output.position, gmtxProjection);
+    //output.position = mul(input.position, gmtxWorld);
+   // output.position = mul(output.position, gmtxView);
+   // output.position = mul(output.position, gmtxProjection);
     output.color = input.color;
 //입력되는 정점의 색상을 그대로 출력한다. 
     return output;

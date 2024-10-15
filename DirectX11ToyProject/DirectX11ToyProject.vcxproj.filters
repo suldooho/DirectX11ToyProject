@@ -161,8 +161,8 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="HLSL\Color.hlsli">
+    <FxCompile Include="HLSL\Color.hlsl">
       <Filter>HLSL</Filter>
-    </None>
+    </FxCompile>
   </ItemGroup>
 </Project>
