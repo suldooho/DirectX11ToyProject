@@ -55,3 +55,18 @@ void OutputMerger::Initialize(unsigned int client_width, unsigned int client_hei
 	CreateDepthStencilView(client_width, client_height);
 	CreateViewPort(client_width, client_height);
 }
+
+ID3D11RenderTargetView* OutputMerger::GetRenderTargetView() const
+{
+	return d3d11_render_target_view_.Get();
+}
+
+ID3D11DepthStencilView* OutputMerger::GetDepthStencilView() const
+{
+	return d3d11_depth_stencil_view_.Get();
+}
+
+D3D11_VIEWPORT* OutputMerger::GetViewport() const
+{
+	return d3d11_viewport_.get();
+}

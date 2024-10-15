@@ -23,3 +23,5 @@
 
 #include "Core/DeviceManager.h"
 #include "Core/SwapChainManager.h"
+#include "FrameResources/FrameResourcesManager.h"
+#include "Meshes/MeshesManager.h"

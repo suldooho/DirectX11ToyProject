@@ -11,7 +11,9 @@ void App::Initialize(unsigned int window_width, unsigned int window_height, HWND
 	hwnd_ = hwnd;
 
 	DeviceManager::GetInstace()->Initialize();
-	SwapChainManager::GetInstace()->Initialize(window_width_, window_height_, hwnd); 
+	SwapChainManager::GetInstace()->Initialize(window_width_, window_height_, hwnd_);
+	FrameResourcesManager::GetInstace()->Initialize(window_width_, window_height_);
+	MeshesManager::GetInstace()->Initialize();
 }
 
 void App::OnProcessingMouseMessage(HWND hwnd, UINT message_id, WPARAM wparam, LPARAM lparam)

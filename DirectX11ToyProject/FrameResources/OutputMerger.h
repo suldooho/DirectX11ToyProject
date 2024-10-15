@@ -19,5 +19,10 @@ private:
 
 public:
 	void Initialize(unsigned int client_width, unsigned int client_height);
+
+public:
+	class ID3D11RenderTargetView* GetRenderTargetView() const;
+	class ID3D11DepthStencilView* GetDepthStencilView() const;
+	class D3D11_VIEWPORT* GetViewport() const;
 };
 

@@ -3,6 +3,8 @@
 #include "ColorShader.h"
 #include "OutputMerger.h"
 
+FrameResourcesManager* FrameResourcesManager::instance_ = nullptr;
+
 void FrameResourcesManager::Initialize(unsigned int client_width, unsigned int client_height)
 {
 	frame_resource_container_["ColorShader"] = std::make_unique<ColorShader>();

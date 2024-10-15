@@ -11,6 +11,10 @@ void BoxMesh::CreateVertices()
 	vertices_[5] = { DirectX::XMFLOAT3(-1.0f, +1.0f, +1.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) };
 	vertices_[6] = { DirectX::XMFLOAT3(+1.0f, +1.0f, +1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) };
 	vertices_[7] = { DirectX::XMFLOAT3(+1.0f, -1.0f, +1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) }; 
+
+	num_vertices_ = 8;
+	stride_ = sizeof(ColorVertex);
+	offset_ = 0;
 }
 
 void BoxMesh::CreateIndices()
@@ -51,6 +55,10 @@ void BoxMesh::CreateIndices()
 	indices_[33] = 4;
 	indices_[34] = 3;
 	indices_[35] = 7; 
+
+	num_indices_ = 36;
+	start_index_ = 0;
+	base_vertex_ = 0;
 }
 
 unsigned int BoxMesh::GetVertexBufferByteWidth()

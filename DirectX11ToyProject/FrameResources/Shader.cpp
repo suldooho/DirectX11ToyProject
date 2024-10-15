@@ -51,4 +51,19 @@ void Shader::CreatePixelShaderFromFile(LPCWSTR shader_file, LPCSTR entry_point)
 	{
 		throw std::string("Can Not Create Pixel Shader");
 	}
-} 
+}
+ID3D11InputLayout* Shader::GetInputLayout() const
+{
+	return d3d11_input_layout_.Get();
+}
+
+ID3D11VertexShader* Shader::GetVertexShader() const
+{
+	return d3d11_vertex_shader_.Get();
+}
+
+ID3D11PixelShader* Shader::GetPixelShader() const
+{
+	return d3d11_pixel_shader_.Get();
+}
+

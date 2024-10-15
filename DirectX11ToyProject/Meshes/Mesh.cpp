@@ -41,3 +41,43 @@ void Mesh::Initialize()
 	CreateVertexBuffer();
 	CreateIndexBuffer();
 }
+
+D3D_PRIMITIVE_TOPOLOGY Mesh::GetPrimitiveTopology() const
+{
+	return primitive_topology_;
+}
+
+unsigned int Mesh::GetStride() const
+{
+	return stride_;
+}
+
+unsigned int Mesh::GetOffset() const
+{
+	return offset_;
+}
+
+ID3D11Buffer* Mesh::GetVertexBuffer() const
+{
+	return d3d11_vertex_buffer_.Get();
+}
+
+unsigned int Mesh::GetNumIndices() const
+{
+	return num_indices_;
+}
+
+unsigned int Mesh::GetStartIndex() const
+{
+	return start_index_;
+}
+
+int Mesh::GetBaseVertex() const
+{
+	return base_vertex_;
+}
+
+ID3D11Buffer* Mesh::GetIndexBuffer() const
+{
+	return d3d11_index_buffer_.Get();
+}

@@ -1,7 +1,8 @@
 #pragma once
 #include <memory>
 #include <string>
-#include <unordered_map> 
+#include <unordered_map>
+#include "FrameResource.h"
 
 class FrameResourcesManager
 {
@@ -26,7 +27,7 @@ public:
 	}
 
 private:
-	std::unordered_map<std::string, std::unique_ptr<class FrameResource>> frame_resource_container_;
+	std::unordered_map<std::string, std::unique_ptr<FrameResource>> frame_resource_container_;
 
 public:
 	void Initialize(unsigned int client_width, unsigned int client_height);

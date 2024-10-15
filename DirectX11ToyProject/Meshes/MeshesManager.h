@@ -1,7 +1,8 @@
 #pragma once
 #include <memory>
 #include <string>
-#include <unordered_map> 
+#include <unordered_map>
+#include "Mesh.h"
 
 class MeshesManager
 {
@@ -26,7 +27,7 @@ public:
 	}
 
 private:
-	std::unordered_map<std::string, std::unique_ptr<class Mesh>> mesh_container_;
+	std::unordered_map<std::string, std::unique_ptr<Mesh>> mesh_container_;
 
 public:
 	void Initialize();

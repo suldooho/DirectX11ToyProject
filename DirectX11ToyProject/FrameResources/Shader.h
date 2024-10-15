@@ -16,5 +16,11 @@ protected:
 	  
 public:
 	virtual void Initialize() = 0;
+
+public:
+	class ID3D11InputLayout* GetInputLayout() const;
+	class ID3D11VertexShader* GetVertexShader() const;
+	class ID3D11PixelShader* GetPixelShader() const;
+
 };
 
