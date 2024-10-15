@@ -1,26 +1,25 @@
 #pragma once
-#include <wrl.h> 
+#include <wrl.h>
+#include <d3d11.h>
 
 class Mesh
 {
 protected:
+	enum D3D_PRIMITIVE_TOPOLOGY primitive_topology_;
+
 	unsigned int num_vertices_;
 	unsigned int stride_;
 	unsigned int offset_;
 
-	Microsoft::WRL::ComPtr<class ID3D11Buffer> d3d11_vertex_buffer_;
-	enum D3D_PRIMITIVE_TOPOLOGY primitive_topology_;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> d3d11_vertex_buffer_;
 	
 protected: 
 	unsigned int num_indices_;
 	unsigned int start_index_;
 	int base_vertex_;
 
-	Microsoft::WRL::ComPtr<class ID3D11Buffer> d3d11_index_buffer_;
-
-public:
-	Mesh();
-
+	Microsoft::WRL::ComPtr<ID3D11Buffer> d3d11_index_buffer_;
+	  
 private:
 	void CreateVertexBuffer();
 	void CreateIndexBuffer();

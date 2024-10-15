@@ -1,9 +1,10 @@
 #pragma once
+#include "FrameResource.h"
 #include <wrl.h> 
 #include <memory>
 
-class OutputMerger
-{
+class OutputMerger : public FrameResource
+{ 
 private:
 	Microsoft::WRL::ComPtr<class ID3D11Texture2D> d3d11_depth_stencil_buffer_;
 

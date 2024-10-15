@@ -1,9 +1,9 @@
-#include "Device.h"
+#include "DeviceManager.h"
 #include "../framework.h"
 
-Device* Device::instance_ = nullptr;
+DeviceManager* DeviceManager::instance_ = nullptr;
 
-IDXGIAdapter1* Device::GetAdapter()
+IDXGIAdapter1* DeviceManager::GetAdapter()
 {
 	Microsoft::WRL::ComPtr<IDXGIFactory1> factory = nullptr;
 	CreateDXGIFactory1(__uuidof(IDXGIFactory1), (void**)(&factory));
@@ -23,7 +23,7 @@ IDXGIAdapter1* Device::GetAdapter()
 	throw std::string("Can Not Found NVIDIA Adapter");  
 }
 
-void Device::Initialize()
+void DeviceManager::Initialize()
 {
 	IDXGIAdapter1* adapter = GetAdapter();
 	 
@@ -36,7 +36,7 @@ void Device::Initialize()
 
 	D3D_FEATURE_LEVEL feature_level = D3D_FEATURE_LEVEL_11_0;
 	 
-	HRESULT result = D3D11CreateDevice(adapter, D3D_DRIVER_TYPE_UNKNOWN, NULL, create_device_flags, feature_levels, 1, D3D11_SDK_VERSION, &d3d11_device_, &feature_level, &d3d11_immediate_context_);
+	HRESULT result = D3D11CreateDevice(adapter, D3D_DRIVER_TYPE_UNKNOWN, NULL, create_device_flags, feature_levels, 1, D3D11_SDK_VERSION, d3d11_device_.GetAddressOf(), &feature_level, d3d11_immediate_context_.GetAddressOf());
 	
 	if (result != S_OK)
 	{
@@ -44,7 +44,7 @@ void Device::Initialize()
 	} 
 }
 
-ID3D11Device* Device::GetD3D11Device() const
+ID3D11Device* DeviceManager::GetD3D11Device() const
 {
 	return d3d11_device_.Get();
 }

@@ -132,27 +132,41 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
-    <ClInclude Include="Core\Device.h" />
-    <ClInclude Include="Core\SwapChain.h" />
+    <ClInclude Include="Core\DeviceManager.h" />
+    <ClInclude Include="Core\SwapChainManager.h" />
     <ClInclude Include="DirectX11ToyProject.h" />
+    <ClInclude Include="FrameResources\ColorShader.h" />
+    <ClInclude Include="FrameResources\FrameResource.h" />
+    <ClInclude Include="FrameResources\FrameResourcesManager.h" />
     <ClInclude Include="FrameResources\OutputMerger.h" />
     <ClInclude Include="FrameResources\Shader.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Meshes\BoxMesh.h" />
     <ClInclude Include="Meshes\Mesh.h" />
+    <ClInclude Include="Meshes\MeshesManager.h" />
     <ClInclude Include="Meshes\Vertices.h" />
+    <ClInclude Include="Objects\Camera.h" />
+    <ClInclude Include="Objects\Object.h" />
+    <ClInclude Include="Objects\Player.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
-    <ClCompile Include="Core\Device.cpp" />
-    <ClCompile Include="Core\SwapChain.cpp" />
+    <ClCompile Include="Core\DeviceManager.cpp" />
+    <ClCompile Include="Core\SwapChainManager.cpp" />
     <ClCompile Include="DirectX11ToyProject.cpp" />
+    <ClCompile Include="FrameResources\ColorShader.cpp" />
+    <ClCompile Include="FrameResources\FrameResource.cpp" />
+    <ClCompile Include="FrameResources\FrameResourcesManager.cpp" />
     <ClCompile Include="FrameResources\OutputMerger.cpp" />
     <ClCompile Include="FrameResources\Shader.cpp" />
     <ClCompile Include="Meshes\BoxMesh.cpp" />
     <ClCompile Include="Meshes\Mesh.cpp" />
+    <ClCompile Include="Meshes\MeshesManager.cpp" />
+    <ClCompile Include="Objects\Camera.cpp" />
+    <ClCompile Include="Objects\Object.cpp" />
+    <ClCompile Include="Objects\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectX11ToyProject.rc" />

@@ -4,8 +4,8 @@
 void OutputMerger::CreateRenderTargetView()
 {
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> back_buffer;
-	SwapChain::GetInstace()->GetDXGISwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(back_buffer.GetAddressOf()));
-	HRESULT result = Device::GetInstace()->GetD3D11Device()->CreateRenderTargetView(back_buffer.Get(), 0, d3d11_render_target_view_.GetAddressOf());
+	SwapChainManager::GetInstace()->GetDXGISwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(back_buffer.GetAddressOf()));
+	HRESULT result = DeviceManager::GetInstace()->GetD3D11Device()->CreateRenderTargetView(back_buffer.Get(), 0, d3d11_render_target_view_.GetAddressOf());
 
 	if (result != S_OK)
 	{
@@ -28,9 +28,9 @@ void OutputMerger::CreateDepthStencilView(unsigned int client_width, unsigned in
 	depth_stencil_desc.CPUAccessFlags = 0;
 	depth_stencil_desc.MiscFlags = 0;
 
-	Device::GetInstace()->GetD3D11Device()->CreateTexture2D(&depth_stencil_desc, 0, d3d11_depth_stencil_buffer_.GetAddressOf());
+	DeviceManager::GetInstace()->GetD3D11Device()->CreateTexture2D(&depth_stencil_desc, 0, d3d11_depth_stencil_buffer_.GetAddressOf());
 
-	HRESULT result = Device::GetInstace()->GetD3D11Device()->CreateDepthStencilView(d3d11_depth_stencil_buffer_.Get(), 0, d3d11_depth_stencil_view_.GetAddressOf());
+	HRESULT result = DeviceManager::GetInstace()->GetD3D11Device()->CreateDepthStencilView(d3d11_depth_stencil_buffer_.Get(), 0, d3d11_depth_stencil_view_.GetAddressOf());
 
 	if (result != S_OK)
 	{
@@ -40,6 +40,7 @@ void OutputMerger::CreateDepthStencilView(unsigned int client_width, unsigned in
 
 void OutputMerger::CreateViewPort(unsigned int client_width, unsigned int client_height)
 {
+	d3d11_viewport_ = std::make_unique<D3D11_VIEWPORT>();
 	d3d11_viewport_.get()->TopLeftX = 0.0f;
 	d3d11_viewport_.get()->TopLeftY = 0.0f;
 	d3d11_viewport_.get()->Width = static_cast<float>(client_width);

@@ -145,14 +145,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     switch (message)
     {
     case WM_SIZE:
+        break;
     case WM_LBUTTONDOWN:
     case WM_LBUTTONUP:
     case WM_RBUTTONDOWN:
     case WM_RBUTTONUP:
     case WM_MOUSEMOVE:
+        g_app.OnProcessingMouseMessage(hWnd, message, wParam, lParam); 
+        break;
     case WM_KEYDOWN:
     case WM_KEYUP:
-        //g_device.OnProcessingWindowMessage(hWnd, message, wParam, lParam);
+        g_app.OnProcessingKeyboardMessage(hWnd, message, wParam, lParam);
         break; 
     case WM_DESTROY:
         PostQuitMessage(0);

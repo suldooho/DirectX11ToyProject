@@ -1,23 +1,23 @@
 #pragma once
 #include <wrl.h>
 
-class Device
+class DeviceManager
 {
 private:
-	static Device* instance_;
+	static DeviceManager* instance_;
 
-	Device() = default;
-	~Device() = default;
+	DeviceManager() = default;
+	~DeviceManager() = default;
 
 public:
-	Device(const Device&) = delete;
-	Device& operator=(const Device&) = delete;
+	DeviceManager(const DeviceManager&) = delete;
+	DeviceManager& operator=(const DeviceManager&) = delete;
 
-	static Device* GetInstace()
+	static DeviceManager* GetInstace()
 	{
 		if (instance_ == nullptr) 
 		{
-			instance_ = new Device();
+			instance_ = new DeviceManager();
 		}
 
 		return instance_;

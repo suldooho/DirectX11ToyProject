@@ -1,23 +1,23 @@
 #pragma once
 #include <wrl.h>
 
-class SwapChain
+class SwapChainManager
 {
 private:
-	static SwapChain* instance_;
+	static SwapChainManager* instance_;
 
-	SwapChain() = default;
-	~SwapChain() = default;
+	SwapChainManager() = default;
+	~SwapChainManager() = default;
 
 public:
-	SwapChain(const SwapChain&) = delete;
-	SwapChain& operator=(const SwapChain&) = delete;
+	SwapChainManager(const SwapChainManager&) = delete;
+	SwapChainManager& operator=(const SwapChainManager&) = delete;
 
-	static SwapChain* GetInstace()
+	static SwapChainManager* GetInstace()
 	{
 		if (instance_ == nullptr)
 		{
-			instance_ = new SwapChain();
+			instance_ = new SwapChainManager();
 		}
 
 		return instance_;

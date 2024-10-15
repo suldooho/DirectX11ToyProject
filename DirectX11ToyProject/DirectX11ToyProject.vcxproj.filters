@@ -25,14 +25,20 @@
     <Filter Include="헤더 파일\FrameResources">
       <UniqueIdentifier>{8eaea42d-5082-4ca9-90aa-acac16be76f6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\Meshes">
-      <UniqueIdentifier>{bc818038-63ba-40f2-8257-d95128632804}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="헤더 파일\Meshes">
-      <UniqueIdentifier>{8ff37967-3ad2-461c-add7-20efda46685a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="HLSL">
       <UniqueIdentifier>{342b4530-b5b1-4264-9fc2-9a9c8ed714d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Objects">
+      <UniqueIdentifier>{73a910ba-729d-4a71-8ac3-7dd6ec6f3e4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Objects">
+      <UniqueIdentifier>{6d758720-b606-4021-840f-f83ac5da6132}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Meshes">
+      <UniqueIdentifier>{a6e80082-f87b-468c-9da0-1ed03fde3af1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Meshes">
+      <UniqueIdentifier>{0d3b197a-0c4b-4292-8a5f-b125c79a3393}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -48,40 +54,55 @@
     <ClInclude Include="DirectX11ToyProject.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Device.h">
-      <Filter>헤더 파일\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\SwapChain.h">
-      <Filter>헤더 파일\Core</Filter>
-    </ClInclude>
     <ClInclude Include="App.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="FrameResources\OutputMerger.h">
       <Filter>헤더 파일\FrameResources</Filter>
     </ClInclude>
+    <ClInclude Include="FrameResources\Shader.h">
+      <Filter>헤더 파일\FrameResources</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Object.h">
+      <Filter>헤더 파일\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Camera.h">
+      <Filter>헤더 파일\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Player.h">
+      <Filter>헤더 파일\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameResources\FrameResourcesManager.h">
+      <Filter>헤더 파일\FrameResources</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameResources\FrameResource.h">
+      <Filter>헤더 파일\FrameResources</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\DeviceManager.h">
+      <Filter>헤더 파일\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\SwapChainManager.h">
+      <Filter>헤더 파일\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameResources\ColorShader.h">
+      <Filter>헤더 파일\FrameResources</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshes\BoxMesh.h">
+      <Filter>헤더 파일\Meshes</Filter>
+    </ClInclude>
     <ClInclude Include="Meshes\Mesh.h">
       <Filter>헤더 파일\Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="Meshes\BoxMesh.h">
+    <ClInclude Include="Meshes\MeshesManager.h">
       <Filter>헤더 파일\Meshes</Filter>
     </ClInclude>
     <ClInclude Include="Meshes\Vertices.h">
       <Filter>헤더 파일\Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="FrameResources\Shader.h">
-      <Filter>헤더 파일\FrameResources</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX11ToyProject.cpp">
       <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Device.cpp">
-      <Filter>소스 파일\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\SwapChain.cpp">
-      <Filter>소스 파일\Core</Filter>
     </ClCompile>
     <ClCompile Include="App.cpp">
       <Filter>소스 파일</Filter>
@@ -89,14 +110,41 @@
     <ClCompile Include="FrameResources\OutputMerger.cpp">
       <Filter>소스 파일\FrameResources</Filter>
     </ClCompile>
-    <ClCompile Include="Meshes\Mesh.cpp">
-      <Filter>소스 파일\Meshes</Filter>
+    <ClCompile Include="FrameResources\Shader.cpp">
+      <Filter>소스 파일\FrameResources</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Object.cpp">
+      <Filter>소스 파일\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Camera.cpp">
+      <Filter>소스 파일\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Player.cpp">
+      <Filter>소스 파일\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameResources\FrameResourcesManager.cpp">
+      <Filter>소스 파일\FrameResources</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameResources\FrameResource.cpp">
+      <Filter>소스 파일\FrameResources</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\DeviceManager.cpp">
+      <Filter>소스 파일\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\SwapChainManager.cpp">
+      <Filter>소스 파일\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameResources\ColorShader.cpp">
+      <Filter>소스 파일\FrameResources</Filter>
     </ClCompile>
     <ClCompile Include="Meshes\BoxMesh.cpp">
       <Filter>소스 파일\Meshes</Filter>
     </ClCompile>
-    <ClCompile Include="FrameResources\Shader.cpp">
-      <Filter>소스 파일\FrameResources</Filter>
+    <ClCompile Include="Meshes\Mesh.cpp">
+      <Filter>소스 파일\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshes\MeshesManager.cpp">
+      <Filter>소스 파일\Meshes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

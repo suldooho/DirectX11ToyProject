@@ -3,7 +3,7 @@
 #include "Vertices.h"
 
 class BoxMesh : public Mesh
-{ 
+{
 private:
 	ColorVertex vertices_[8];
 	unsigned int indices_[36];

@@ -21,5 +21,5 @@
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
 
-#include "Core/Device.h"
-#include "Core/SwapChain.h"
+#include "Core/DeviceManager.h"
+#include "Core/SwapChainManager.h"
