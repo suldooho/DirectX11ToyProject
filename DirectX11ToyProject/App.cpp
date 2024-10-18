@@ -1,4 +1,5 @@
 #include "App.h"
+#include "Objects/ObjectsManager.h"
 
 App::App() : window_width_(NULL), window_height_(NULL), hwnd_(NULL)
 {  
@@ -14,6 +15,7 @@ void App::Initialize(unsigned int window_width, unsigned int window_height, HWND
 	SwapChainManager::GetInstace()->Initialize(window_width_, window_height_, hwnd_);
 	FrameResourcesManager::GetInstace()->Initialize(window_width_, window_height_);
 	MeshesManager::GetInstace()->Initialize();
+	ObjectsManager::GetInstace()->Initialize(static_cast<float>(window_width_), static_cast<float>(window_height_));
 }
 
 void App::OnProcessingMouseMessage(HWND hwnd, UINT message_id, WPARAM wparam, LPARAM lparam)
@@ -58,4 +60,9 @@ void App::OnProcessingKeyboardMessage(HWND hwnd, UINT message_id, WPARAM wparam,
 	default:
 		break;
 	}
+}
+
+void App::FrameAdvance()
+{
+	ObjectsManager::GetInstace()->ExecuteCommandList();
 }

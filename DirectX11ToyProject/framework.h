@@ -25,3 +25,4 @@
 #include "Core/SwapChainManager.h"
 #include "FrameResources/FrameResourcesManager.h"
 #include "Meshes/MeshesManager.h"
+#include "Objects/ObjectsManager.h"

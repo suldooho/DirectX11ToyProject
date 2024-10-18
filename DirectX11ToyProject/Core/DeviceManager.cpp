@@ -48,3 +48,8 @@ ID3D11Device* DeviceManager::GetD3D11Device() const
 {
 	return d3d11_device_.Get();
 }
+
+ID3D11DeviceContext* DeviceManager::GetD3D11ImmediateContext() const
+{
+	return d3d11_immediate_context_.Get();
+}

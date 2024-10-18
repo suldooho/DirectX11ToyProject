@@ -32,5 +32,6 @@ private:
 
 public:
 	void Initialize();
-	class ID3D11Device* GetD3D11Device() const; 
+	class ID3D11Device* GetD3D11Device() const;
+	class ID3D11DeviceContext* GetD3D11ImmediateContext() const;
 }; 

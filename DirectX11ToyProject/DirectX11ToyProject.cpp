@@ -60,10 +60,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
         else
         {
-            //g_device.FrameAdvance();
+            g_app.FrameAdvance();
         }
-    }
-    //g_device.OnDestroy();
+    } 
 
     return (int) msg.wParam;
 }

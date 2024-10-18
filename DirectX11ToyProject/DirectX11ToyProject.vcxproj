@@ -138,6 +138,7 @@
     <ClInclude Include="FrameResources\ColorShader.h" />
     <ClInclude Include="FrameResources\FrameResource.h" />
     <ClInclude Include="FrameResources\FrameResourcesManager.h" />
+    <ClInclude Include="FrameResources\IncludeHandler.h" />
     <ClInclude Include="FrameResources\OutputMerger.h" />
     <ClInclude Include="FrameResources\Shader.h" />
     <ClInclude Include="framework.h" />
@@ -146,7 +147,9 @@
     <ClInclude Include="Meshes\MeshesManager.h" />
     <ClInclude Include="Meshes\Vertices.h" />
     <ClInclude Include="Objects\Camera.h" />
+    <ClInclude Include="Objects\MovableObject.h" />
     <ClInclude Include="Objects\Object.h" />
+    <ClInclude Include="Objects\ObjectsManager.h" />
     <ClInclude Include="Objects\Player.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
@@ -165,7 +168,9 @@
     <ClCompile Include="Meshes\Mesh.cpp" />
     <ClCompile Include="Meshes\MeshesManager.cpp" />
     <ClCompile Include="Objects\Camera.cpp" />
+    <ClCompile Include="Objects\MovableObject.cpp" />
     <ClCompile Include="Objects\Object.cpp" />
+    <ClCompile Include="Objects\ObjectsManager.cpp" />
     <ClCompile Include="Objects\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -182,6 +187,9 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="HLSL\Header.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

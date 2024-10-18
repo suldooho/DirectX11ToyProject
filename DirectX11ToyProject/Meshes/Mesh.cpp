@@ -33,6 +33,15 @@ void Mesh::CreateIndexBuffer()
 	DeviceManager::GetInstace()->GetD3D11Device()->CreateBuffer(&buffer_desc, &init_data, d3d11_index_buffer_.GetAddressOf());
 }
 
+void Mesh::CreateSolidRasterizerState()
+{ 
+	D3D11_RASTERIZER_DESC rasterizer_desc;
+	ZeroMemory(&rasterizer_desc, sizeof(D3D11_RASTERIZER_DESC));
+	rasterizer_desc.CullMode = D3D11_CULL_NONE;
+	rasterizer_desc.FillMode = D3D11_FILL_SOLID;
+	DeviceManager::GetInstace()->GetD3D11Device()->CreateRasterizerState(&rasterizer_desc, rasterizer_state_.GetAddressOf()); 
+}
+
 void Mesh::Initialize()
 {
 	CreateVertices();
@@ -40,6 +49,8 @@ void Mesh::Initialize()
 
 	CreateVertexBuffer();
 	CreateIndexBuffer();
+
+	CreateSolidRasterizerState();
 }
 
 D3D_PRIMITIVE_TOPOLOGY Mesh::GetPrimitiveTopology() const
@@ -80,4 +91,9 @@ int Mesh::GetBaseVertex() const
 ID3D11Buffer* Mesh::GetIndexBuffer() const
 {
 	return d3d11_index_buffer_.Get();
+}
+
+ID3D11RasterizerState* Mesh::GetRasterizerState()
+{
+	return rasterizer_state_.Get();
 }

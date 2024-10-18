@@ -13,7 +13,9 @@ public:
 
 public:
 	void Initialize(unsigned int window_width, unsigned int window_height, HWND hwnd);
+
 	void OnProcessingMouseMessage(HWND hwnd, UINT message_id, WPARAM wparam, LPARAM lparam);
 	void OnProcessingKeyboardMessage(HWND hwnd, UINT message_id, WPARAM wparam, LPARAM lparam);
+	void FrameAdvance();
 };
 

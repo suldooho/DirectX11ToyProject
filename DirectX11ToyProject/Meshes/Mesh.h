@@ -20,9 +20,13 @@ protected:
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer> d3d11_index_buffer_;
 	  
+protected:
+	Microsoft::WRL::ComPtr<ID3D11RasterizerState> rasterizer_state_;
+
 private:
 	void CreateVertexBuffer();
 	void CreateIndexBuffer();
+	void CreateSolidRasterizerState();
 
 protected:
 	virtual void CreateVertices() = 0;
@@ -46,5 +50,6 @@ public:
 	unsigned int GetStartIndex() const;
 	int GetBaseVertex() const;
 	ID3D11Buffer* GetIndexBuffer() const;
+	ID3D11RasterizerState* GetRasterizerState();
 };
 

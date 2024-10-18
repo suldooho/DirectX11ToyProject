@@ -1,15 +1,37 @@
 #pragma once
 #include "Object.h"
+#include <wrl.h>
+#include <memory>
 #include <DirectXMath.h>
 
-class Camera : public Object
+struct CameraMatrix
+{ 
+	DirectX::XMFLOAT4X4A view_matrix;
+	DirectX::XMFLOAT4X4A projection_matrix;
+};
+
+class Camera  
 {
 private:
-	DirectX::XMFLOAT4X4A view_matrix_;
-	DirectX::XMFLOAT4X4A projection_matrix_;
+	std::unique_ptr<class Player> player_;
+
+	CameraMatrix camera_matrix_;
+	Microsoft::WRL::ComPtr<class ID3D11Buffer> d3d11_camera_matrix_constant_buffer_;
+	 
+private:
+	const DirectX::XMFLOAT3A kUpOffset = DirectX::XMFLOAT3A(0.0f, 2.0f, 0.0f);
+	const DirectX::XMFLOAT3A kBackOffset = DirectX::XMFLOAT3A(0.0f, 0.0f, -1.0f);
+	 
+private:
+	void CreateConstantBuffer();
+	void CreateProjectionMatrix(float near_plane_distance, float far_plane_distance, float aspect_ratio, float fov_angle);
 
 public:
-	void CreateViewMatrix(DirectX::FXMVECTOR eye_position, DirectX::FXMVECTOR focus_position, DirectX::FXMVECTOR up_direction);
-	void CreateProjectionMatrix(float near_plane_distance, float far_plane_distance, float aspect_ratio, float fov_angle);
+	void Initialize(float client_width, float client_height);
+
+	class ID3D11Buffer** GetAddressOfCameraConstantBuffer();
+	void SetPlayer(class Player* player);
+	void UpdateViewMatrix();
+	void UpdateConstantBuffer();
 };
 
