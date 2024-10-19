@@ -38,23 +38,48 @@ void App::OnProcessingMouseMessage(HWND hwnd, UINT message_id, WPARAM wparam, LP
 
 void App::OnProcessingKeyboardMessage(HWND hwnd, UINT message_id, WPARAM wparam, LPARAM lparam)
 {
+	static UCHAR key_buffer[256];
+
 	switch (message_id)
 	{
 	case WM_KEYDOWN:
 		switch (wparam)
 		{
-
+		case 0x41:  // A key
+			ObjectsManager::GetInstace()->PushButton(ObjectsManager::GetInstace()->kAKey);
+			break;
+		case 0x53:  // S key
+			ObjectsManager::GetInstace()->PushButton(ObjectsManager::GetInstace()->kSKey);
+			break;
+		case 0x44:  // D key
+			ObjectsManager::GetInstace()->PushButton(ObjectsManager::GetInstace()->kDKey);
+			break;
+		case 0x57:  // W key
+			ObjectsManager::GetInstace()->PushButton(ObjectsManager::GetInstace()->kWKey);
+			break; 
 		default:
 			break;
-		}
+		} 
 		break;
 	case WM_KEYUP:
 		switch (wparam)
 		{
+		case 0x41:  // A key
+			ObjectsManager::GetInstace()->ReleaseButton(ObjectsManager::GetInstace()->kAKey);
+			break;
+		case 0x53:  // S key
+			ObjectsManager::GetInstace()->ReleaseButton(ObjectsManager::GetInstace()->kSKey);
+			break;
+		case 0x44:  // D key
+			ObjectsManager::GetInstace()->ReleaseButton(ObjectsManager::GetInstace()->kDKey);
+			break;
+		case 0x57:  // W key
+			ObjectsManager::GetInstace()->ReleaseButton(ObjectsManager::GetInstace()->kWKey);
+			break;
 		case VK_ESCAPE:
 			::PostQuitMessage(0);
 			break;
-		default:
+		default: 
 			break;
 		} 
 		break;
@@ -66,5 +91,6 @@ void App::OnProcessingKeyboardMessage(HWND hwnd, UINT message_id, WPARAM wparam,
 void App::FrameAdvance()
 {
 	TimerManager::GetInstace()->Tick();
+	ObjectsManager::GetInstace()->AnimateObjects();
 	ObjectsManager::GetInstace()->ExecuteCommandList();
 }

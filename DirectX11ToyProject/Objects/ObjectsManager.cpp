@@ -29,11 +29,45 @@ void ObjectsManager::ClearDepthStencilView()
 		throw std::string("OutputMerger dynamic_cast Fail");
 	}
 
+	float clear_color[4] = { 0.125f,  0.125f,  0.125f, 1.0f };
+	DeviceManager::GetInstace()->GetD3D11ImmediateContext()->ClearRenderTargetView(output_merger->GetRenderTargetView(), clear_color);
 	DeviceManager::GetInstace()->GetD3D11ImmediateContext()->ClearDepthStencilView(output_merger->GetDepthStencilView(), D3D11_CLEAR_DEPTH, 1.0f, 0.0f);
+}
+
+void ObjectsManager::PlayerMove(float delta_time)
+{
+	DirectX::XMVECTOR move_vector = DirectX::XMVectorZero();
+	 
+	if (direction_ & kAKey)
+	{
+		move_vector = DirectX::XMVectorAdd(move_vector, DirectX::XMVectorSet(-1.0f, 0.0f, 0.0f, 0.0f));  
+	}
+	if (direction_ & kDKey)
+	{
+		move_vector = DirectX::XMVectorAdd(move_vector, DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f));  
+	}
+	if (direction_ & kWKey)
+	{
+		move_vector = DirectX::XMVectorAdd(move_vector, DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f));  
+	}
+	if (direction_ & kSKey)
+	{
+		move_vector = DirectX::XMVectorAdd(move_vector, DirectX::XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f));  
+	}
+	
+	if (!DirectX::XMVector3Equal(move_vector, DirectX::XMVectorZero()))
+	{
+		DirectX::XMVECTOR normalized_move_vector = DirectX::XMVector3Normalize(move_vector);
+		DirectX::XMVECTOR delta_time_move_vector = DirectX::XMVectorScale(normalized_move_vector, delta_time);
+
+		player_->Move(delta_time_move_vector);
+	}
 }
 
 void ObjectsManager::Initialize(float client_width, float client_height)
 {
+	direction_ = 0;
+
 	camera_ = std::make_unique<Camera>();
 	camera_->Initialize(client_width, client_height);
 
@@ -45,9 +79,26 @@ void ObjectsManager::Initialize(float client_width, float client_height)
 	CreateMovableObjects();
 }
 
+void ObjectsManager::PushButton(unsigned int direction)
+{
+	direction_ |= direction;
+}
+
+void ObjectsManager::ReleaseButton(unsigned int direction)
+{
+	direction_ &= ~direction;
+} 
+
 ID3D11Buffer** ObjectsManager::GetAddressOfCameraConstantBuffer() const
 {
 	return camera_->GetAddressOfCameraConstantBuffer();
+}
+
+void ObjectsManager::AnimateObjects()
+{
+	float delta_time = TimerManager::GetInstace()->DeltaTime();
+	 
+	PlayerMove(delta_time);
 }
 
 void ObjectsManager::ExecuteCommandList()

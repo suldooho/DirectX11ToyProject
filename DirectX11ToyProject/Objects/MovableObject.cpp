@@ -3,6 +3,8 @@
 
 void MovableObject::Initialize()
 {
+	move_speed_ = 10.0f;
+
 	D3D11_BUFFER_DESC buffer_desc;
 	buffer_desc.Usage = D3D11_USAGE_DYNAMIC;
 	buffer_desc.ByteWidth = sizeof(DirectX::XMFLOAT4X4A);
@@ -12,6 +14,17 @@ void MovableObject::Initialize()
 	buffer_desc.StructureByteStride = 0;
 
 	DeviceManager::GetInstace()->GetD3D11Device()->CreateBuffer(&buffer_desc, nullptr, &d3d11_world_matrix_constant_buffer_);
+}
+
+void MovableObject::SetMoveSpeed(float move_speed)
+{
+	move_speed_ = move_speed;
+}
+
+void MovableObject::Move(DirectX::FXMVECTOR move_vector)
+{ 
+	DirectX::XMVECTOR new_position = DirectX::XMVectorAdd(GetPosition(), DirectX::XMVectorScale(move_vector, move_speed_));
+	DirectX::XMStoreFloat3A(&position_, new_position);
 }
 
 void MovableObject::UpdateConstantBuffer()

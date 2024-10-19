@@ -10,6 +10,7 @@ void Player::Initialize()
 {
 	MovableObject::Initialize();
 	SetPosition(2.0f, -2.0f, 2.0f);
+	SetMoveSpeed(20.0f);
 
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> d3d11_deferred_context;
 	DeviceManager::GetInstace()->GetD3D11Device()->CreateDeferredContext(0, d3d11_deferred_context.GetAddressOf());
