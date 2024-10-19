@@ -134,6 +134,7 @@
     <ClInclude Include="App.h" />
     <ClInclude Include="Core\DeviceManager.h" />
     <ClInclude Include="Core\SwapChainManager.h" />
+    <ClInclude Include="Core\TimerManager.h" />
     <ClInclude Include="DirectX11ToyProject.h" />
     <ClInclude Include="FrameResources\ColorShader.h" />
     <ClInclude Include="FrameResources\FrameResource.h" />
@@ -146,6 +147,7 @@
     <ClInclude Include="Meshes\Mesh.h" />
     <ClInclude Include="Meshes\MeshesManager.h" />
     <ClInclude Include="Meshes\Vertices.h" />
+    <ClInclude Include="Objects\BoxObject.h" />
     <ClInclude Include="Objects\Camera.h" />
     <ClInclude Include="Objects\MovableObject.h" />
     <ClInclude Include="Objects\Object.h" />
@@ -158,6 +160,7 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Core\DeviceManager.cpp" />
     <ClCompile Include="Core\SwapChainManager.cpp" />
+    <ClCompile Include="Core\TimerManager.cpp" />
     <ClCompile Include="DirectX11ToyProject.cpp" />
     <ClCompile Include="FrameResources\ColorShader.cpp" />
     <ClCompile Include="FrameResources\FrameResource.cpp" />
@@ -167,6 +170,7 @@
     <ClCompile Include="Meshes\BoxMesh.cpp" />
     <ClCompile Include="Meshes\Mesh.cpp" />
     <ClCompile Include="Meshes\MeshesManager.cpp" />
+    <ClCompile Include="Objects\BoxObject.cpp" />
     <ClCompile Include="Objects\Camera.cpp" />
     <ClCompile Include="Objects\MovableObject.cpp" />
     <ClCompile Include="Objects\Object.cpp" />

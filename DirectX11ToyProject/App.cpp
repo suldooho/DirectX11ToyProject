@@ -11,6 +11,7 @@ void App::Initialize(unsigned int window_width, unsigned int window_height, HWND
 	window_height_ = window_height;
 	hwnd_ = hwnd;
 
+	TimerManager::GetInstace()->Initialize();
 	DeviceManager::GetInstace()->Initialize();
 	SwapChainManager::GetInstace()->Initialize(window_width_, window_height_, hwnd_);
 	FrameResourcesManager::GetInstace()->Initialize(window_width_, window_height_);
@@ -64,5 +65,6 @@ void App::OnProcessingKeyboardMessage(HWND hwnd, UINT message_id, WPARAM wparam,
 
 void App::FrameAdvance()
 {
+	TimerManager::GetInstace()->Tick();
 	ObjectsManager::GetInstace()->ExecuteCommandList();
 }

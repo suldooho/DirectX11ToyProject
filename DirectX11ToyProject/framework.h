@@ -21,6 +21,7 @@
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
 
+#include "Core/TimerManager.h"
 #include "Core/DeviceManager.h"
 #include "Core/SwapChainManager.h"
 #include "FrameResources/FrameResourcesManager.h"
