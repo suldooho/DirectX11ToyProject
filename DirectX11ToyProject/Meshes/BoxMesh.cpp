@@ -3,14 +3,14 @@
 
 void BoxMesh::CreateVertices()
 {
-	vertices_[0] = { DirectX::XMFLOAT3(-1.0f,  1.0f, -1.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) };
-	vertices_[1] = { DirectX::XMFLOAT3(1.0f,  1.0f, -1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) };
+	vertices_[0] = { DirectX::XMFLOAT3(-1.0f, 1.0f, -1.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) };
+	vertices_[1] = { DirectX::XMFLOAT3(1.0f, 1.0f, -1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) };
 	vertices_[2] = { DirectX::XMFLOAT3(1.0f, -1.0f, -1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) };
 	vertices_[3] = { DirectX::XMFLOAT3(-1.0f, -1.0f, -1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) };
-	vertices_[4] = { DirectX::XMFLOAT3(-1.0f,  1.0f,  5.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) };
-	vertices_[5] = { DirectX::XMFLOAT3(1.0f,  1.0f,  5.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) };
-	vertices_[6] = { DirectX::XMFLOAT3(1.0f, -1.0f,  5.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) };
-	vertices_[7] = { DirectX::XMFLOAT3(-1.0f, -1.0f,  5.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) };
+	vertices_[4] = { DirectX::XMFLOAT3(-1.0f, 1.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) };
+	vertices_[5] = { DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) };
+	vertices_[6] = { DirectX::XMFLOAT3(1.0f, -1.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) };
+	vertices_[7] = { DirectX::XMFLOAT3(-1.0f, -1.0f, 1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) };
 
 	num_vertices_ = 8;
 	stride_ = sizeof(ColorVertex);

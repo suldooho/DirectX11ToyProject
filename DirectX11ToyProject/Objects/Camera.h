@@ -13,15 +13,24 @@ struct CameraMatrix
 class Camera  
 {
 private:
+	DirectX::XMFLOAT3A right_;
+	DirectX::XMFLOAT3A up_;
+	DirectX::XMFLOAT3A look_;
+	DirectX::XMFLOAT3A position_; 
+
+private:
 	std::unique_ptr<class Player> player_;
 
 	CameraMatrix camera_matrix_;
 	Microsoft::WRL::ComPtr<class ID3D11Buffer> d3d11_camera_matrix_constant_buffer_;
 	 
 private:
-	const DirectX::XMFLOAT3A kUpOffset = DirectX::XMFLOAT3A(0.0f, 2.0f, 0.0f);
-	const DirectX::XMFLOAT3A kBackOffset = DirectX::XMFLOAT3A(0.0f, 0.0f, -1.0f);
-	 
+	const DirectX::XMFLOAT3A kPositionOffset = DirectX::XMFLOAT3A(0.0f, 0.0f, -3.0f); 
+	DirectX::XMFLOAT3A init_player_position_offset_;
+
+public:
+	Camera();
+
 private:
 	void CreateConstantBuffer();
 	void CreateProjectionMatrix(float near_plane_distance, float far_plane_distance, float aspect_ratio, float fov_angle);

@@ -21,6 +21,11 @@ public:
 public:
 	virtual void Initialize() = 0;
 	void ExecuteCommandList();
+
+	void SetRight(float x, float y, float z);
+	void SetUp(float x, float y, float z);
+	void SetLook(float x, float y, float z);
+	void SetPosition(float x, float y, float z);
 	 
 	DirectX::XMVECTOR GetRight() const;
 	DirectX::XMVECTOR GetUp() const;

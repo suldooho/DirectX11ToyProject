@@ -14,6 +14,26 @@ void Object::ExecuteCommandList()
 	DeviceManager::GetInstace()->GetD3D11ImmediateContext()->ExecuteCommandList(d3d11_command_list_.Get(), true);
 }
 
+void Object::SetRight(float x, float y, float z)
+{
+	DirectX::XMStoreFloat3A(&right_, DirectX::XMVectorSet(x, y, z, 0.0f));
+}
+
+void Object::SetUp(float x, float y, float z)
+{
+	DirectX::XMStoreFloat3A(&up_, DirectX::XMVectorSet(x, y, z, 0.0f));
+}
+
+void Object::SetLook(float x, float y, float z)
+{
+	DirectX::XMStoreFloat3A(&look_, DirectX::XMVectorSet(x, y, z, 0.0f));
+}
+
+void Object::SetPosition(float x, float y, float z)
+{
+	DirectX::XMStoreFloat3A(&position_, DirectX::XMVectorSet(x, y, z, 1.0f));
+}
+
 DirectX::XMVECTOR Object::GetRight() const
 {
 	return DirectX::XMLoadFloat3A(&right_);

@@ -1,7 +1,9 @@
 #pragma once
 #include <memory>
+#include <vector>
 #include "Player.h"
 #include "Camera.h"
+#include "MovableObject.h"
 
 class ObjectsManager
 {
@@ -27,6 +29,14 @@ public:
 private:
 	std::unique_ptr<Player> player_;
 	std::unique_ptr<Camera> camera_;
+
+	std::vector<std::unique_ptr<MovableObject>> movable_objects_;
+
+private:
+	void CreateMovableObjects();
+	void ExecuteCommandListMovableObjects();
+
+	void ClearDepthStencilView();
 
 public:
 	void Initialize(float client_width, float client_height);

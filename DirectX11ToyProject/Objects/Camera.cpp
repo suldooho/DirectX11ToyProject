@@ -2,6 +2,14 @@
 #include "../framework.h"
 #include "Player.h"
 
+Camera::Camera()
+{ 
+	DirectX::XMStoreFloat3A(&right_, DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f));
+	DirectX::XMStoreFloat3A(&up_, DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f));
+	DirectX::XMStoreFloat3A(&look_, DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f));
+	DirectX::XMStoreFloat3A(&position_, DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+}
+
 void Camera::CreateConstantBuffer()
 {
 	D3D11_BUFFER_DESC buffer_desc;
@@ -35,16 +43,16 @@ ID3D11Buffer** Camera::GetAddressOfCameraConstantBuffer()
 void Camera::SetPlayer(Player* player)
 {
 	player_.reset(player);
+	DirectX::XMStoreFloat3A(&init_player_position_offset_, DirectX::XMVectorMultiply(player_->GetPosition(), DirectX::XMVectorSet(-1.0f, -1.0f, -1.0f, 1.0f)));
 }
 
 void Camera::UpdateViewMatrix()
 {
-	DirectX::XMVECTOR eye_position = DirectX::XMVectorAdd(player_->GetPosition(), DirectX::XMLoadFloat3A(&kUpOffset));
-	DirectX::XMVECTOR focus_position = DirectX::XMVectorAdd(eye_position, player_->GetLook());
+	DirectX::XMVECTOR eye_position = DirectX::XMVectorAdd(player_->GetPosition(), DirectX::XMLoadFloat3A(&init_player_position_offset_));
+	DirectX::XMVECTOR focus_position = DirectX::XMVectorAdd(eye_position, DirectX::XMLoadFloat3A(&look_));
 	DirectX::XMMATRIX view_matrix = DirectX::XMMatrixLookAtLH(eye_position, focus_position, player_->GetUp());
 	DirectX::XMStoreFloat4x4A(&camera_matrix_.view_matrix, view_matrix);
-}
-
+} 
 
 void Camera::UpdateConstantBuffer()
 {
