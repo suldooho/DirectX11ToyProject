@@ -4,10 +4,7 @@
 
 Camera::Camera()
 { 
-	DirectX::XMStoreFloat3A(&right_, DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f));
-	DirectX::XMStoreFloat3A(&up_, DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f));
-	DirectX::XMStoreFloat3A(&look_, DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f));
-	DirectX::XMStoreFloat3A(&position_, DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+	DirectX::XMStoreFloat4x4A(&world_matrix_, DirectX::XMMatrixIdentity());
 }
 
 void Camera::CreateConstantBuffer()
@@ -43,15 +40,26 @@ ID3D11Buffer** Camera::GetAddressOfCameraConstantBuffer()
 void Camera::SetPlayer(Player* player)
 {
 	player_.reset(player);
-	DirectX::XMStoreFloat3A(&init_player_position_offset_, DirectX::XMVectorMultiply(player_->GetPosition(), DirectX::XMVectorSet(-1.0f, -1.0f, -1.0f, 1.0f)));
+	DirectX::XMStoreFloat4A(&init_player_position_offset_, DirectX::XMVectorMultiply(player_->GetPosition(), DirectX::XMVectorSet(-1.0f, -1.0f, -1.0f, 0.0f)));
+	SetPosition(player->GetPosition());
 }
 
 void Camera::UpdateViewMatrix()
 {
-	DirectX::XMVECTOR eye_position = DirectX::XMVectorAdd(player_->GetPosition(), DirectX::XMLoadFloat3A(&init_player_position_offset_));
-	DirectX::XMVECTOR focus_position = DirectX::XMVectorAdd(eye_position, DirectX::XMLoadFloat3A(&look_));
-	DirectX::XMMATRIX view_matrix = DirectX::XMMatrixLookAtLH(eye_position, focus_position, player_->GetUp());
-	DirectX::XMStoreFloat4x4A(&camera_matrix_.view_matrix, view_matrix);
+	DirectX::XMVECTOR right = DirectX::XMVectorSet(world_matrix_._11, world_matrix_._12, world_matrix_._13, 0.0f);
+	DirectX::XMVECTOR up = DirectX::XMVectorSet(world_matrix_._21, world_matrix_._22, world_matrix_._23, 0.0f);
+	DirectX::XMVECTOR look = DirectX::XMVectorSet(world_matrix_._31, world_matrix_._32, world_matrix_._33, 0.0f);
+	DirectX::XMVECTOR position = DirectX::XMVectorSet(world_matrix_._41, world_matrix_._42, world_matrix_._43, 0.0f);
+	
+	float view_position_x = DirectX::XMVectorGetX(DirectX::XMVector3Dot(position, right)) * -1.0f;
+	float view_position_y = DirectX::XMVectorGetX(DirectX::XMVector3Dot(position, up)) * -1.0f;
+	float view_position_z = DirectX::XMVectorGetX(DirectX::XMVector3Dot(position, look)) * -1.0f;
+
+	DirectX::XMMATRIX view_matrix = DirectX::XMMATRIX(right, up, look, DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+	view_matrix = DirectX::XMMatrixTranspose(view_matrix);
+	view_matrix.r[3] = DirectX::XMVectorSet(view_position_x, view_position_y, view_position_z, 1.0f);
+
+	DirectX::XMStoreFloat4x4A(&(camera_matrix_.view_matrix), view_matrix);
 } 
 
 void Camera::UpdateConstantBuffer()
@@ -66,4 +74,29 @@ void Camera::UpdateConstantBuffer()
 	DirectX::XMStoreFloat4x4A(&camera_matrix->view_matrix, xm_view_matrix);
 	DirectX::XMStoreFloat4x4A(&camera_matrix->projection_matrix, xm_projection_matrix);
 	DeviceManager::GetInstace()->GetD3D11ImmediateContext()->Unmap(d3d11_camera_matrix_constant_buffer_.Get(), 0);
+}
+
+void Camera::SetPosition(DirectX::FXMVECTOR player_position)
+{
+	DirectX::XMVECTOR camera_position = DirectX::XMVectorAdd(player_position, DirectX::XMLoadFloat4A(&init_player_position_offset_));
+	
+	world_matrix_._41 = DirectX::XMVectorGetX(camera_position);
+	world_matrix_._42 = DirectX::XMVectorGetY(camera_position);
+	world_matrix_._43 = DirectX::XMVectorGetZ(camera_position);
+}
+
+void Camera::RotateYaw(float yaw)
+{
+	/*DirectX::XMVECTOR look_vector = DirectX::XMLoadFloat3A(&look_);
+
+	DirectX::XMVECTOR up_vector = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);  
+	DirectX::XMMATRIX rotation_matrix = DirectX::XMMatrixRotationAxis(up_vector, yaw);
+
+	DirectX::XMVECTOR rotated_look_vector = DirectX::XMVector3Transform(look_vector, rotation_matrix);
+
+	DirectX::XMStoreFloat3A(&look_, rotated_look_vector); */
+}
+
+void Camera::RotatePitch(float pitch)
+{
 }

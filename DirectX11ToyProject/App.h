@@ -17,5 +17,7 @@ public:
 	void OnProcessingMouseMessage(HWND hwnd, UINT message_id, WPARAM wparam, LPARAM lparam);
 	void OnProcessingKeyboardMessage(HWND hwnd, UINT message_id, WPARAM wparam, LPARAM lparam);
 	void FrameAdvance();
+
+	POINT GetWindowCenter();
 };
 

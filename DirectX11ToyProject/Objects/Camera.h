@@ -13,10 +13,7 @@ struct CameraMatrix
 class Camera  
 {
 private:
-	DirectX::XMFLOAT3A right_;
-	DirectX::XMFLOAT3A up_;
-	DirectX::XMFLOAT3A look_;
-	DirectX::XMFLOAT3A position_; 
+	DirectX::XMFLOAT4X4A world_matrix_;
 
 private:
 	std::unique_ptr<class Player> player_;
@@ -26,7 +23,7 @@ private:
 	 
 private:
 	const DirectX::XMFLOAT3A kPositionOffset = DirectX::XMFLOAT3A(0.0f, 0.0f, -3.0f); 
-	DirectX::XMFLOAT3A init_player_position_offset_;
+	DirectX::XMFLOAT4A init_player_position_offset_;
 
 public:
 	Camera();
@@ -42,5 +39,10 @@ public:
 	void SetPlayer(class Player* player);
 	void UpdateViewMatrix();
 	void UpdateConstantBuffer();
+
+	void SetPosition(DirectX::FXMVECTOR player_position);
+
+	void RotateYaw(float yaw);
+	void RotatePitch(float pitch);
 };
 

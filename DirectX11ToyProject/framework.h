@@ -15,12 +15,13 @@
 #include <tchar.h>
 #include <memory>
 #include <cwchar>
-#include <string>
+#include <string> 
 
 #include <d3d11.h> 
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
 
+#include "Core/DebugLog.h"
 #include "Core/TimerManager.h"
 #include "Core/DeviceManager.h"
 #include "Core/SwapChainManager.h"

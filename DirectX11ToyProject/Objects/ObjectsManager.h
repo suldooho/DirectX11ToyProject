@@ -27,7 +27,10 @@ public:
 	}
 
 private:
-	unsigned int direction_;
+	unsigned int player_direction_;
+	float player_yaw_;
+	float player_pitch_;
+
 	std::unique_ptr<Player> player_;
 	std::unique_ptr<Camera> camera_;
 
@@ -39,13 +42,15 @@ private:
 
 	void ClearDepthStencilView();
 
-	void PlayerMove(float delta_time);
+	void MovePlayer(float delta_time);
+	void RotatePlayer(float delta_time);
 
 public:
 	void Initialize(float client_width, float client_height);
 
 	void PushButton(unsigned int direction);
 	void ReleaseButton(unsigned int direction);
+	void SetRotationValue(float yaw, float pitch);
 
 public:
 	class ID3D11Buffer** GetAddressOfCameraConstantBuffer() const;

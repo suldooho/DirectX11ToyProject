@@ -5,11 +5,8 @@
 
 class Object
 {
-protected: 
-	DirectX::XMFLOAT3A right_;
-	DirectX::XMFLOAT3A up_;
-	DirectX::XMFLOAT3A look_;
-	DirectX::XMFLOAT3A position_;
+protected:
+	DirectX::XMFLOAT4X4A world_matrix_;
 
 protected:
 	Microsoft::WRL::ComPtr<ID3D11CommandList> d3d11_command_list_;
@@ -26,6 +23,7 @@ public:
 	void SetUp(float x, float y, float z);
 	void SetLook(float x, float y, float z);
 	void SetPosition(float x, float y, float z);
+	void SetPosition(DirectX::FXMVECTOR new_position);
 	 
 	DirectX::XMVECTOR GetRight() const;
 	DirectX::XMVECTOR GetUp() const;

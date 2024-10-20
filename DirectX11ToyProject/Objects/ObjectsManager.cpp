@@ -34,23 +34,23 @@ void ObjectsManager::ClearDepthStencilView()
 	DeviceManager::GetInstace()->GetD3D11ImmediateContext()->ClearDepthStencilView(output_merger->GetDepthStencilView(), D3D11_CLEAR_DEPTH, 1.0f, 0.0f);
 }
 
-void ObjectsManager::PlayerMove(float delta_time)
+void ObjectsManager::MovePlayer(float delta_time)
 {
 	DirectX::XMVECTOR move_vector = DirectX::XMVectorZero();
 	 
-	if (direction_ & kAKey)
+	if (player_direction_ & kAKey)
 	{
 		move_vector = DirectX::XMVectorAdd(move_vector, DirectX::XMVectorSet(-1.0f, 0.0f, 0.0f, 0.0f));  
 	}
-	if (direction_ & kDKey)
+	if (player_direction_ & kDKey)
 	{
 		move_vector = DirectX::XMVectorAdd(move_vector, DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f));  
 	}
-	if (direction_ & kWKey)
+	if (player_direction_ & kWKey)
 	{
 		move_vector = DirectX::XMVectorAdd(move_vector, DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f));  
 	}
-	if (direction_ & kSKey)
+	if (player_direction_ & kSKey)
 	{
 		move_vector = DirectX::XMVectorAdd(move_vector, DirectX::XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f));  
 	}
@@ -61,12 +61,22 @@ void ObjectsManager::PlayerMove(float delta_time)
 		DirectX::XMVECTOR delta_time_move_vector = DirectX::XMVectorScale(normalized_move_vector, delta_time);
 
 		player_->Move(delta_time_move_vector);
+		camera_->SetPosition(player_->GetPosition());
 	}
+}
+
+void ObjectsManager::RotatePlayer(float delta_time)
+{ 
+	camera_->RotateYaw(player_yaw_ * delta_time);
+	
+	player_yaw_ = 0.0f;// TEST
 }
 
 void ObjectsManager::Initialize(float client_width, float client_height)
 {
-	direction_ = 0;
+	player_direction_ = 0;
+	player_yaw_ = 0.0f;
+	player_pitch_ = 0.0f;
 
 	camera_ = std::make_unique<Camera>();
 	camera_->Initialize(client_width, client_height);
@@ -81,12 +91,18 @@ void ObjectsManager::Initialize(float client_width, float client_height)
 
 void ObjectsManager::PushButton(unsigned int direction)
 {
-	direction_ |= direction;
+	player_direction_ |= direction;
 }
 
 void ObjectsManager::ReleaseButton(unsigned int direction)
 {
-	direction_ &= ~direction;
+	player_direction_ &= ~direction;
+}
+
+void ObjectsManager::SetRotationValue(float yaw, float pitch)
+{
+	player_yaw_ = yaw * 0.1f;
+	player_pitch_ = pitch * 0.1f; // TEST
 } 
 
 ID3D11Buffer** ObjectsManager::GetAddressOfCameraConstantBuffer() const
@@ -98,7 +114,8 @@ void ObjectsManager::AnimateObjects()
 {
 	float delta_time = TimerManager::GetInstace()->DeltaTime();
 	 
-	PlayerMove(delta_time);
+	MovePlayer(delta_time);
+	RotatePlayer(delta_time);
 }
 
 void ObjectsManager::ExecuteCommandList()

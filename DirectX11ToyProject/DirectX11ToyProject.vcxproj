@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="Core\DebugLog.h" />
     <ClInclude Include="Core\DeviceManager.h" />
     <ClInclude Include="Core\SwapChainManager.h" />
     <ClInclude Include="Core\TimerManager.h" />
@@ -158,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Core\DebugLog.cpp" />
     <ClCompile Include="Core\DeviceManager.cpp" />
     <ClCompile Include="Core\SwapChainManager.cpp" />
     <ClCompile Include="Core\TimerManager.cpp" />

@@ -114,6 +114,9 @@
     <ClInclude Include="Core\TimerManager.h">
       <Filter>헤더 파일\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Core\DebugLog.h">
+      <Filter>헤더 파일\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX11ToyProject.cpp">
@@ -171,6 +174,9 @@
       <Filter>소스 파일\Objects</Filter>
     </ClCompile>
     <ClCompile Include="Core\TimerManager.cpp">
+      <Filter>소스 파일\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\DebugLog.cpp">
       <Filter>소스 파일\Core</Filter>
     </ClCompile>
   </ItemGroup>

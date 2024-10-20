@@ -21,6 +21,9 @@ void App::Initialize(unsigned int window_width, unsigned int window_height, HWND
 
 void App::OnProcessingMouseMessage(HWND hwnd, UINT message_id, WPARAM wparam, LPARAM lparam)
 {
+	static POINT last_mouse_pos = GetWindowCenter(); 
+	POINT current_mouse_pos;
+
 	switch (message_id)
 	{
 	case WM_LBUTTONDOWN:
@@ -29,7 +32,20 @@ void App::OnProcessingMouseMessage(HWND hwnd, UINT message_id, WPARAM wparam, LP
 	case WM_LBUTTONUP:
 	case WM_RBUTTONUP:
 		break;
-	case WM_MOUSEMOVE:
+	case WM_MOUSEMOVE: 
+		GetCursorPos(&current_mouse_pos);  
+
+		if (current_mouse_pos.x != last_mouse_pos.x || current_mouse_pos.y != last_mouse_pos.y)
+		{
+			DebugLog::GetInstace()->LogFormattedMessage("%d, %d, %d, %d\n", current_mouse_pos.x, last_mouse_pos.x, current_mouse_pos.y, last_mouse_pos.y);
+			ObjectsManager::GetInstace()->SetRotationValue(static_cast<float>(current_mouse_pos.x - last_mouse_pos.x), static_cast<float>(-(current_mouse_pos.y - last_mouse_pos.y)));
+		}
+
+		POINT center = GetWindowCenter();
+		ClientToScreen(hwnd, &center);
+		SetCursorPos(center.x, center.y);
+		 
+		last_mouse_pos = center;
 		break;
 	default:
 		break;
@@ -38,8 +54,6 @@ void App::OnProcessingMouseMessage(HWND hwnd, UINT message_id, WPARAM wparam, LP
 
 void App::OnProcessingKeyboardMessage(HWND hwnd, UINT message_id, WPARAM wparam, LPARAM lparam)
 {
-	static UCHAR key_buffer[256];
-
 	switch (message_id)
 	{
 	case WM_KEYDOWN:
@@ -93,4 +107,13 @@ void App::FrameAdvance()
 	TimerManager::GetInstace()->Tick();
 	ObjectsManager::GetInstace()->AnimateObjects();
 	ObjectsManager::GetInstace()->ExecuteCommandList();
+}
+
+POINT App::GetWindowCenter()
+{ 
+	POINT center;
+	center.x = window_width_ / 2;
+	center.y = window_height_ / 2;
+
+	return center;
 }
