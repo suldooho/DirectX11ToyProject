@@ -117,6 +117,9 @@
     <ClInclude Include="Core\DebugLog.h">
       <Filter>헤더 파일\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Meshes\OBJMesh.h">
+      <Filter>헤더 파일\Meshes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX11ToyProject.cpp">
@@ -178,6 +181,9 @@
     </ClCompile>
     <ClCompile Include="Core\DebugLog.cpp">
       <Filter>소스 파일\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshes\OBJMesh.cpp">
+      <Filter>소스 파일\Meshes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

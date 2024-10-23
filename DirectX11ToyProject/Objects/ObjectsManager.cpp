@@ -38,25 +38,26 @@ void ObjectsManager::MoveCamera(float delta_time)
 {
 	DirectX::XMVECTOR move_vector = DirectX::XMVectorZero();
 	 
-	if (camera_direction_ & kAKey)
+	if (camera_direction_ & kAKey_)
 	{
 		move_vector = DirectX::XMVectorAdd(move_vector, DirectX::XMVectorScale(camera_->GetRight(), -1.0f));
 	}
-	if (camera_direction_ & kDKey)
+	if (camera_direction_ & kDKey_)
 	{
 		move_vector = DirectX::XMVectorAdd(move_vector, camera_->GetRight());
 	}
-	if (camera_direction_ & kWKey)
+	if (camera_direction_ & kWKey_)
 	{
 		move_vector = DirectX::XMVectorAdd(move_vector, camera_->GetLook());
 	}
-	if (camera_direction_ & kSKey)
+	if (camera_direction_ & kSKey_)
 	{
 		move_vector = DirectX::XMVectorAdd(move_vector, DirectX::XMVectorScale(camera_->GetLook(), -1.0f));
 	}
 	
 	if (!DirectX::XMVector3Equal(move_vector, DirectX::XMVectorZero()))
 	{
+		move_vector = DirectX::XMVectorSet(DirectX::XMVectorGetX(move_vector), 0.0f, DirectX::XMVectorGetZ(move_vector), 0.0f);
 		DirectX::XMVECTOR normalized_move_vector = DirectX::XMVector3Normalize(move_vector);
 		DirectX::XMVECTOR delta_time_move_vector = DirectX::XMVectorScale(normalized_move_vector, delta_time);
 		 
@@ -105,8 +106,8 @@ void ObjectsManager::ReleaseButton(unsigned int direction)
 
 void ObjectsManager::SetRotationValue(float yaw, float pitch)
 {
-	camera_yaw_ = yaw * rotation_sensitivity_;
-	camera_pitch_ = pitch * rotation_sensitivity_;
+	camera_yaw_ = yaw *  kRotationSensitivity_;
+	camera_pitch_ = pitch * kRotationSensitivity_;
 } 
 
 ID3D11Buffer** ObjectsManager::GetAddressOfCameraConstantBuffer() const

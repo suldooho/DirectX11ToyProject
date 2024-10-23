@@ -8,9 +8,10 @@
 
 void BoxObject::Initialize()
 {
+	MovableObject::Initialize();
+
 	SetPosition(0.0f, 0.0f, 10.0f);
 
-	MovableObject::Initialize();
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> d3d11_deferred_context;
 	DeviceManager::GetInstace()->GetD3D11Device()->CreateDeferredContext(0, d3d11_deferred_context.GetAddressOf());
 
@@ -44,8 +45,8 @@ void BoxObject::Initialize()
 	d3d11_deferred_context->RSSetState(box_mesh->GetRasterizerState());
 	ID3D11RenderTargetView* d3d11_render_target_view = output_merger->GetRenderTargetView();
 	d3d11_deferred_context->OMSetRenderTargets(1, &d3d11_render_target_view, output_merger->GetDepthStencilView());//
-	d3d11_deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstace()->kVertexShaderSlotWorldMatrix, 1, d3d11_world_matrix_constant_buffer_.GetAddressOf());
-	d3d11_deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstace()->kCameraShaderSlotWorldMatrix, 1, ObjectsManager::GetInstace()->GetAddressOfCameraConstantBuffer());
+	d3d11_deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstace()->kVertexShaderSlotWorldMatrix_, 1, d3d11_world_matrix_constant_buffer_.GetAddressOf());
+	d3d11_deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstace()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstace()->GetAddressOfCameraConstantBuffer());
 	d3d11_deferred_context->DrawIndexed(box_mesh->GetNumIndices(), 0, 0);
 
 	d3d11_deferred_context->FinishCommandList(true, d3d11_command_list_.GetAddressOf());

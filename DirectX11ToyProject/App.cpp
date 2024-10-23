@@ -59,16 +59,16 @@ void App::OnProcessingKeyboardMessage(HWND hwnd, UINT message_id, WPARAM wparam,
 		switch (wparam)
 		{
 		case 0x41:  // A key
-			ObjectsManager::GetInstace()->PushButton(ObjectsManager::GetInstace()->kAKey);
+			ObjectsManager::GetInstace()->PushButton(ObjectsManager::GetInstace()->kAKey_);
 			break;
 		case 0x53:  // S key
-			ObjectsManager::GetInstace()->PushButton(ObjectsManager::GetInstace()->kSKey);
+			ObjectsManager::GetInstace()->PushButton(ObjectsManager::GetInstace()->kSKey_);
 			break;
 		case 0x44:  // D key
-			ObjectsManager::GetInstace()->PushButton(ObjectsManager::GetInstace()->kDKey);
+			ObjectsManager::GetInstace()->PushButton(ObjectsManager::GetInstace()->kDKey_);
 			break;
 		case 0x57:  // W key
-			ObjectsManager::GetInstace()->PushButton(ObjectsManager::GetInstace()->kWKey);
+			ObjectsManager::GetInstace()->PushButton(ObjectsManager::GetInstace()->kWKey_);
 			break; 
 		default:
 			break;
@@ -78,16 +78,16 @@ void App::OnProcessingKeyboardMessage(HWND hwnd, UINT message_id, WPARAM wparam,
 		switch (wparam)
 		{
 		case 0x41:  // A key
-			ObjectsManager::GetInstace()->ReleaseButton(ObjectsManager::GetInstace()->kAKey);
+			ObjectsManager::GetInstace()->ReleaseButton(ObjectsManager::GetInstace()->kAKey_);
 			break;
 		case 0x53:  // S key
-			ObjectsManager::GetInstace()->ReleaseButton(ObjectsManager::GetInstace()->kSKey);
+			ObjectsManager::GetInstace()->ReleaseButton(ObjectsManager::GetInstace()->kSKey_);
 			break;
 		case 0x44:  // D key
-			ObjectsManager::GetInstace()->ReleaseButton(ObjectsManager::GetInstace()->kDKey);
+			ObjectsManager::GetInstace()->ReleaseButton(ObjectsManager::GetInstace()->kDKey_);
 			break;
 		case 0x57:  // W key
-			ObjectsManager::GetInstace()->ReleaseButton(ObjectsManager::GetInstace()->kWKey);
+			ObjectsManager::GetInstace()->ReleaseButton(ObjectsManager::GetInstace()->kWKey_);
 			break;
 		case VK_ESCAPE:
 			::PostQuitMessage(0);

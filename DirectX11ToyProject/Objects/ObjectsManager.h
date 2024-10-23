@@ -30,7 +30,7 @@ private:
 	unsigned int camera_direction_;
 	float camera_yaw_;
 	float camera_pitch_;
-	const float rotation_sensitivity_ = 2.0f;
+	const float kRotationSensitivity_ = 2.0f;
 
 	std::unique_ptr<Player> player_;
 	std::unique_ptr<Camera> camera_;
@@ -61,12 +61,12 @@ public:
 	void ExecuteCommandList();
 
 public:
-	const unsigned int kVertexShaderSlotWorldMatrix = 0;
-	const unsigned int kCameraShaderSlotWorldMatrix = 1;
+	const unsigned int kVertexShaderSlotWorldMatrix_ = 0;
+	const unsigned int kCameraShaderSlotWorldMatrix_ = 1;
 
-	const unsigned int kAKey = 0x01;
-	const unsigned int kSKey = 0x02;
-	const unsigned int kDKey = 0x04;
-	const unsigned int kWKey = 0x08;
+	const unsigned int kAKey_ = 0x01;
+	const unsigned int kSKey_ = 0x02;
+	const unsigned int kDKey_ = 0x04;
+	const unsigned int kWKey_ = 0x08;
 };
 
