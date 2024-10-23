@@ -37,8 +37,7 @@ void App::OnProcessingMouseMessage(HWND hwnd, UINT message_id, WPARAM wparam, LP
 
 		if (current_mouse_pos.x != last_mouse_pos.x || current_mouse_pos.y != last_mouse_pos.y)
 		{
-			DebugLog::GetInstace()->LogFormattedMessage("%d, %d, %d, %d\n", current_mouse_pos.x, last_mouse_pos.x, current_mouse_pos.y, last_mouse_pos.y);
-			ObjectsManager::GetInstace()->SetRotationValue(static_cast<float>(current_mouse_pos.x - last_mouse_pos.x), static_cast<float>(-(current_mouse_pos.y - last_mouse_pos.y)));
+			ObjectsManager::GetInstace()->SetRotationValue(static_cast<float>(current_mouse_pos.x - last_mouse_pos.x), static_cast<float>(current_mouse_pos.y - last_mouse_pos.y));
 		}
 
 		POINT center = GetWindowCenter();

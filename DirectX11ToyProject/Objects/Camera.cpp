@@ -28,6 +28,7 @@ void Camera::CreateProjectionMatrix(float fov_angle, float aspect_ratio, float n
 
 void Camera::Initialize(float client_width, float client_height)
 { 
+	move_speed_ = 20.0f;
 	CreateConstantBuffer();
 	CreateProjectionMatrix(90.0f, client_width / client_height, 1.0f, 500.0f);
 }
@@ -36,14 +37,7 @@ ID3D11Buffer** Camera::GetAddressOfCameraConstantBuffer()
 {
 	return d3d11_camera_matrix_constant_buffer_.GetAddressOf();
 }
-
-void Camera::SetPlayer(Player* player)
-{
-	player_.reset(player);
-	DirectX::XMStoreFloat4A(&init_player_position_offset_, DirectX::XMVectorMultiply(player_->GetPosition(), DirectX::XMVectorSet(-1.0f, -1.0f, -1.0f, 0.0f)));
-	SetPosition(player->GetPosition());
-}
-
+ 
 void Camera::UpdateViewMatrix()
 {
 	DirectX::XMVECTOR right = DirectX::XMVectorSet(world_matrix_._11, world_matrix_._12, world_matrix_._13, 0.0f);
@@ -76,27 +70,76 @@ void Camera::UpdateConstantBuffer()
 	DeviceManager::GetInstace()->GetD3D11ImmediateContext()->Unmap(d3d11_camera_matrix_constant_buffer_.Get(), 0);
 }
 
-void Camera::SetPosition(DirectX::FXMVECTOR player_position)
+void Camera::Move(DirectX::FXMVECTOR move_vector)
 {
-	DirectX::XMVECTOR camera_position = DirectX::XMVectorAdd(player_position, DirectX::XMLoadFloat4A(&init_player_position_offset_));
-	
-	world_matrix_._41 = DirectX::XMVectorGetX(camera_position);
-	world_matrix_._42 = DirectX::XMVectorGetY(camera_position);
-	world_matrix_._43 = DirectX::XMVectorGetZ(camera_position);
-}
+	DirectX::XMVECTOR new_position = DirectX::XMVectorAdd(GetPosition(), DirectX::XMVectorScale(move_vector, move_speed_));
+	SetPosition(new_position);
+} 
 
 void Camera::RotateYaw(float yaw)
-{
-	/*DirectX::XMVECTOR look_vector = DirectX::XMLoadFloat3A(&look_);
-
+{  
 	DirectX::XMVECTOR up_vector = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);  
 	DirectX::XMMATRIX rotation_matrix = DirectX::XMMatrixRotationAxis(up_vector, yaw);
 
-	DirectX::XMVECTOR rotated_look_vector = DirectX::XMVector3Transform(look_vector, rotation_matrix);
+	DirectX::XMFLOAT3 save_position = DirectX::XMFLOAT3(world_matrix_._41, world_matrix_._42, world_matrix_._43);
+	world_matrix_._41 = 0.0f;
+	world_matrix_._42 = 0.0f;
+	world_matrix_._43 = 0.0f;
 
-	DirectX::XMStoreFloat3A(&look_, rotated_look_vector); */
+	DirectX::XMMATRIX rotated_matrix = DirectX::XMMatrixMultiply(DirectX::XMLoadFloat4x4A(&world_matrix_), rotation_matrix);
+
+	DirectX::XMStoreFloat4x4A(&world_matrix_, rotated_matrix);
+	world_matrix_._41 = save_position.x;
+	world_matrix_._42 = save_position.y;
+	world_matrix_._43 = save_position.z;
 }
 
 void Camera::RotatePitch(float pitch)
 {
+	DirectX::XMVECTOR right_vector = DirectX::XMVectorSet(world_matrix_._11, world_matrix_._12, world_matrix_._13, 0.0f);
+	DirectX::XMMATRIX rotation_matrix = DirectX::XMMatrixRotationAxis(right_vector, pitch);
+
+	DirectX::XMFLOAT3 save_position = DirectX::XMFLOAT3(world_matrix_._41, world_matrix_._42, world_matrix_._43);
+	world_matrix_._41 = 0.0f;
+	world_matrix_._42 = 0.0f;
+	world_matrix_._43 = 0.0f;
+
+	DirectX::XMMATRIX rotated_matrix = DirectX::XMMatrixMultiply(DirectX::XMLoadFloat4x4A(&world_matrix_), rotation_matrix);
+
+	DirectX::XMStoreFloat4x4A(&world_matrix_, rotated_matrix);
+	world_matrix_._41 = save_position.x;
+	world_matrix_._42 = save_position.y;
+	world_matrix_._43 = save_position.z;
+}
+
+void Camera::SetPosition(DirectX::FXMVECTOR new_position)
+{
+	world_matrix_._41 = DirectX::XMVectorGetX(new_position);
+	world_matrix_._42 = DirectX::XMVectorGetY(new_position);
+	world_matrix_._43 = DirectX::XMVectorGetZ(new_position);
+}
+
+DirectX::XMVECTOR Camera::GetRight() const
+{
+	return DirectX::XMVectorSet(world_matrix_._11, world_matrix_._12, world_matrix_._13, 0.0f);
+}
+
+DirectX::XMVECTOR Camera::GetUp() const
+{
+	return DirectX::XMVectorSet(world_matrix_._21, world_matrix_._22, world_matrix_._23, 0.0f);
+}
+
+DirectX::XMVECTOR Camera::GetLook() const
+{
+	return DirectX::XMVectorSet(world_matrix_._31, world_matrix_._32, world_matrix_._33, 0.0f);
+}
+
+DirectX::XMVECTOR Camera::GetPosition() const
+{
+	return DirectX::XMVectorSet(world_matrix_._41, world_matrix_._42, world_matrix_._43, 1.0f);
+}
+
+DirectX::XMMATRIX Camera::GetWorldMatrix()
+{
+	return DirectX::XMLoadFloat4x4A(&world_matrix_);
 }

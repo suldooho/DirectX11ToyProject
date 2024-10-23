@@ -9,8 +9,7 @@
 void Player::Initialize()
 {
 	MovableObject::Initialize();
-	SetPosition(2.0f, -2.0f, 2.0f);
-	SetMoveSpeed(20.0f);
+	SetPosition(kPlayerToCameraOffset.x, kPlayerToCameraOffset.y, kPlayerToCameraOffset.z); 
 
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> d3d11_deferred_context;
 	DeviceManager::GetInstace()->GetD3D11Device()->CreateDeferredContext(0, d3d11_deferred_context.GetAddressOf());
@@ -50,4 +49,15 @@ void Player::Initialize()
 	d3d11_deferred_context->DrawIndexed(box_mesh->GetNumIndices(), 0, 0);
 
 	d3d11_deferred_context->FinishCommandList(true, d3d11_command_list_.GetAddressOf());
+}
+
+void Player::SetRotationAndPosition(DirectX::FXMMATRIX camera_world_matrix)
+{ 
+	DirectX::XMStoreFloat4x4A(&world_matrix_, camera_world_matrix); 
+	DirectX::XMVECTOR offset_vector = DirectX::XMLoadFloat3(&kPlayerToCameraOffset);
+	offset_vector = DirectX::XMVector3Transform(offset_vector, camera_world_matrix);  // offset_vector is x, y, z, 1.0f ... !?!?
+
+	world_matrix_._41 = DirectX::XMVectorGetX(offset_vector);
+	world_matrix_._42 = DirectX::XMVectorGetY(offset_vector);
+	world_matrix_._43 = DirectX::XMVectorGetZ(offset_vector);
 }

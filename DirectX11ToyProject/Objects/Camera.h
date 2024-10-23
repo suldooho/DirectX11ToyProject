@@ -22,8 +22,7 @@ private:
 	Microsoft::WRL::ComPtr<class ID3D11Buffer> d3d11_camera_matrix_constant_buffer_;
 	 
 private:
-	const DirectX::XMFLOAT3A kPositionOffset = DirectX::XMFLOAT3A(0.0f, 0.0f, -3.0f); 
-	DirectX::XMFLOAT4A init_player_position_offset_;
+	float move_speed_; 
 
 public:
 	Camera();
@@ -35,14 +34,23 @@ private:
 public:
 	void Initialize(float client_width, float client_height);
 
-	class ID3D11Buffer** GetAddressOfCameraConstantBuffer();
-	void SetPlayer(class Player* player);
+	class ID3D11Buffer** GetAddressOfCameraConstantBuffer(); 
 	void UpdateViewMatrix();
 	void UpdateConstantBuffer();
 
-	void SetPosition(DirectX::FXMVECTOR player_position);
+	void Move(DirectX::FXMVECTOR move_vector);
 
 	void RotateYaw(float yaw);
 	void RotatePitch(float pitch);
+
+public:
+	void SetPosition(DirectX::FXMVECTOR new_position);
+
+	DirectX::XMVECTOR GetRight() const;
+	DirectX::XMVECTOR GetUp() const;
+	DirectX::XMVECTOR GetLook() const; 
+	DirectX::XMVECTOR GetPosition() const;
+
+	DirectX::XMMATRIX GetWorldMatrix();
 };
 

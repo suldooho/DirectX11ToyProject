@@ -27,9 +27,10 @@ public:
 	}
 
 private:
-	unsigned int player_direction_;
-	float player_yaw_;
-	float player_pitch_;
+	unsigned int camera_direction_;
+	float camera_yaw_;
+	float camera_pitch_;
+	const float rotation_sensitivity_ = 2.0f;
 
 	std::unique_ptr<Player> player_;
 	std::unique_ptr<Camera> camera_;
@@ -42,8 +43,9 @@ private:
 
 	void ClearDepthStencilView();
 
-	void MovePlayer(float delta_time);
-	void RotatePlayer(float delta_time);
+	void MoveCamera(float delta_time);
+	void RotateCamera(float delta_time);
+	void SetPlayerRotationAndPosition(DirectX::FXMMATRIX camera_world_matrix);
 
 public:
 	void Initialize(float client_width, float client_height);
