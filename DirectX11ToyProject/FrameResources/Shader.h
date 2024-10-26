@@ -10,6 +10,7 @@ private:
 	Microsoft::WRL::ComPtr<class ID3D11PixelShader> d3d11_pixel_shader_;
 
 protected:
+	void CreateVertexShaderFromFile(LPCWSTR shader_file, LPCSTR entry_point);
 	void CreateInputLayoutAndVertexShaderFromFile(LPCWSTR shader_file, LPCSTR entry_point, class D3D11_INPUT_ELEMENT_DESC* input_element_desc, unsigned int num_elements);
 	void CreatePixelShaderFromFile(LPCWSTR shader_file, LPCSTR entry_point);
 	  

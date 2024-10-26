@@ -3,6 +3,7 @@
 #include "ColorShader.h"
 #include "BumpMappingShader.h"
 #include "OutputMerger.h"
+#include "SecondPassShader.h"
 
 FrameResourcesManager* FrameResourcesManager::instance_ = nullptr;
 
@@ -19,6 +20,10 @@ void FrameResourcesManager::Initialize(unsigned int client_width, unsigned int c
 	frame_resource_container_["OutputMerger"] = std::make_unique<OutputMerger>();
 	OutputMerger* output_merger = dynamic_cast<OutputMerger*>(frame_resource_container_["OutputMerger"].get());
 	output_merger->Initialize(client_width, client_height);
+
+	frame_resource_container_["SecondPassShader"] = std::make_unique<SecondPassShader>();
+	SecondPassShader* second_pass_shader = dynamic_cast<SecondPassShader*>(frame_resource_container_["SecondPassShader"].get());
+	second_pass_shader->Initialize();
 }
 
 FrameResource* FrameResourcesManager::GetFrameResource(std::string class_name)

@@ -41,8 +41,14 @@ void Player::Initialize()
 	d3d11_deferred_context->PSSetShader(bump_mapping_shader->GetPixelShader(), nullptr, 0);
 	d3d11_deferred_context->RSSetViewports(1, output_merger->GetViewport());
 	d3d11_deferred_context->RSSetState(obj_mesh->GetRasterizerState());
-	ID3D11RenderTargetView* d3d11_render_target_view = output_merger->GetRenderTargetView();
-	d3d11_deferred_context->OMSetRenderTargets(1, &d3d11_render_target_view, output_merger->GetDepthStencilView());
+	ID3D11RenderTargetView* d3d11_render_target_views[4] = 
+	{ 
+		output_merger->GetGBufferPositionRenderTargetView(), 
+		output_merger->GetGBufferNormalRenderTargetView(), 
+		output_merger->GetGBufferDiffuseRenderTargetView(), 
+		output_merger->GetGBufferViewDirectionRenderTargetView() 
+	};
+	d3d11_deferred_context->OMSetRenderTargets(4, d3d11_render_target_views, output_merger->GetDepthStencilView());
 	d3d11_deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstace()->kVertexShaderSlotWorldMatrix_, 1, d3d11_world_matrix_constant_buffer_.GetAddressOf());
 	d3d11_deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstace()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstace()->GetAddressOfCameraConstantBuffer());
 	d3d11_deferred_context->PSSetShaderResources(0, 1, obj_mesh->GetDiffuse());

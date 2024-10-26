@@ -144,6 +144,7 @@
     <ClInclude Include="FrameResources\FrameResourcesManager.h" />
     <ClInclude Include="FrameResources\IncludeHandler.h" />
     <ClInclude Include="FrameResources\OutputMerger.h" />
+    <ClInclude Include="FrameResources\SecondPassShader.h" />
     <ClInclude Include="FrameResources\Shader.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Meshes\BoxMesh.h" />
@@ -153,6 +154,7 @@
     <ClInclude Include="Meshes\Vertices.h" />
     <ClInclude Include="Objects\BoxObject.h" />
     <ClInclude Include="Objects\Camera.h" />
+    <ClInclude Include="Objects\DeferredRenderingSecondPass.h" />
     <ClInclude Include="Objects\MovableObject.h" />
     <ClInclude Include="Objects\Object.h" />
     <ClInclude Include="Objects\ObjectsManager.h" />
@@ -172,6 +174,7 @@
     <ClCompile Include="FrameResources\FrameResource.cpp" />
     <ClCompile Include="FrameResources\FrameResourcesManager.cpp" />
     <ClCompile Include="FrameResources\OutputMerger.cpp" />
+    <ClCompile Include="FrameResources\SecondPassShader.cpp" />
     <ClCompile Include="FrameResources\Shader.cpp" />
     <ClCompile Include="Meshes\BoxMesh.cpp" />
     <ClCompile Include="Meshes\Mesh.cpp" />
@@ -179,6 +182,7 @@
     <ClCompile Include="Meshes\OBJMesh.cpp" />
     <ClCompile Include="Objects\BoxObject.cpp" />
     <ClCompile Include="Objects\Camera.cpp" />
+    <ClCompile Include="Objects\DeferredRenderingSecondPass.cpp" />
     <ClCompile Include="Objects\MovableObject.cpp" />
     <ClCompile Include="Objects\Object.cpp" />
     <ClCompile Include="Objects\ObjectsManager.cpp" />
@@ -197,8 +201,22 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="HLSL\Color.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="HLSL\SecondPass.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="HLSL\TEST.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>

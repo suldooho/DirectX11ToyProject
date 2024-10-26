@@ -2,6 +2,7 @@
 #include "../framework.h"
 #include "BoxObject.h"
 #include "../FrameResources/OutputMerger.h"
+#include "DeferredRenderingSecondPass.h"
 
 ObjectsManager* ObjectsManager::instance_ = nullptr;
 
@@ -12,6 +13,15 @@ void ObjectsManager::CreateMovableObjects()
 	movable_objects_.emplace_back(box_object);
 }
 
+void ObjectsManager::ExecuteCommandListPlayer()
+{
+	camera_->UpdateViewMatrix();
+	camera_->UpdateConstantBuffer();
+
+	player_->UpdateConstantBuffer();
+	player_->ExecuteCommandList();
+}
+
 void ObjectsManager::ExecuteCommandListMovableObjects()
 {
 	for (unsigned int i = 0; i < movable_objects_.size(); ++i)
@@ -19,6 +29,11 @@ void ObjectsManager::ExecuteCommandListMovableObjects()
 		movable_objects_[i].get()->UpdateConstantBuffer();
 		movable_objects_[i].get()->ExecuteCommandList();
 	}
+}
+
+void ObjectsManager::ExecuteCommandSecondPassOfDeferredRendering()
+{
+	deferred_rendering_second_pass_->ExecuteCommandList();
 }
 
 void ObjectsManager::ClearDepthStencilView()
@@ -31,7 +46,7 @@ void ObjectsManager::ClearDepthStencilView()
 
 	float clear_color[4] = { 0.125f,  0.125f,  0.125f, 1.0f };
 	DeviceManager::GetInstace()->GetD3D11ImmediateContext()->ClearRenderTargetView(output_merger->GetRenderTargetView(), clear_color);
-	DeviceManager::GetInstace()->GetD3D11ImmediateContext()->ClearDepthStencilView(output_merger->GetDepthStencilView(), D3D11_CLEAR_DEPTH, 1.0f, 0.0f);
+	DeviceManager::GetInstace()->GetD3D11ImmediateContext()->ClearDepthStencilView(output_merger->GetDepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0.0f); 
 }
 
 void ObjectsManager::MoveCamera(float delta_time)
@@ -91,6 +106,9 @@ void ObjectsManager::Initialize(float client_width, float client_height)
 	player_ = std::make_unique<Player>();
 	player_->Initialize(); 
 
+	deferred_rendering_second_pass_ = std::make_unique<DeferredRenderingSecondPass>();
+	deferred_rendering_second_pass_->Initialize();
+
 	CreateMovableObjects();
 }
 
@@ -128,14 +146,9 @@ void ObjectsManager::ExecuteCommandList()
 {  
 	ClearDepthStencilView();
 
-	camera_->UpdateViewMatrix();
-
-	camera_->UpdateConstantBuffer();
-
-	player_->UpdateConstantBuffer();
-	player_->ExecuteCommandList(); 
-
+	ExecuteCommandListPlayer();
 	ExecuteCommandListMovableObjects();
+	ExecuteCommandSecondPassOfDeferredRendering();
 
 	SwapChainManager::GetInstace()->GetDXGISwapChain()->Present(0, 0);
 }

@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Camera.h"
 #include "MovableObject.h"
+#include "DeferredRenderingSecondPass.h"
 
 class ObjectsManager
 {
@@ -36,10 +37,13 @@ private:
 	std::unique_ptr<Camera> camera_;
 
 	std::vector<std::unique_ptr<MovableObject>> movable_objects_;
+	std::unique_ptr<DeferredRenderingSecondPass> deferred_rendering_second_pass_;
 
 private:
 	void CreateMovableObjects();
+	void ExecuteCommandListPlayer();
 	void ExecuteCommandListMovableObjects();
+	void ExecuteCommandSecondPassOfDeferredRendering();
 
 	void ClearDepthStencilView();
 

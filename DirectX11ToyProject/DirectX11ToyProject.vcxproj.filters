@@ -123,6 +123,12 @@
     <ClInclude Include="FrameResources\BumpMappingShader.h">
       <Filter>헤더 파일\FrameResources</Filter>
     </ClInclude>
+    <ClInclude Include="Objects\DeferredRenderingSecondPass.h">
+      <Filter>헤더 파일\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameResources\SecondPassShader.h">
+      <Filter>헤더 파일\FrameResources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX11ToyProject.cpp">
@@ -191,6 +197,12 @@
     <ClCompile Include="FrameResources\BumpMappingShader.cpp">
       <Filter>소스 파일\FrameResources</Filter>
     </ClCompile>
+    <ClCompile Include="Objects\DeferredRenderingSecondPass.cpp">
+      <Filter>소스 파일\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameResources\SecondPassShader.cpp">
+      <Filter>소스 파일\FrameResources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectX11ToyProject.rc">
@@ -210,6 +222,12 @@
       <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="HLSL\BumpMapping.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="HLSL\SecondPass.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="HLSL\TEST.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
   </ItemGroup>

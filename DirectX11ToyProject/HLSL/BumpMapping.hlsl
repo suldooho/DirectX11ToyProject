@@ -7,7 +7,7 @@ struct VertexInput
     float3 tangent : TANGENT;
     float3 bitangent : BITANGENT;
     float3 normal : NORMAL;
-}; 
+};
 
 struct PixelInput
 {
@@ -17,51 +17,66 @@ struct PixelInput
     float3 B : BITANGENT;
     float3 N : NORMAL;
     float3 viewDirection : TEXCOORD1;
+    float3 worldPosition : TEXCOORD2; // 추가된 월드 위치
+};
+
+struct GBufferOutput
+{
+    float4 pos : SV_TARGET0;
+    float4 normal : SV_TARGET1;
+    float4 diffuse : SV_TARGET2;
+    float4 viewDir : SV_TARGET3;
 };
 
 PixelInput main(VertexInput input)
 {
     PixelInput output;
      
-    float4 worldPosition = mul(float4(input.position, 1.0f), World); 
+    // 월드 위치 계산
+    float4 worldPosition = mul(float4(input.position, 1.0f), World);
     output.position = mul(worldPosition, View);
     output.position = mul(output.position, Projection);
      
     output.texcoord = input.texcoord;
-    
+
+    // 월드 공간의 접선(Tangent), 비노멀(Bitangent), 노멀(Normal) 벡터 계산
     output.T = normalize(mul(input.tangent, (float3x3) World));
     output.B = normalize(mul(input.bitangent, (float3x3) World));
     output.N = normalize(mul(input.normal, (float3x3) World));
-       
+    
+    // 월드 위치 전달
+    output.worldPosition = worldPosition.xyz;
+    
+    // 뷰 방향 계산
     output.viewDirection = normalize(CameraPosition - worldPosition.xyz);
 
     return output;
 }
 
-float4 PS(PixelInput input) : SV_TARGET
+GBufferOutput PS(PixelInput input)
 {
+    GBufferOutput output;
+
+    // TBN 행렬 생성
     float3x3 TBN = float3x3(input.T, input.B, input.N);
 
-    // 범프 맵을 통해 노말 벡터 변형 (노말 맵 [-1, 1]로 변환)
+    // 범프 맵에서 노멀 벡터 샘플링 및 [-1, 1] 범위로 변환
     float3 normalFromMap = NormalMap.Sample(Sampler, input.texcoord).xyz * 2.0f - 1.0f;
 
-    // TBN 공간의 노말을 월드 공간으로 변환
+    // TBN 공간의 노멀을 월드 공간으로 변환
     float3 normal = normalize(mul(normalFromMap, TBN));
 
-    // 디퓨즈 조명 계산 (디렉셔널 라이트)
-    float lightIntensity = saturate(dot(normal, -kLightDirection));
+    // 픽셀 셰이더에서 받은 월드 위치 사용
+    float3 worldPosition = input.worldPosition;
 
-    // 기본 텍스처 샘플링
-    float4 baseColor = DiffuseMap.Sample(Sampler, input.texcoord);
+    // 뷰 방향 (정점 셰이더에서 계산한 값을 사용)
+    float3 viewDir = input.viewDirection;
 
-    // 스페큘러 조명 계산
-    float3 viewDir = normalize(input.viewDirection); // 뷰 방향
-    float3 reflectDir = reflect(kLightDirection, normal); // 반사 방향 계산
-     
-    float specFactor = pow(saturate(dot(viewDir, reflectDir)), kSpecularPower);
+    // G-버퍼에 필요한 정보 저장
+    output.pos = float4(worldPosition, 1.0); // 월드 위치
+    output.normal = float4(normal, 0.0); // 노멀 벡터
+    output.diffuse = DiffuseMap.Sample(Sampler, input.texcoord); // 디퓨즈 색상
+    output.viewDir = float4(viewDir, 0.0); // 뷰 방향 벡터
 
-    // 최종 조명 색상  
-    float4 finalColor = (baseColor * lightIntensity) + specFactor;
-
-    return finalColor;
+    return output;
 }

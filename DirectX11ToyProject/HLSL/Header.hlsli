@@ -17,4 +17,10 @@ cbuffer ViewProjectionMatrix : register(b1)
 
 Texture2D DiffuseMap : register(t0);
 Texture2D NormalMap : register(t1); 
+ 
+Texture2D<float4> GBufferPosition : register(t4);
+Texture2D<float4> GBufferNormal : register(t5);
+Texture2D<float4> GBufferDiffuse : register(t6);
+Texture2D<float4> GBufferViewDirection : register(t7);
+
 SamplerState Sampler : register(s0);
