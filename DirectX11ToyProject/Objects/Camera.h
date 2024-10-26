@@ -8,6 +8,7 @@ struct CameraMatrix
 { 
 	DirectX::XMFLOAT4X4A view_matrix;
 	DirectX::XMFLOAT4X4A projection_matrix;
+	DirectX::XMFLOAT3A camera_position;
 };
 
 class Camera  

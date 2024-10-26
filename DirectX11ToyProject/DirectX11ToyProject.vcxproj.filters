@@ -120,6 +120,9 @@
     <ClInclude Include="Meshes\OBJMesh.h">
       <Filter>헤더 파일\Meshes</Filter>
     </ClInclude>
+    <ClInclude Include="FrameResources\BumpMappingShader.h">
+      <Filter>헤더 파일\FrameResources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX11ToyProject.cpp">
@@ -185,6 +188,9 @@
     <ClCompile Include="Meshes\OBJMesh.cpp">
       <Filter>소스 파일\Meshes</Filter>
     </ClCompile>
+    <ClCompile Include="FrameResources\BumpMappingShader.cpp">
+      <Filter>소스 파일\FrameResources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectX11ToyProject.rc">
@@ -201,6 +207,9 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="HLSL\Color.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="HLSL\BumpMapping.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
   </ItemGroup>

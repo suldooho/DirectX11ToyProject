@@ -43,10 +43,11 @@ public:
 
 public:
 	enum D3D_PRIMITIVE_TOPOLOGY GetPrimitiveTopology() const;
-	unsigned int GetStride() const;
-	unsigned int GetOffset() const;
-	ID3D11Buffer* GetVertexBuffer() const;
+	unsigned int* GetStride();
+	unsigned int* GetOffset();
+	ID3D11Buffer** GetVertexBuffer();
 	unsigned int GetNumIndices() const;
+	unsigned int GetNumVertices() const;
 	unsigned int GetStartIndex() const;
 	int GetBaseVertex() const;
 	ID3D11Buffer* GetIndexBuffer() const;

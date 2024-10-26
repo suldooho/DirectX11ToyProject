@@ -20,6 +20,7 @@
 #include <d3d11.h> 
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
+#include "DirectXTex.h"
 
 #include "Core/DebugLog.h"
 #include "Core/TimerManager.h"

@@ -3,7 +3,7 @@
 
 void Mesh::CreateVertexBuffer()
 {
-	primitive_topology_ = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	primitive_topology_ = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST; 
 	
 	D3D11_BUFFER_DESC buffer_desc;
 	buffer_desc.Usage = D3D11_USAGE_IMMUTABLE;
@@ -39,6 +39,7 @@ void Mesh::CreateSolidRasterizerState()
 	ZeroMemory(&rasterizer_desc, sizeof(D3D11_RASTERIZER_DESC));
 	rasterizer_desc.CullMode = D3D11_CULL_BACK;
 	rasterizer_desc.FillMode = D3D11_FILL_SOLID;
+	rasterizer_desc.FrontCounterClockwise = false;
 	DeviceManager::GetInstace()->GetD3D11Device()->CreateRasterizerState(&rasterizer_desc, rasterizer_state_.GetAddressOf()); 
 }
 
@@ -58,24 +59,29 @@ D3D_PRIMITIVE_TOPOLOGY Mesh::GetPrimitiveTopology() const
 	return primitive_topology_;
 }
 
-unsigned int Mesh::GetStride() const
+unsigned int* Mesh::GetStride()
 {
-	return stride_;
+	return &stride_;
 }
 
-unsigned int Mesh::GetOffset() const
+unsigned int* Mesh::GetOffset()
 {
-	return offset_;
+	return &offset_;
 }
 
-ID3D11Buffer* Mesh::GetVertexBuffer() const
+ID3D11Buffer** Mesh::GetVertexBuffer()
 {
-	return d3d11_vertex_buffer_.Get();
+	return d3d11_vertex_buffer_.GetAddressOf();
 }
 
 unsigned int Mesh::GetNumIndices() const
 {
 	return num_indices_;
+}
+
+unsigned int Mesh::GetNumVertices() const
+{
+	return num_vertices_;
 }
 
 unsigned int Mesh::GetStartIndex() const

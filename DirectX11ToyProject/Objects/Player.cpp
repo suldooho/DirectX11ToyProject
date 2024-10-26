@@ -4,7 +4,7 @@
 #include "../Meshes/BoxMesh.h"
 #include "../Meshes/OBJMesh.h"
 #include "../FrameResources/FrameResource.h"
-#include "../FrameResources/ColorShader.h"
+#include "../FrameResources/BumpMappingShader.h"
 #include "../FrameResources/OutputMerger.h"
  
 void Player::Initialize()
@@ -15,16 +15,16 @@ void Player::Initialize()
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> d3d11_deferred_context;
 	DeviceManager::GetInstace()->GetD3D11Device()->CreateDeferredContext(0, d3d11_deferred_context.GetAddressOf());
 	 
-	OBJMesh* obj_mesh = dynamic_cast<OBJMesh*>(MeshesManager::GetInstace()->GetMesh("RevolverMesh"));
+	OBJMesh* obj_mesh = dynamic_cast<OBJMesh*>(MeshesManager::GetInstace()->GetMesh("GunMesh"));
 	if (obj_mesh == nullptr)
 	{
-		throw std::string("BoxMesh dynamic_cast Fail");
+		throw std::string("OBJMesh dynamic_cast Fail");
 	}
 
-	ColorShader* color_shader = dynamic_cast<ColorShader*>(FrameResourcesManager::GetInstace()->GetFrameResource("ColorShader"));
-	if (color_shader == nullptr)
+	BumpMappingShader* bump_mapping_shader = dynamic_cast<BumpMappingShader*>(FrameResourcesManager::GetInstace()->GetFrameResource("BumpMappingShader"));
+	if (bump_mapping_shader == nullptr)
 	{
-		throw std::string("ColorShader dynamic_cast Fail");
+		throw std::string("BumpMappingShader dynamic_cast Fail");
 	}
 
 	OutputMerger* output_merger = dynamic_cast<OutputMerger*>(FrameResourcesManager::GetInstace()->GetFrameResource("OutputMerger"));
@@ -32,24 +32,25 @@ void Player::Initialize()
 	{
 		throw std::string("OutputMerger dynamic_cast Fail");
 	} 
-	d3d11_deferred_context->IASetPrimitiveTopology(obj_mesh->GetPrimitiveTopology());
-	ID3D11Buffer* d3d11_vertex_buffer = obj_mesh->GetVertexBuffer();
-	unsigned int stride = obj_mesh->GetStride();
-	unsigned int offset = obj_mesh->GetOffset();
-	d3d11_deferred_context->IASetVertexBuffers(0, 1, &d3d11_vertex_buffer, &stride, &offset);
+
+	d3d11_deferred_context->IASetPrimitiveTopology(obj_mesh->GetPrimitiveTopology());  
+	d3d11_deferred_context->IASetVertexBuffers(0, 1, obj_mesh->GetVertexBuffer(), obj_mesh->GetStride(), obj_mesh->GetOffset());
 	d3d11_deferred_context->IASetIndexBuffer(obj_mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
-	d3d11_deferred_context->IASetInputLayout(color_shader->GetInputLayout());
-	d3d11_deferred_context->VSSetShader(color_shader->GetVertexShader(), nullptr, 0);
-	d3d11_deferred_context->PSSetShader(color_shader->GetPixelShader(), nullptr, 0);
+	d3d11_deferred_context->IASetInputLayout(bump_mapping_shader->GetInputLayout());
+	d3d11_deferred_context->VSSetShader(bump_mapping_shader->GetVertexShader(), nullptr, 0);
+	d3d11_deferred_context->PSSetShader(bump_mapping_shader->GetPixelShader(), nullptr, 0);
 	d3d11_deferred_context->RSSetViewports(1, output_merger->GetViewport());
 	d3d11_deferred_context->RSSetState(obj_mesh->GetRasterizerState());
 	ID3D11RenderTargetView* d3d11_render_target_view = output_merger->GetRenderTargetView();
 	d3d11_deferred_context->OMSetRenderTargets(1, &d3d11_render_target_view, output_merger->GetDepthStencilView());
 	d3d11_deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstace()->kVertexShaderSlotWorldMatrix_, 1, d3d11_world_matrix_constant_buffer_.GetAddressOf());
 	d3d11_deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstace()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstace()->GetAddressOfCameraConstantBuffer());
+	d3d11_deferred_context->PSSetShaderResources(0, 1, obj_mesh->GetDiffuse());
+	d3d11_deferred_context->PSSetShaderResources(1, 1, obj_mesh->GetNormal()); 
+	d3d11_deferred_context->PSSetSamplers(0, 1, obj_mesh->GetSampler());
 	d3d11_deferred_context->DrawIndexed(obj_mesh->GetNumIndices(), 0, 0);
 
-	d3d11_deferred_context->FinishCommandList(true, d3d11_command_list_.GetAddressOf());
+	d3d11_deferred_context->FinishCommandList(true, d3d11_command_list_.GetAddressOf()); 
 }
 
 void Player::SetRotationAndPosition(DirectX::FXMMATRIX camera_world_matrix)

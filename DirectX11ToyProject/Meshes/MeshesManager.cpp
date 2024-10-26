@@ -10,9 +10,9 @@ void MeshesManager::Initialize()
 	BoxMesh* box_mesh = dynamic_cast<BoxMesh*>(mesh_container_["BoxMesh"].get());
 	box_mesh->Initialize();
 	 
-	mesh_container_["RevolverMesh"] = std::make_unique<OBJMesh>();
-	OBJMesh* obj_mesh = dynamic_cast<OBJMesh*>(mesh_container_["RevolverMesh"].get());
-	obj_mesh->Initialize("/Resources/Revolver");
+	mesh_container_["GunMesh"] = std::make_unique<OBJMesh>();
+	OBJMesh* obj_mesh = dynamic_cast<OBJMesh*>(mesh_container_["GunMesh"].get());
+	obj_mesh->Initialize("/Resources/Gun");
 }
 
 Mesh* MeshesManager::GetMesh(std::string class_name)

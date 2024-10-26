@@ -1,6 +1,7 @@
 #include "FrameResourcesManager.h"
 #include "../framework.h"
 #include "ColorShader.h"
+#include "BumpMappingShader.h"
 #include "OutputMerger.h"
 
 FrameResourcesManager* FrameResourcesManager::instance_ = nullptr;
@@ -10,6 +11,10 @@ void FrameResourcesManager::Initialize(unsigned int client_width, unsigned int c
 	frame_resource_container_["ColorShader"] = std::make_unique<ColorShader>();
 	ColorShader* color_shader = dynamic_cast<ColorShader*>(frame_resource_container_["ColorShader"].get());
 	color_shader->Initialize();
+
+	frame_resource_container_["BumpMappingShader"] = std::make_unique<BumpMappingShader>();
+	BumpMappingShader* bump_mapping_shader = dynamic_cast<BumpMappingShader*>(frame_resource_container_["BumpMappingShader"].get());
+	bump_mapping_shader->Initialize();
 
 	frame_resource_container_["OutputMerger"] = std::make_unique<OutputMerger>();
 	OutputMerger* output_merger = dynamic_cast<OutputMerger*>(frame_resource_container_["OutputMerger"].get());

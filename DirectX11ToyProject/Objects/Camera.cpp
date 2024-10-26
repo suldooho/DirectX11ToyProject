@@ -67,6 +67,9 @@ void Camera::UpdateConstantBuffer()
 	xm_projection_matrix = DirectX::XMMatrixTranspose(xm_projection_matrix);
 	DirectX::XMStoreFloat4x4A(&camera_matrix->view_matrix, xm_view_matrix);
 	DirectX::XMStoreFloat4x4A(&camera_matrix->projection_matrix, xm_projection_matrix);
+	camera_matrix->camera_position.x = world_matrix_._41;
+	camera_matrix->camera_position.y = world_matrix_._42;
+	camera_matrix->camera_position.z = world_matrix_._43;
 	DeviceManager::GetInstace()->GetD3D11ImmediateContext()->Unmap(d3d11_camera_matrix_constant_buffer_.Get(), 0);
 }
 
