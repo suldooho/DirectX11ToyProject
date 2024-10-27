@@ -13,7 +13,7 @@ public:
 	DeviceManager(const DeviceManager&) = delete;
 	DeviceManager& operator=(const DeviceManager&) = delete;
 
-	static DeviceManager* GetInstace()
+	static DeviceManager* GetInstance()
 	{
 		if (instance_ == nullptr) 
 		{

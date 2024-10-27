@@ -1,5 +1,6 @@
 #include "App.h"
 #include "Objects/ObjectsManager.h"
+#include "Objects/LightsManager.h"
 
 App::App() : window_width_(NULL), window_height_(NULL), hwnd_(NULL)
 {  
@@ -11,12 +12,13 @@ void App::Initialize(unsigned int window_width, unsigned int window_height, HWND
 	window_height_ = window_height;
 	hwnd_ = hwnd;
 
-	TimerManager::GetInstace()->Initialize();
-	DeviceManager::GetInstace()->Initialize();
-	SwapChainManager::GetInstace()->Initialize(window_width_, window_height_, hwnd_);
-	FrameResourcesManager::GetInstace()->Initialize(window_width_, window_height_);
-	MeshesManager::GetInstace()->Initialize();
-	ObjectsManager::GetInstace()->Initialize(static_cast<float>(window_width_), static_cast<float>(window_height_));
+	TimerManager::GetInstance()->Initialize();
+	DeviceManager::GetInstance()->Initialize();
+	SwapChainManager::GetInstance()->Initialize(window_width_, window_height_, hwnd_);
+	FrameResourcesManager::GetInstance()->Initialize(window_width_, window_height_);
+	MeshesManager::GetInstance()->Initialize();
+	LightsManager::GetInstance()->Initialize();
+	ObjectsManager::GetInstance()->Initialize(static_cast<float>(window_width_), static_cast<float>(window_height_));
 }
 
 void App::OnProcessingMouseMessage(HWND hwnd, UINT message_id, WPARAM wparam, LPARAM lparam)
@@ -37,7 +39,7 @@ void App::OnProcessingMouseMessage(HWND hwnd, UINT message_id, WPARAM wparam, LP
 
 		if (current_mouse_pos.x != last_mouse_pos.x || current_mouse_pos.y != last_mouse_pos.y)
 		{
-			ObjectsManager::GetInstace()->SetRotationValue(static_cast<float>(current_mouse_pos.x - last_mouse_pos.x), static_cast<float>(current_mouse_pos.y - last_mouse_pos.y));
+			ObjectsManager::GetInstance()->SetRotationValue(static_cast<float>(current_mouse_pos.x - last_mouse_pos.x), static_cast<float>(current_mouse_pos.y - last_mouse_pos.y));
 		}
 
 		POINT center = GetWindowCenter();
@@ -59,16 +61,16 @@ void App::OnProcessingKeyboardMessage(HWND hwnd, UINT message_id, WPARAM wparam,
 		switch (wparam)
 		{
 		case 0x41:  // A key
-			ObjectsManager::GetInstace()->PushButton(ObjectsManager::GetInstace()->kAKey_);
+			ObjectsManager::GetInstance()->PushButton(ObjectsManager::GetInstance()->kAKey_);
 			break;
 		case 0x53:  // S key
-			ObjectsManager::GetInstace()->PushButton(ObjectsManager::GetInstace()->kSKey_);
+			ObjectsManager::GetInstance()->PushButton(ObjectsManager::GetInstance()->kSKey_);
 			break;
 		case 0x44:  // D key
-			ObjectsManager::GetInstace()->PushButton(ObjectsManager::GetInstace()->kDKey_);
+			ObjectsManager::GetInstance()->PushButton(ObjectsManager::GetInstance()->kDKey_);
 			break;
 		case 0x57:  // W key
-			ObjectsManager::GetInstace()->PushButton(ObjectsManager::GetInstace()->kWKey_);
+			ObjectsManager::GetInstance()->PushButton(ObjectsManager::GetInstance()->kWKey_);
 			break; 
 		default:
 			break;
@@ -78,16 +80,16 @@ void App::OnProcessingKeyboardMessage(HWND hwnd, UINT message_id, WPARAM wparam,
 		switch (wparam)
 		{
 		case 0x41:  // A key
-			ObjectsManager::GetInstace()->ReleaseButton(ObjectsManager::GetInstace()->kAKey_);
+			ObjectsManager::GetInstance()->ReleaseButton(ObjectsManager::GetInstance()->kAKey_);
 			break;
 		case 0x53:  // S key
-			ObjectsManager::GetInstace()->ReleaseButton(ObjectsManager::GetInstace()->kSKey_);
+			ObjectsManager::GetInstance()->ReleaseButton(ObjectsManager::GetInstance()->kSKey_);
 			break;
 		case 0x44:  // D key
-			ObjectsManager::GetInstace()->ReleaseButton(ObjectsManager::GetInstace()->kDKey_);
+			ObjectsManager::GetInstance()->ReleaseButton(ObjectsManager::GetInstance()->kDKey_);
 			break;
 		case 0x57:  // W key
-			ObjectsManager::GetInstace()->ReleaseButton(ObjectsManager::GetInstace()->kWKey_);
+			ObjectsManager::GetInstance()->ReleaseButton(ObjectsManager::GetInstance()->kWKey_);
 			break;
 		case VK_ESCAPE:
 			::PostQuitMessage(0);
@@ -103,9 +105,10 @@ void App::OnProcessingKeyboardMessage(HWND hwnd, UINT message_id, WPARAM wparam,
 
 void App::FrameAdvance()
 {
-	TimerManager::GetInstace()->Tick();
-	ObjectsManager::GetInstace()->AnimateObjects();
-	ObjectsManager::GetInstace()->ExecuteCommandList();
+	TimerManager::GetInstance()->Tick();
+	LightsManager::GetInstance()->UpdateLightBuffers();
+	ObjectsManager::GetInstance()->AnimateObjects();
+	ObjectsManager::GetInstance()->ExecuteCommandList();
 }
 
 POINT App::GetWindowCenter()

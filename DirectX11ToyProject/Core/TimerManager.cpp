@@ -39,7 +39,7 @@ void TimerManager::Tick()
 	CaclulateFrameCount();
 }
 
-float TimerManager::DeltaTime() const
+float TimerManager::GetDeltaTime() const
 {
 	return delta_time_;
 }

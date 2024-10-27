@@ -16,7 +16,7 @@ public:
 	MeshesManager(const MeshesManager&) = delete;
 	MeshesManager& operator=(const MeshesManager&) = delete;
 
-	static MeshesManager* GetInstace()
+	static MeshesManager* GetInstance()
 	{
 		if (instance_ == nullptr)
 		{

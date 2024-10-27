@@ -15,7 +15,7 @@ ID3D11Texture2D* OutputMerger::CreateGBufferTexture(DXGI_FORMAT format, unsigned
 	texture_desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
 
 	ID3D11Texture2D* texture = nullptr;
-	HRESULT result = DeviceManager::GetInstace()->GetD3D11Device()->CreateTexture2D(&texture_desc, nullptr, &texture);
+	HRESULT result = DeviceManager::GetInstance()->GetD3D11Device()->CreateTexture2D(&texture_desc, nullptr, &texture);
 	
 	if (result != S_OK) 
 	{
@@ -39,13 +39,13 @@ void OutputMerger::CreateGBufferTextures(unsigned int client_width, unsigned int
 
 void OutputMerger::CreateRenderTargetViewAndShaderResourceView(ID3D11Texture2D* texture, ID3D11RenderTargetView** render_target_view, ID3D11ShaderResourceView** shader_resource_view)
 {
-	HRESULT result = DeviceManager::GetInstace()->GetD3D11Device()->CreateRenderTargetView(texture, nullptr, render_target_view);
+	HRESULT result = DeviceManager::GetInstance()->GetD3D11Device()->CreateRenderTargetView(texture, nullptr, render_target_view);
 	if (result != S_OK) 
 	{
 		throw std::string("Can Not Create GBuffer Render Target View");
 	}
 	 
-	result = DeviceManager::GetInstace()->GetD3D11Device()->CreateShaderResourceView(texture, nullptr, shader_resource_view);
+	result = DeviceManager::GetInstance()->GetD3D11Device()->CreateShaderResourceView(texture, nullptr, shader_resource_view);
 	if (result != S_OK) 
 	{
 		throw std::string("Can Not Create GBuffer Shader Resource View");
@@ -82,8 +82,8 @@ void OutputMerger::CreateRenderTargetViewsAndShaderResourceViews()
 void OutputMerger::CreateBackBufferView()
 {
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> back_buffer;
-	SwapChainManager::GetInstace()->GetDXGISwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(back_buffer.GetAddressOf()));
-	HRESULT result = DeviceManager::GetInstace()->GetD3D11Device()->CreateRenderTargetView(back_buffer.Get(), 0, d3d11_render_target_view_.GetAddressOf());
+	SwapChainManager::GetInstance()->GetDXGISwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(back_buffer.GetAddressOf()));
+	HRESULT result = DeviceManager::GetInstance()->GetD3D11Device()->CreateRenderTargetView(back_buffer.Get(), 0, d3d11_render_target_view_.GetAddressOf());
 
 	if (result != S_OK)
 	{
@@ -113,9 +113,9 @@ void OutputMerger::CreateDepthStencilView(unsigned int client_width, unsigned in
 	depth_stencil_buffer_desc.CPUAccessFlags = 0;
 	depth_stencil_buffer_desc.MiscFlags = 0;
 
-	DeviceManager::GetInstace()->GetD3D11Device()->CreateTexture2D(&depth_stencil_buffer_desc, nullptr, d3d11_depth_stencil_buffer_.GetAddressOf());
+	DeviceManager::GetInstance()->GetD3D11Device()->CreateTexture2D(&depth_stencil_buffer_desc, nullptr, d3d11_depth_stencil_buffer_.GetAddressOf());
 	
-	HRESULT result = DeviceManager::GetInstace()->GetD3D11Device()->CreateDepthStencilView(d3d11_depth_stencil_buffer_.Get(), nullptr, d3d11_depth_stencil_view_.GetAddressOf());
+	HRESULT result = DeviceManager::GetInstance()->GetD3D11Device()->CreateDepthStencilView(d3d11_depth_stencil_buffer_.Get(), nullptr, d3d11_depth_stencil_view_.GetAddressOf());
 
 	if (result != S_OK)
 	{
@@ -160,7 +160,7 @@ void OutputMerger::CreateSecondPassDepthStencilState()
 
 	// ±íÀÌ ½ºÅÙ½Ç »óÅÂ °´Ã¼ »ý¼º
 	ID3D11DepthStencilState* depth_stencil_state = nullptr;
-	HRESULT result = DeviceManager::GetInstace()->GetD3D11Device()->CreateDepthStencilState(&depth_stencil_desc, &depth_stencil_state);
+	HRESULT result = DeviceManager::GetInstance()->GetD3D11Device()->CreateDepthStencilState(&depth_stencil_desc, &depth_stencil_state);
 	 
 	if (result != S_OK)
 	{

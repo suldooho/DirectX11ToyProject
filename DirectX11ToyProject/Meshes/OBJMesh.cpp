@@ -92,7 +92,7 @@ class ID3D11ShaderResourceView* OBJMesh::LoadTexture(std::string obj_texture_fil
     }
      
     ID3D11ShaderResourceView* texture_view;
-    result = DirectX::CreateShaderResourceView(DeviceManager::GetInstace()->GetD3D11Device(), scratchImg.GetImages(), scratchImg.GetImageCount(), metadata, &texture_view);              
+    result = DirectX::CreateShaderResourceView(DeviceManager::GetInstance()->GetD3D11Device(), scratchImg.GetImages(), scratchImg.GetImageCount(), metadata, &texture_view);              
 
     if (result != S_OK)
     {
@@ -112,7 +112,7 @@ void OBJMesh::CreateSamplerState()
     sampler_desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;  
     sampler_desc.MaxLOD = D3D11_FLOAT32_MAX;
 
-    DeviceManager::GetInstace()->GetD3D11Device()->CreateSamplerState(&sampler_desc, sampler_state_.GetAddressOf());
+    DeviceManager::GetInstance()->GetD3D11Device()->CreateSamplerState(&sampler_desc, sampler_state_.GetAddressOf());
 } 
 
 void OBJMesh::CreateVertices()

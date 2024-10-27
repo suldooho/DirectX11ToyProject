@@ -8,21 +8,21 @@
 void DeferredRenderingSecondPass::Initialize()
 {   
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> d3d11_deferred_context;
-	DeviceManager::GetInstace()->GetD3D11Device()->CreateDeferredContext(0, d3d11_deferred_context.GetAddressOf());
+	DeviceManager::GetInstance()->GetD3D11Device()->CreateDeferredContext(0, d3d11_deferred_context.GetAddressOf());
 
-	OBJMesh* obj_mesh = dynamic_cast<OBJMesh*>(MeshesManager::GetInstace()->GetMesh("GunMesh"));
+	OBJMesh* obj_mesh = dynamic_cast<OBJMesh*>(MeshesManager::GetInstance()->GetMesh("GunMesh"));
 	if (obj_mesh == nullptr)
 	{
 		throw std::string("OBJMesh dynamic_cast Fail");
 	}
 
-	SecondPassShader* second_pass_shader = dynamic_cast<SecondPassShader*>(FrameResourcesManager::GetInstace()->GetFrameResource("SecondPassShader"));
+	SecondPassShader* second_pass_shader = dynamic_cast<SecondPassShader*>(FrameResourcesManager::GetInstance()->GetFrameResource("SecondPassShader"));
 	if (second_pass_shader == nullptr)
 	{
 		throw std::string("SecondPassShader dynamic_cast Fail");
 	}
 
-	OutputMerger* output_merger = dynamic_cast<OutputMerger*>(FrameResourcesManager::GetInstace()->GetFrameResource("OutputMerger"));
+	OutputMerger* output_merger = dynamic_cast<OutputMerger*>(FrameResourcesManager::GetInstance()->GetFrameResource("OutputMerger"));
 	if (output_merger == nullptr)
 	{
 		throw std::string("OutputMerger dynamic_cast Fail");
@@ -42,6 +42,8 @@ void DeferredRenderingSecondPass::Initialize()
 		output_merger->GetGBufferViewDirectionShaderResourceView()
 	}; 
 	d3d11_deferred_context->PSSetShaderResources(4, 4, d3d11_shader_resource_views);
+	d3d11_deferred_context->PSSetShaderResources(0, 1, LightsManager::GetInstance()->GetLightShaderResourceView("PointLightShaderResourceView")); // t2 레지스터에 바인딩
+	d3d11_deferred_context->PSSetShaderResources(1, 1, LightsManager::GetInstance()->GetLightShaderResourceView("SpotLightShaderResourceView"));  // t3 레지스터에 바인딩 
 	d3d11_deferred_context->PSSetSamplers(0, 1, obj_mesh->GetSampler()); 
 	d3d11_deferred_context->OMSetDepthStencilState(output_merger->GetDepthStencilState("SecondPass"), 1);
 	ID3D11RenderTargetView* d3d11_render_target_view = output_merger->GetRenderTargetView();

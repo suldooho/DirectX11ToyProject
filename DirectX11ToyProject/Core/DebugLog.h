@@ -12,7 +12,7 @@ public:
 	DebugLog(const DebugLog&) = delete;
 	DebugLog& operator=(const DebugLog&) = delete;
 
-	static DebugLog* GetInstace()
+	static DebugLog* GetInstance()
 	{
 		if (instance_ == nullptr)
 		{

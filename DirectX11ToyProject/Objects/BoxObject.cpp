@@ -13,21 +13,21 @@ void BoxObject::Initialize()
 	SetPosition(0.0f, 0.0f, 10.0f);
 
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> d3d11_deferred_context;
-	DeviceManager::GetInstace()->GetD3D11Device()->CreateDeferredContext(0, d3d11_deferred_context.GetAddressOf());
+	DeviceManager::GetInstance()->GetD3D11Device()->CreateDeferredContext(0, d3d11_deferred_context.GetAddressOf());
 
-	BoxMesh* box_mesh = dynamic_cast<BoxMesh*>(MeshesManager::GetInstace()->GetMesh("BoxMesh"));
+	BoxMesh* box_mesh = dynamic_cast<BoxMesh*>(MeshesManager::GetInstance()->GetMesh("BoxMesh"));
 	if (box_mesh == nullptr)
 	{
 		throw std::string("BoxMesh dynamic_cast Fail");
 	}
 
-	ColorShader* color_shader = dynamic_cast<ColorShader*>(FrameResourcesManager::GetInstace()->GetFrameResource("ColorShader"));
+	ColorShader* color_shader = dynamic_cast<ColorShader*>(FrameResourcesManager::GetInstance()->GetFrameResource("ColorShader"));
 	if (color_shader == nullptr)
 	{
 		throw std::string("ColorShader dynamic_cast Fail");
 	}
 
-	OutputMerger* output_merger = dynamic_cast<OutputMerger*>(FrameResourcesManager::GetInstace()->GetFrameResource("OutputMerger"));
+	OutputMerger* output_merger = dynamic_cast<OutputMerger*>(FrameResourcesManager::GetInstance()->GetFrameResource("OutputMerger"));
 	if (output_merger == nullptr)
 	{
 		throw std::string("OutputMerger dynamic_cast Fail");
@@ -42,8 +42,8 @@ void BoxObject::Initialize()
 	d3d11_deferred_context->RSSetState(box_mesh->GetRasterizerState());
 	ID3D11RenderTargetView* d3d11_render_target_view = output_merger->GetRenderTargetView();
 	d3d11_deferred_context->OMSetRenderTargets(1, &d3d11_render_target_view, output_merger->GetDepthStencilView());//
-	d3d11_deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstace()->kVertexShaderSlotWorldMatrix_, 1, d3d11_world_matrix_constant_buffer_.GetAddressOf());
-	d3d11_deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstace()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstace()->GetAddressOfCameraConstantBuffer());
+	d3d11_deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kVertexShaderSlotWorldMatrix_, 1, d3d11_world_matrix_constant_buffer_.GetAddressOf());
+	d3d11_deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstance()->GetAddressOfCameraConstantBuffer());
 	d3d11_deferred_context->DrawIndexed(box_mesh->GetNumIndices(), 0, 0);
 
 	d3d11_deferred_context->FinishCommandList(true, d3d11_command_list_.GetAddressOf());

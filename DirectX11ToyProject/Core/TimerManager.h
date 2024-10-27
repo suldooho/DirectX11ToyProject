@@ -12,7 +12,7 @@ public:
 	TimerManager(const TimerManager&) = delete;
 	TimerManager& operator=(const TimerManager&) = delete;
 
-	static TimerManager* GetInstace()
+	static TimerManager* GetInstance()
 	{
 		if (instance_ == nullptr)
 		{
@@ -37,6 +37,6 @@ public:
 
 	void Tick();
 
-	float DeltaTime() const;
+	float GetDeltaTime() const;
 };
 

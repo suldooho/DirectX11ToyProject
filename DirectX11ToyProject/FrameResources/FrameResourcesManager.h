@@ -16,7 +16,7 @@ public:
 	FrameResourcesManager(const FrameResourcesManager&) = delete;
 	FrameResourcesManager& operator=(const FrameResourcesManager&) = delete;
 
-	static FrameResourcesManager* GetInstace()
+	static FrameResourcesManager* GetInstance()
 	{
 		if (instance_ == nullptr)
 		{

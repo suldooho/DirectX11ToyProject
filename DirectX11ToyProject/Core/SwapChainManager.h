@@ -13,7 +13,7 @@ public:
 	SwapChainManager(const SwapChainManager&) = delete;
 	SwapChainManager& operator=(const SwapChainManager&) = delete;
 
-	static SwapChainManager* GetInstace()
+	static SwapChainManager* GetInstance()
 	{
 		if (instance_ == nullptr)
 		{

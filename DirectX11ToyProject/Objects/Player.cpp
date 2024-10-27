@@ -13,21 +13,21 @@ void Player::Initialize()
 	SetPosition(kPlayerToCameraOffset.x, kPlayerToCameraOffset.y, kPlayerToCameraOffset.z); 
 
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> d3d11_deferred_context;
-	DeviceManager::GetInstace()->GetD3D11Device()->CreateDeferredContext(0, d3d11_deferred_context.GetAddressOf());
+	DeviceManager::GetInstance()->GetD3D11Device()->CreateDeferredContext(0, d3d11_deferred_context.GetAddressOf());
 	 
-	OBJMesh* obj_mesh = dynamic_cast<OBJMesh*>(MeshesManager::GetInstace()->GetMesh("GunMesh"));
+	OBJMesh* obj_mesh = dynamic_cast<OBJMesh*>(MeshesManager::GetInstance()->GetMesh("GunMesh"));
 	if (obj_mesh == nullptr)
 	{
 		throw std::string("OBJMesh dynamic_cast Fail");
 	}
 
-	BumpMappingShader* bump_mapping_shader = dynamic_cast<BumpMappingShader*>(FrameResourcesManager::GetInstace()->GetFrameResource("BumpMappingShader"));
+	BumpMappingShader* bump_mapping_shader = dynamic_cast<BumpMappingShader*>(FrameResourcesManager::GetInstance()->GetFrameResource("BumpMappingShader"));
 	if (bump_mapping_shader == nullptr)
 	{
 		throw std::string("BumpMappingShader dynamic_cast Fail");
 	}
 
-	OutputMerger* output_merger = dynamic_cast<OutputMerger*>(FrameResourcesManager::GetInstace()->GetFrameResource("OutputMerger"));
+	OutputMerger* output_merger = dynamic_cast<OutputMerger*>(FrameResourcesManager::GetInstance()->GetFrameResource("OutputMerger"));
 	if (output_merger == nullptr)
 	{
 		throw std::string("OutputMerger dynamic_cast Fail");
@@ -49,8 +49,8 @@ void Player::Initialize()
 		output_merger->GetGBufferViewDirectionRenderTargetView() 
 	};
 	d3d11_deferred_context->OMSetRenderTargets(4, d3d11_render_target_views, output_merger->GetDepthStencilView());
-	d3d11_deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstace()->kVertexShaderSlotWorldMatrix_, 1, d3d11_world_matrix_constant_buffer_.GetAddressOf());
-	d3d11_deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstace()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstace()->GetAddressOfCameraConstantBuffer());
+	d3d11_deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kVertexShaderSlotWorldMatrix_, 1, d3d11_world_matrix_constant_buffer_.GetAddressOf());
+	d3d11_deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstance()->GetAddressOfCameraConstantBuffer());
 	d3d11_deferred_context->PSSetShaderResources(0, 1, obj_mesh->GetDiffuse());
 	d3d11_deferred_context->PSSetShaderResources(1, 1, obj_mesh->GetNormal()); 
 	d3d11_deferred_context->PSSetSamplers(0, 1, obj_mesh->GetSampler());

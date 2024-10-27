@@ -155,6 +155,7 @@
     <ClInclude Include="Objects\BoxObject.h" />
     <ClInclude Include="Objects\Camera.h" />
     <ClInclude Include="Objects\DeferredRenderingSecondPass.h" />
+    <ClInclude Include="Objects\LightsManager.h" />
     <ClInclude Include="Objects\MovableObject.h" />
     <ClInclude Include="Objects\Object.h" />
     <ClInclude Include="Objects\ObjectsManager.h" />
@@ -183,6 +184,7 @@
     <ClCompile Include="Objects\BoxObject.cpp" />
     <ClCompile Include="Objects\Camera.cpp" />
     <ClCompile Include="Objects\DeferredRenderingSecondPass.cpp" />
+    <ClCompile Include="Objects\LightsManager.cpp" />
     <ClCompile Include="Objects\MovableObject.cpp" />
     <ClCompile Include="Objects\Object.cpp" />
     <ClCompile Include="Objects\ObjectsManager.cpp" />

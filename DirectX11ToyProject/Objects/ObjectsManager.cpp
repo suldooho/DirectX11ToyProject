@@ -38,15 +38,15 @@ void ObjectsManager::ExecuteCommandSecondPassOfDeferredRendering()
 
 void ObjectsManager::ClearDepthStencilView()
 {
-	OutputMerger* output_merger = dynamic_cast<OutputMerger*>(FrameResourcesManager::GetInstace()->GetFrameResource("OutputMerger"));
+	OutputMerger* output_merger = dynamic_cast<OutputMerger*>(FrameResourcesManager::GetInstance()->GetFrameResource("OutputMerger"));
 	if (output_merger == nullptr)
 	{
 		throw std::string("OutputMerger dynamic_cast Fail");
 	}
 
 	float clear_color[4] = { 0.125f,  0.125f,  0.125f, 1.0f };
-	DeviceManager::GetInstace()->GetD3D11ImmediateContext()->ClearRenderTargetView(output_merger->GetRenderTargetView(), clear_color);
-	DeviceManager::GetInstace()->GetD3D11ImmediateContext()->ClearDepthStencilView(output_merger->GetDepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0.0f); 
+	DeviceManager::GetInstance()->GetD3D11ImmediateContext()->ClearRenderTargetView(output_merger->GetRenderTargetView(), clear_color);
+	DeviceManager::GetInstance()->GetD3D11ImmediateContext()->ClearDepthStencilView(output_merger->GetDepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0.0f); 
 }
 
 void ObjectsManager::MoveCamera(float delta_time)
@@ -135,7 +135,7 @@ ID3D11Buffer** ObjectsManager::GetAddressOfCameraConstantBuffer() const
 
 void ObjectsManager::AnimateObjects()
 {
-	float delta_time = TimerManager::GetInstace()->DeltaTime();
+	float delta_time = TimerManager::GetInstance()->GetDeltaTime();
 	 
 	MoveCamera(delta_time);
 	RotateCamera(delta_time);
@@ -150,5 +150,5 @@ void ObjectsManager::ExecuteCommandList()
 	ExecuteCommandListMovableObjects();
 	ExecuteCommandSecondPassOfDeferredRendering();
 
-	SwapChainManager::GetInstace()->GetDXGISwapChain()->Present(0, 0);
+	SwapChainManager::GetInstance()->GetDXGISwapChain()->Present(0, 0);
 }

@@ -17,7 +17,7 @@ public:
 	ObjectsManager(const ObjectsManager&) = delete;
 	ObjectsManager& operator=(const ObjectsManager&) = delete;
 
-	static ObjectsManager* GetInstace()
+	static ObjectsManager* GetInstance()
 	{
 		if (instance_ == nullptr)
 		{

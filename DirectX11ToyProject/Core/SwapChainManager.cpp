@@ -23,7 +23,7 @@ void SwapChainManager::Initialize(unsigned int window_width, unsigned int window
 	swap_chain_desc.Flags = 0;
 
 	Microsoft::WRL::ComPtr<IDXGIDevice> previous_divice;
-	DeviceManager::GetInstace()->GetD3D11Device()->QueryInterface(__uuidof(IDXGIDevice), (void**)previous_divice.GetAddressOf());
+	DeviceManager::GetInstance()->GetD3D11Device()->QueryInterface(__uuidof(IDXGIDevice), (void**)previous_divice.GetAddressOf());
 
 	Microsoft::WRL::ComPtr<IDXGIAdapter> previous_adapter;
 	previous_divice->GetParent(__uuidof(IDXGIAdapter), (void**)previous_adapter.GetAddressOf());
@@ -31,7 +31,7 @@ void SwapChainManager::Initialize(unsigned int window_width, unsigned int window
 	Microsoft::WRL::ComPtr<IDXGIFactory> previous_factory;
 	previous_adapter->GetParent(__uuidof(IDXGIFactory), (void**)previous_factory.GetAddressOf());
 
-	HRESULT result = previous_factory->CreateSwapChain(DeviceManager::GetInstace()->GetD3D11Device(), &swap_chain_desc, d3d11_swap_chain_.GetAddressOf());
+	HRESULT result = previous_factory->CreateSwapChain(DeviceManager::GetInstance()->GetD3D11Device(), &swap_chain_desc, d3d11_swap_chain_.GetAddressOf());
 	 
 	if (result != S_OK)
 	{

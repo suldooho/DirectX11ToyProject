@@ -15,7 +15,7 @@ void Mesh::CreateVertexBuffer()
 
 	D3D11_SUBRESOURCE_DATA init_data;
 	init_data.pSysMem = GetVertexData();
-	DeviceManager::GetInstace()->GetD3D11Device()->CreateBuffer(&buffer_desc, &init_data, d3d11_vertex_buffer_.GetAddressOf());
+	DeviceManager::GetInstance()->GetD3D11Device()->CreateBuffer(&buffer_desc, &init_data, d3d11_vertex_buffer_.GetAddressOf());
 }
 
 void Mesh::CreateIndexBuffer()
@@ -30,7 +30,7 @@ void Mesh::CreateIndexBuffer()
 
 	D3D11_SUBRESOURCE_DATA init_data;
 	init_data.pSysMem = GetIndexData();
-	DeviceManager::GetInstace()->GetD3D11Device()->CreateBuffer(&buffer_desc, &init_data, d3d11_index_buffer_.GetAddressOf());
+	DeviceManager::GetInstance()->GetD3D11Device()->CreateBuffer(&buffer_desc, &init_data, d3d11_index_buffer_.GetAddressOf());
 }
 
 void Mesh::CreateSolidRasterizerState()
@@ -40,7 +40,7 @@ void Mesh::CreateSolidRasterizerState()
 	rasterizer_desc.CullMode = D3D11_CULL_BACK;
 	rasterizer_desc.FillMode = D3D11_FILL_SOLID;
 	rasterizer_desc.FrontCounterClockwise = false;
-	DeviceManager::GetInstace()->GetD3D11Device()->CreateRasterizerState(&rasterizer_desc, rasterizer_state_.GetAddressOf()); 
+	DeviceManager::GetInstance()->GetD3D11Device()->CreateRasterizerState(&rasterizer_desc, rasterizer_state_.GetAddressOf()); 
 }
 
 void Mesh::Initialize()
