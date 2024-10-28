@@ -43,10 +43,10 @@ void Player::Initialize()
 	d3d11_deferred_context->RSSetState(obj_mesh->GetRasterizerState());
 	ID3D11RenderTargetView* d3d11_render_target_views[4] = 
 	{ 
-		output_merger->GetGBufferPositionRenderTargetView(), 
-		output_merger->GetGBufferNormalRenderTargetView(), 
-		output_merger->GetGBufferDiffuseRenderTargetView(), 
-		output_merger->GetGBufferViewDirectionRenderTargetView() 
+		output_merger->GetRenderTargetView("GBufferPositionView"),
+		output_merger->GetRenderTargetView("GBufferNormalView"),
+		output_merger->GetRenderTargetView("GBufferDiffuseView"),
+		output_merger->GetRenderTargetView("GBufferViewDirectionView")
 	};
 	d3d11_deferred_context->OMSetRenderTargets(4, d3d11_render_target_views, output_merger->GetDepthStencilView());
 	d3d11_deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kVertexShaderSlotWorldMatrix_, 1, d3d11_world_matrix_constant_buffer_.GetAddressOf());

@@ -233,9 +233,6 @@
     <FxCompile Include="HLSL\SecondPass.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
-    <FxCompile Include="HLSL\TEST.hlsl">
-      <Filter>HLSL</Filter>
-    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="HLSL\Header.hlsli">

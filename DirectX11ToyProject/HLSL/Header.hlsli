@@ -2,8 +2,8 @@ static const float3 kLightDirection = float3(0.2182f, -0.9759f, 0.0f);
 //static const float4 diffuseColor = float4(1.0f, 1.0f, 1.0f, 1.0f); 
 //static const float4 specularColor = float4(1.0f, 1.0f, 1.0f, 1.0f); 
 static const float kDirectionalLightSpecularPower = 100.0f;
-static const float kPointLightSpecularPower = 100.0f;
-static const float kSpotLightSpecularPower = 100.0f;
+static const float kPointLightSpecularPower = 1.0f;
+static const float kSpotLightSpecularPower = 1.0f;
 
 cbuffer WorldMatrix : register(b0)
 {

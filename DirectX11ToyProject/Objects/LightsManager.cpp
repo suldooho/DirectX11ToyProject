@@ -31,9 +31,9 @@ void LightsManager::Initialize()
     result = DeviceManager::GetInstance()->GetD3D11Device()->CreateShaderResourceView(d3d11_light_buffer_container_["PointLightBuffer"].Get(), &shader_resource_view_desc, &point_light_shader_resource_view);
     if (result != S_OK)
     {
-        throw std::string("Failed To Create Point Light SRV");
+        throw std::string("Failed To Create Point Light Shader Resource View");
     }
-    d3d11_shader_resource_view_container_["PointLightShaderResourceView"] = point_light_shader_resource_view;
+    d3d11_shader_resource_view_container_["PointLightView"] = point_light_shader_resource_view;
 
      
     buffer_desc.ByteWidth = sizeof(SpotLight) * kMaxSpotLightNum_;
@@ -51,9 +51,9 @@ void LightsManager::Initialize()
     result = DeviceManager::GetInstance()->GetD3D11Device()->CreateShaderResourceView(d3d11_light_buffer_container_["SpotLightBuffer"].Get(), &shader_resource_view_desc, &spot_light_shader_resource_view);
     if (result != S_OK)
     {
-        throw std::string("Failed to create Spot Light SRV");
+        throw std::string("Failed to create Spot Light Shader Resource View");
     }
-    d3d11_shader_resource_view_container_["SpotLightShaderResourceView"] = spot_light_shader_resource_view; 
+    d3d11_shader_resource_view_container_["SpotLightView"] = spot_light_shader_resource_view; 
 }
 
 void LightsManager::UpdateLightBuffers()
@@ -112,5 +112,5 @@ ID3D11ShaderResourceView** LightsManager::GetLightShaderResourceView(std::string
         return d3d11_shader_resource_view_container_[view_name].GetAddressOf();
     }
 
-    throw std::string("Light ShaderResource View Name Error");
+    throw std::string("Light Shader Resource View Name Error");
 } 

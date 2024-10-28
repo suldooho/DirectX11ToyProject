@@ -40,8 +40,8 @@ void BoxObject::Initialize()
 	d3d11_deferred_context->PSSetShader(color_shader->GetPixelShader(), nullptr, 0);
 	d3d11_deferred_context->RSSetViewports(1, output_merger->GetViewport());
 	d3d11_deferred_context->RSSetState(box_mesh->GetRasterizerState());
-	ID3D11RenderTargetView* d3d11_render_target_view = output_merger->GetRenderTargetView();
-	d3d11_deferred_context->OMSetRenderTargets(1, &d3d11_render_target_view, output_merger->GetDepthStencilView());//
+	ID3D11RenderTargetView* d3d11_back_buffer_view = output_merger->GetRenderTargetView("BackBufferView");
+	d3d11_deferred_context->OMSetRenderTargets(1, &d3d11_back_buffer_view, output_merger->GetDepthStencilView());
 	d3d11_deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kVertexShaderSlotWorldMatrix_, 1, d3d11_world_matrix_constant_buffer_.GetAddressOf());
 	d3d11_deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstance()->GetAddressOfCameraConstantBuffer());
 	d3d11_deferred_context->DrawIndexed(box_mesh->GetNumIndices(), 0, 0);

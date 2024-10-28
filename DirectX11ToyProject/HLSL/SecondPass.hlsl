@@ -51,7 +51,7 @@ float4 PS(PixelInput input) : SV_TARGET
 
     // 2. Point Light 계산
     [loop]
-    for (uint i = 0; i < PointLights.Length; i++)
+    for (uint i = 0; i < 1; i++)
     { 
         // output.position = mul(worldPosition, View);
         // output.position = mul(output.position, Projection);
@@ -71,7 +71,7 @@ float4 PS(PixelInput input) : SV_TARGET
 
     // 3. Spot Light 계산
     [loop]
-    for (uint i = 0; i < SpotLights.Length; i++)
+    for (uint i = 0; i < 0; i++)
     {
         float3 lightVec = SpotLights[i].position - position;
         float distance = length(lightVec);

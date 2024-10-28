@@ -36,18 +36,18 @@ void DeferredRenderingSecondPass::Initialize()
 	d3d11_deferred_context->RSSetState(obj_mesh->GetRasterizerState());
 	ID3D11ShaderResourceView* d3d11_shader_resource_views[4] =
 	{
-		output_merger->GetGBufferPositionShaderResourceView(),
-		output_merger->GetGBufferNormalShaderResourceView(),
-		output_merger->GetGBufferDiffuseShaderResourceView(),
-		output_merger->GetGBufferViewDirectionShaderResourceView()
+		output_merger->GetShaderResourceView("GBufferPositionView"),
+		output_merger->GetShaderResourceView("GBufferNormalView"),
+		output_merger->GetShaderResourceView("GBufferDiffuseView"),
+		output_merger->GetShaderResourceView("GBufferViewDirectionView")
 	}; 
 	d3d11_deferred_context->PSSetShaderResources(4, 4, d3d11_shader_resource_views);
-	d3d11_deferred_context->PSSetShaderResources(0, 1, LightsManager::GetInstance()->GetLightShaderResourceView("PointLightShaderResourceView")); // t2 레지스터에 바인딩
-	d3d11_deferred_context->PSSetShaderResources(1, 1, LightsManager::GetInstance()->GetLightShaderResourceView("SpotLightShaderResourceView"));  // t3 레지스터에 바인딩 
+	d3d11_deferred_context->PSSetShaderResources(0, 1, LightsManager::GetInstance()->GetLightShaderResourceView("PointLightView"));
+	d3d11_deferred_context->PSSetShaderResources(1, 1, LightsManager::GetInstance()->GetLightShaderResourceView("SpotLightView"));
 	d3d11_deferred_context->PSSetSamplers(0, 1, obj_mesh->GetSampler()); 
-	d3d11_deferred_context->OMSetDepthStencilState(output_merger->GetDepthStencilState("SecondPass"), 1);
-	ID3D11RenderTargetView* d3d11_render_target_view = output_merger->GetRenderTargetView();
-	d3d11_deferred_context->OMSetRenderTargets(1, &d3d11_render_target_view, output_merger->GetDepthStencilView()); 
+	d3d11_deferred_context->OMSetDepthStencilState(output_merger->GetDepthStencilState("SecondPassState"), 1);
+	ID3D11RenderTargetView* d3d11_back_buffer_view = output_merger->GetRenderTargetView("BackBufferView");
+	d3d11_deferred_context->OMSetRenderTargets(1, &d3d11_back_buffer_view, output_merger->GetDepthStencilView());
 	d3d11_deferred_context->Draw(6, 0);
 
 	d3d11_deferred_context->FinishCommandList(true, d3d11_command_list_.GetAddressOf());
