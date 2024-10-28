@@ -5,7 +5,7 @@
 class MovableObject : public Object
 {
 protected:
-	Microsoft::WRL::ComPtr<class ID3D11Buffer> d3d11_world_matrix_constant_buffer_;
+	Microsoft::WRL::ComPtr<class ID3D11Buffer> world_matrix_constant_buffer_;
 
 	float move_speed_;
 	 

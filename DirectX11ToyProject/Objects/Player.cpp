@@ -12,8 +12,8 @@ void Player::Initialize()
 	MovableObject::Initialize();
 	SetPosition(kPlayerToCameraOffset.x, kPlayerToCameraOffset.y, kPlayerToCameraOffset.z); 
 
-	Microsoft::WRL::ComPtr<ID3D11DeviceContext> d3d11_deferred_context;
-	DeviceManager::GetInstance()->GetD3D11Device()->CreateDeferredContext(0, d3d11_deferred_context.GetAddressOf());
+	Microsoft::WRL::ComPtr<ID3D11DeviceContext> deferred_context;
+	DeviceManager::GetInstance()->GetD3D11Device()->CreateDeferredContext(0, deferred_context.GetAddressOf());
 	 
 	OBJMesh* obj_mesh = dynamic_cast<OBJMesh*>(MeshesManager::GetInstance()->GetMesh("GunMesh"));
 	if (obj_mesh == nullptr)
@@ -33,30 +33,30 @@ void Player::Initialize()
 		throw std::string("OutputMerger dynamic_cast Fail");
 	} 
 
-	d3d11_deferred_context->IASetPrimitiveTopology(obj_mesh->GetPrimitiveTopology());  
-	d3d11_deferred_context->IASetVertexBuffers(0, 1, obj_mesh->GetVertexBuffer(), obj_mesh->GetStride(), obj_mesh->GetOffset());
-	d3d11_deferred_context->IASetIndexBuffer(obj_mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
-	d3d11_deferred_context->IASetInputLayout(bump_mapping_shader->GetInputLayout());
-	d3d11_deferred_context->VSSetShader(bump_mapping_shader->GetVertexShader(), nullptr, 0);
-	d3d11_deferred_context->PSSetShader(bump_mapping_shader->GetPixelShader(), nullptr, 0);
-	d3d11_deferred_context->RSSetViewports(1, output_merger->GetViewport());
-	d3d11_deferred_context->RSSetState(obj_mesh->GetRasterizerState());
-	ID3D11RenderTargetView* d3d11_render_target_views[4] = 
+	deferred_context->IASetPrimitiveTopology(obj_mesh->GetPrimitiveTopology());  
+	deferred_context->IASetVertexBuffers(0, 1, obj_mesh->GetVertexBuffer(), obj_mesh->GetStride(), obj_mesh->GetOffset());
+	deferred_context->IASetIndexBuffer(obj_mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
+	deferred_context->IASetInputLayout(bump_mapping_shader->GetInputLayout());
+	deferred_context->VSSetShader(bump_mapping_shader->GetVertexShader(), nullptr, 0);
+	deferred_context->PSSetShader(bump_mapping_shader->GetPixelShader(), nullptr, 0);
+	deferred_context->RSSetViewports(1, output_merger->GetViewport());
+	deferred_context->RSSetState(obj_mesh->GetRasterizerState());
+	ID3D11RenderTargetView* render_target_views[4] = 
 	{ 
 		output_merger->GetRenderTargetView("GBufferPositionView"),
 		output_merger->GetRenderTargetView("GBufferNormalView"),
 		output_merger->GetRenderTargetView("GBufferDiffuseView"),
 		output_merger->GetRenderTargetView("GBufferViewDirectionView")
 	};
-	d3d11_deferred_context->OMSetRenderTargets(4, d3d11_render_target_views, output_merger->GetDepthStencilView());
-	d3d11_deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kVertexShaderSlotWorldMatrix_, 1, d3d11_world_matrix_constant_buffer_.GetAddressOf());
-	d3d11_deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstance()->GetAddressOfCameraConstantBuffer());
-	d3d11_deferred_context->PSSetShaderResources(0, 1, obj_mesh->GetDiffuse());
-	d3d11_deferred_context->PSSetShaderResources(1, 1, obj_mesh->GetNormal()); 
-	d3d11_deferred_context->PSSetSamplers(0, 1, obj_mesh->GetSampler());
-	d3d11_deferred_context->DrawIndexed(obj_mesh->GetNumIndices(), 0, 0);
+	deferred_context->OMSetRenderTargets(4, render_target_views, output_merger->GetDepthStencilView());
+	deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kVertexShaderSlotWorldMatrix_, 1, world_matrix_constant_buffer_.GetAddressOf());
+	deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstance()->GetAddressOfCameraConstantBuffer());
+	deferred_context->PSSetShaderResources(0, 1, obj_mesh->GetDiffuse());
+	deferred_context->PSSetShaderResources(1, 1, obj_mesh->GetNormal()); 
+	deferred_context->PSSetSamplers(0, 1, obj_mesh->GetSampler());
+	deferred_context->DrawIndexed(obj_mesh->GetNumIndices(), 0, 0);
 
-	d3d11_deferred_context->FinishCommandList(true, d3d11_command_list_.GetAddressOf()); 
+	deferred_context->FinishCommandList(true, command_list_.GetAddressOf()); 
 }
 
 void Player::SetRotationAndPosition(DirectX::FXMMATRIX camera_world_matrix)

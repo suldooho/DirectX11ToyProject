@@ -20,7 +20,7 @@ private:
 	std::unique_ptr<class Player> player_;
 
 	CameraMatrix camera_matrix_;
-	Microsoft::WRL::ComPtr<class ID3D11Buffer> d3d11_camera_matrix_constant_buffer_;
+	Microsoft::WRL::ComPtr<class ID3D11Buffer> camera_matrix_constant_buffer_;
 	 
 private:
 	float move_speed_; 

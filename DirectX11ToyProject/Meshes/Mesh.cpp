@@ -15,7 +15,7 @@ void Mesh::CreateVertexBuffer()
 
 	D3D11_SUBRESOURCE_DATA init_data;
 	init_data.pSysMem = GetVertexData();
-	DeviceManager::GetInstance()->GetD3D11Device()->CreateBuffer(&buffer_desc, &init_data, d3d11_vertex_buffer_.GetAddressOf());
+	DeviceManager::GetInstance()->GetD3D11Device()->CreateBuffer(&buffer_desc, &init_data, vertex_buffer_.GetAddressOf());
 }
 
 void Mesh::CreateIndexBuffer()
@@ -30,7 +30,7 @@ void Mesh::CreateIndexBuffer()
 
 	D3D11_SUBRESOURCE_DATA init_data;
 	init_data.pSysMem = GetIndexData();
-	DeviceManager::GetInstance()->GetD3D11Device()->CreateBuffer(&buffer_desc, &init_data, d3d11_index_buffer_.GetAddressOf());
+	DeviceManager::GetInstance()->GetD3D11Device()->CreateBuffer(&buffer_desc, &init_data, index_buffer_.GetAddressOf());
 }
 
 void Mesh::CreateRasterizerState()
@@ -81,7 +81,7 @@ unsigned int* Mesh::GetOffset()
 
 ID3D11Buffer** Mesh::GetVertexBuffer()
 {
-	return d3d11_vertex_buffer_.GetAddressOf();
+	return vertex_buffer_.GetAddressOf();
 }
 
 unsigned int Mesh::GetNumIndices() const
@@ -106,7 +106,7 @@ int Mesh::GetBaseVertex() const
 
 ID3D11Buffer* Mesh::GetIndexBuffer() const
 {
-	return d3d11_index_buffer_.Get();
+	return index_buffer_.Get();
 }
 
 ID3D11RasterizerState* Mesh::GetRasterizerState()

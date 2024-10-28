@@ -36,7 +36,7 @@ void DeviceManager::Initialize()
 
 	D3D_FEATURE_LEVEL feature_level = D3D_FEATURE_LEVEL_11_0;
 	 
-	HRESULT result = D3D11CreateDevice(adapter, D3D_DRIVER_TYPE_UNKNOWN, NULL, create_device_flags, feature_levels, 1, D3D11_SDK_VERSION, d3d11_device_.GetAddressOf(), &feature_level, d3d11_immediate_context_.GetAddressOf());
+	HRESULT result = D3D11CreateDevice(adapter, D3D_DRIVER_TYPE_UNKNOWN, NULL, create_device_flags, feature_levels, 1, D3D11_SDK_VERSION, device_.GetAddressOf(), &feature_level, immediate_context_.GetAddressOf());
 	
 	if (result != S_OK)
 	{
@@ -46,10 +46,10 @@ void DeviceManager::Initialize()
 
 ID3D11Device* DeviceManager::GetD3D11Device() const
 {
-	return d3d11_device_.Get();
+	return device_.Get();
 }
 
 ID3D11DeviceContext* DeviceManager::GetD3D11ImmediateContext() const
 {
-	return d3d11_immediate_context_.Get();
+	return immediate_context_.Get();
 }

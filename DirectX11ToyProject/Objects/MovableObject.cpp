@@ -13,7 +13,7 @@ void MovableObject::Initialize()
 	buffer_desc.MiscFlags = 0;
 	buffer_desc.StructureByteStride = 0;
 
-	DeviceManager::GetInstance()->GetD3D11Device()->CreateBuffer(&buffer_desc, nullptr, &d3d11_world_matrix_constant_buffer_);
+	DeviceManager::GetInstance()->GetD3D11Device()->CreateBuffer(&buffer_desc, nullptr, &world_matrix_constant_buffer_);
 }
 
 void MovableObject::SetMoveSpeed(float move_speed)
@@ -30,12 +30,12 @@ void MovableObject::Move(DirectX::FXMVECTOR move_vector)
 void MovableObject::UpdateConstantBuffer()
 {  
 	D3D11_MAPPED_SUBRESOURCE mapped_subresource;
-	DeviceManager::GetInstance()->GetD3D11ImmediateContext()->Map(d3d11_world_matrix_constant_buffer_.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped_subresource);
+	DeviceManager::GetInstance()->GetD3D11ImmediateContext()->Map(world_matrix_constant_buffer_.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped_subresource);
 	DirectX::XMFLOAT4X4A* world_matrix = reinterpret_cast<DirectX::XMFLOAT4X4A*>(mapped_subresource.pData);
 	DirectX::XMMATRIX xm_world_matrix = DirectX::XMLoadFloat4x4A(&world_matrix_);
 	xm_world_matrix = DirectX::XMMatrixTranspose(xm_world_matrix);
 	DirectX::XMStoreFloat4x4A(world_matrix, xm_world_matrix);
-	DeviceManager::GetInstance()->GetD3D11ImmediateContext()->Unmap(d3d11_world_matrix_constant_buffer_.Get(), 0); 
+	DeviceManager::GetInstance()->GetD3D11ImmediateContext()->Unmap(world_matrix_constant_buffer_.Get(), 0); 
 }
 
 

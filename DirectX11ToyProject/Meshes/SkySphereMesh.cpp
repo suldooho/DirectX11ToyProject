@@ -82,4 +82,21 @@ void* SkySphereMesh::GetVertexData()
 {
     return vertices_.data();
 }
+
+void SkySphereMesh::Initialize(std::string file_path)
+{
+    wchar_t current_path[MAX_PATH];
+    GetCurrentDirectory(MAX_PATH, current_path);
+
+    std::wstring w_obj_file_path;
+    w_obj_file_path.assign(file_path.begin(), file_path.end());
+
+    w_obj_file_path = std::wstring(current_path) + w_obj_file_path;
+    file_path.assign(w_obj_file_path.begin(), w_obj_file_path.end());
+      
+    diffuse_ = LoadTexture(file_path + "_Diffuse.png"); 
+    CreateSamplerState();
+
+    CreateFaceData();
+}
  

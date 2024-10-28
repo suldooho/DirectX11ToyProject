@@ -7,16 +7,16 @@
 class OutputMerger : public FrameResource
 { 
 private:
-	std::unordered_map<std::string, Microsoft::WRL::ComPtr<class ID3D11Texture2D>> d3d11_gbuffer_container_; // position normal diffuse view_direction   
-	std::unordered_map<std::string, Microsoft::WRL::ComPtr<class ID3D11RenderTargetView>> d3d11_render_target_view_container_; // position normal diffuse view_direction  
-	std::unordered_map<std::string, Microsoft::WRL::ComPtr<class ID3D11ShaderResourceView>> d3d11_shader_resource_view_container_; // position normal diffuse view_direction  
-	std::unordered_map<std::string, Microsoft::WRL::ComPtr<class ID3D11DepthStencilState>> d3d11_depth_stencil_state_container_;
+	std::unordered_map<std::string, Microsoft::WRL::ComPtr<class ID3D11Texture2D>> gbuffer_container_; // position normal diffuse view_direction   
+	std::unordered_map<std::string, Microsoft::WRL::ComPtr<class ID3D11RenderTargetView>> render_target_view_container_; // position normal diffuse view_direction  
+	std::unordered_map<std::string, Microsoft::WRL::ComPtr<class ID3D11ShaderResourceView>> shader_resource_view_container_; // position normal diffuse view_direction  
+	std::unordered_map<std::string, Microsoft::WRL::ComPtr<class ID3D11DepthStencilState>> depth_stencil_state_container_;
 
-	Microsoft::WRL::ComPtr<class ID3D11Texture2D> d3d11_depth_stencil_buffer_; 
-	//Microsoft::WRL::ComPtr<class ID3D11RenderTargetView> d3d11_render_target_view_;
-	Microsoft::WRL::ComPtr<class ID3D11DepthStencilView> d3d11_depth_stencil_view_;
+	Microsoft::WRL::ComPtr<class ID3D11Texture2D> depth_stencil_buffer_; 
+	//Microsoft::WRL::ComPtr<class ID3D11RenderTargetView> render_target_view_;
+	Microsoft::WRL::ComPtr<class ID3D11DepthStencilView> depth_stencil_view_;
 
-	std::unique_ptr<class D3D11_VIEWPORT> d3d11_viewport_;
+	std::unique_ptr<class D3D11_VIEWPORT> viewport_;
 
 
 private:

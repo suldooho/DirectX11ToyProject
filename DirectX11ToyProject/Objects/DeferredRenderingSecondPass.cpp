@@ -7,8 +7,8 @@
 
 void DeferredRenderingSecondPass::Initialize()
 {   
-	Microsoft::WRL::ComPtr<ID3D11DeviceContext> d3d11_deferred_context;
-	DeviceManager::GetInstance()->GetD3D11Device()->CreateDeferredContext(0, d3d11_deferred_context.GetAddressOf());
+	Microsoft::WRL::ComPtr<ID3D11DeviceContext> deferred_context;
+	DeviceManager::GetInstance()->GetD3D11Device()->CreateDeferredContext(0, deferred_context.GetAddressOf());
 
 	OBJMesh* obj_mesh = dynamic_cast<OBJMesh*>(MeshesManager::GetInstance()->GetMesh("GunMesh"));
 	if (obj_mesh == nullptr)
@@ -28,27 +28,27 @@ void DeferredRenderingSecondPass::Initialize()
 		throw std::string("OutputMerger dynamic_cast Fail");
 	}
 
-	d3d11_deferred_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	d3d11_deferred_context->IASetInputLayout(nullptr); // SV_VertexID에 의존
-	d3d11_deferred_context->VSSetShader(second_pass_shader->GetVertexShader(), nullptr, 0);
-	d3d11_deferred_context->PSSetShader(second_pass_shader->GetPixelShader(), nullptr, 0);
-	d3d11_deferred_context->RSSetViewports(1, output_merger->GetViewport()); 
-	d3d11_deferred_context->RSSetState(obj_mesh->GetRasterizerState());
-	ID3D11ShaderResourceView* d3d11_shader_resource_views[4] =
+	deferred_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	deferred_context->IASetInputLayout(nullptr); // SV_VertexID에 의존
+	deferred_context->VSSetShader(second_pass_shader->GetVertexShader(), nullptr, 0);
+	deferred_context->PSSetShader(second_pass_shader->GetPixelShader(), nullptr, 0);
+	deferred_context->RSSetViewports(1, output_merger->GetViewport()); 
+	deferred_context->RSSetState(obj_mesh->GetRasterizerState());
+	ID3D11ShaderResourceView* shader_resource_views[4] =
 	{
 		output_merger->GetShaderResourceView("GBufferPositionView"),
 		output_merger->GetShaderResourceView("GBufferNormalView"),
 		output_merger->GetShaderResourceView("GBufferDiffuseView"),
 		output_merger->GetShaderResourceView("GBufferViewDirectionView")
 	}; 
-	d3d11_deferred_context->PSSetShaderResources(4, 4, d3d11_shader_resource_views);
-	d3d11_deferred_context->PSSetShaderResources(0, 1, LightsManager::GetInstance()->GetLightShaderResourceView("PointLightView"));
-	d3d11_deferred_context->PSSetShaderResources(1, 1, LightsManager::GetInstance()->GetLightShaderResourceView("SpotLightView"));
-	d3d11_deferred_context->PSSetSamplers(0, 1, obj_mesh->GetSampler()); 
-	d3d11_deferred_context->OMSetDepthStencilState(output_merger->GetDepthStencilState("SecondPassState"), 1);
-	ID3D11RenderTargetView* d3d11_back_buffer_view = output_merger->GetRenderTargetView("BackBufferView");
-	d3d11_deferred_context->OMSetRenderTargets(1, &d3d11_back_buffer_view, output_merger->GetDepthStencilView());
-	d3d11_deferred_context->Draw(6, 0);
+	deferred_context->PSSetShaderResources(4, 4, shader_resource_views);
+	deferred_context->PSSetShaderResources(0, 1, LightsManager::GetInstance()->GetLightShaderResourceView("PointLightView"));
+	deferred_context->PSSetShaderResources(1, 1, LightsManager::GetInstance()->GetLightShaderResourceView("SpotLightView"));
+	deferred_context->PSSetSamplers(0, 1, obj_mesh->GetSampler()); 
+	deferred_context->OMSetDepthStencilState(output_merger->GetDepthStencilState("SecondPassState"), 1);
+	ID3D11RenderTargetView* back_buffer_view = output_merger->GetRenderTargetView("BackBufferView");
+	deferred_context->OMSetRenderTargets(1, &back_buffer_view, output_merger->GetDepthStencilView());
+	deferred_context->Draw(6, 0);
 
-	d3d11_deferred_context->FinishCommandList(true, d3d11_command_list_.GetAddressOf());
+	deferred_context->FinishCommandList(true, command_list_.GetAddressOf());
 }

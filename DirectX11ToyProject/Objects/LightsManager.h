@@ -45,8 +45,8 @@ public:
 	}
 
 private:   
-	std::unordered_map<std::string, Microsoft::WRL::ComPtr<class ID3D11Buffer>> d3d11_light_buffer_container_;
-	std::unordered_map<std::string, Microsoft::WRL::ComPtr<class ID3D11ShaderResourceView>> d3d11_shader_resource_view_container_;
+	std::unordered_map<std::string, Microsoft::WRL::ComPtr<class ID3D11Buffer>> light_buffer_container_;
+	std::unordered_map<std::string, Microsoft::WRL::ComPtr<class ID3D11ShaderResourceView>> shader_resource_view_container_;
 	 
 public:
 	void Initialize();

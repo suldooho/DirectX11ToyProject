@@ -16,7 +16,7 @@ void Shader::CreateVertexShaderFromFile(LPCWSTR shader_file, LPCSTR entry_point)
 		throw std::string("Can Not Compile Vertex Shader");
 	} 
 
-	result = DeviceManager::GetInstance()->GetD3D11Device()->CreateVertexShader(code_blob->GetBufferPointer(), code_blob->GetBufferSize(), nullptr, d3d11_vertex_shader_.GetAddressOf());
+	result = DeviceManager::GetInstance()->GetD3D11Device()->CreateVertexShader(code_blob->GetBufferPointer(), code_blob->GetBufferSize(), nullptr, vertex_shader_.GetAddressOf());
 
 	if (result != S_OK)
 	{
@@ -38,14 +38,14 @@ void Shader::CreateInputLayoutAndVertexShaderFromFile(LPCWSTR shader_file, LPCST
 		throw std::string("Can Not Compile Vertex Shader");
 	}
 
-	result = DeviceManager::GetInstance()->GetD3D11Device()->CreateInputLayout(input_element_desc, num_elements, code_blob->GetBufferPointer(), code_blob->GetBufferSize(), d3d11_input_layout_.GetAddressOf());
+	result = DeviceManager::GetInstance()->GetD3D11Device()->CreateInputLayout(input_element_desc, num_elements, code_blob->GetBufferPointer(), code_blob->GetBufferSize(), input_layout_.GetAddressOf());
 
 	if (result != S_OK)
 	{
 		throw std::string("Can Not Input Layout");
 	}
 
-	result = DeviceManager::GetInstance()->GetD3D11Device()->CreateVertexShader(code_blob->GetBufferPointer(), code_blob->GetBufferSize(), nullptr, d3d11_vertex_shader_.GetAddressOf());
+	result = DeviceManager::GetInstance()->GetD3D11Device()->CreateVertexShader(code_blob->GetBufferPointer(), code_blob->GetBufferSize(), nullptr, vertex_shader_.GetAddressOf());
 
 	if (result != S_OK)
 	{
@@ -66,7 +66,7 @@ void Shader::CreatePixelShaderFromFile(LPCWSTR shader_file, LPCSTR entry_point)
 		throw std::string("Can Not Compile Pixel Shader");
 	}
 	
-	result = DeviceManager::GetInstance()->GetD3D11Device()->CreatePixelShader(code_blob->GetBufferPointer(), code_blob->GetBufferSize(), nullptr, d3d11_pixel_shader_.GetAddressOf());
+	result = DeviceManager::GetInstance()->GetD3D11Device()->CreatePixelShader(code_blob->GetBufferPointer(), code_blob->GetBufferSize(), nullptr, pixel_shader_.GetAddressOf());
 
 	if (result != S_OK)
 	{
@@ -76,16 +76,16 @@ void Shader::CreatePixelShaderFromFile(LPCWSTR shader_file, LPCSTR entry_point)
 
 ID3D11InputLayout* Shader::GetInputLayout() const
 {
-	return d3d11_input_layout_.Get();
+	return input_layout_.Get();
 }
 
 ID3D11VertexShader* Shader::GetVertexShader() const
 {
-	return d3d11_vertex_shader_.Get();
+	return vertex_shader_.Get();
 }
 
 ID3D11PixelShader* Shader::GetPixelShader() const
 {
-	return d3d11_pixel_shader_.Get();
+	return pixel_shader_.Get();
 }
 

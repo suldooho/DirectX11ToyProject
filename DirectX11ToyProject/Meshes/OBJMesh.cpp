@@ -99,22 +99,22 @@ void* OBJMesh::GetVertexData()
 	return vertices_.data();
 } 
 
-void OBJMesh::Initialize(std::string obj_file_path)
+void OBJMesh::Initialize(std::string file_path)
 {
     wchar_t current_path[MAX_PATH];
     GetCurrentDirectory(MAX_PATH, current_path);
 
     std::wstring w_obj_file_path;
-    w_obj_file_path.assign(obj_file_path.begin(), obj_file_path.end());
+    w_obj_file_path.assign(file_path.begin(), file_path.end());
 
     w_obj_file_path = std::wstring(current_path) + w_obj_file_path;
-    obj_file_path.assign(w_obj_file_path.begin(), w_obj_file_path.end());
+    file_path.assign(w_obj_file_path.begin(), w_obj_file_path.end());
 
-    LoadVertices(obj_file_path + ".txt");
-    LoadIndices(obj_file_path + "_Index.txt");
+    LoadVertices(file_path + ".txt");
+    LoadIndices(file_path + "_Index.txt");
 
-    diffuse_ = LoadTexture(obj_file_path + "_Diffuse.png");
-    normal_ = LoadTexture(obj_file_path + "_Normal.png"); 
+    diffuse_ = LoadTexture(file_path + "_Diffuse.png");
+    normal_ = LoadTexture(file_path + "_Normal.png");
     CreateSamplerState();
 
     CreateFaceData();

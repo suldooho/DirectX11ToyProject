@@ -8,7 +8,7 @@ Object::Object()
 
 void Object::ExecuteCommandList()
 {
-	DeviceManager::GetInstance()->GetD3D11ImmediateContext()->ExecuteCommandList(d3d11_command_list_.Get(), true);
+	DeviceManager::GetInstance()->GetD3D11ImmediateContext()->ExecuteCommandList(command_list_.Get(), true);
 }
 
 void Object::SetRight(float x, float y, float z)

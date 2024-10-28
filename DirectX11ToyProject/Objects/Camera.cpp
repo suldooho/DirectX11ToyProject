@@ -17,7 +17,7 @@ void Camera::CreateConstantBuffer()
 	buffer_desc.MiscFlags = 0;
 	buffer_desc.StructureByteStride = 0;
 
-	DeviceManager::GetInstance()->GetD3D11Device()->CreateBuffer(&buffer_desc, nullptr, &d3d11_camera_matrix_constant_buffer_);
+	DeviceManager::GetInstance()->GetD3D11Device()->CreateBuffer(&buffer_desc, nullptr, &camera_matrix_constant_buffer_);
 }
 
 void Camera::CreateProjectionMatrix(float fov_angle, float aspect_ratio, float near_plane_distance, float far_plane_distance)
@@ -35,7 +35,7 @@ void Camera::Initialize(float client_width, float client_height)
 
 ID3D11Buffer** Camera::GetAddressOfCameraConstantBuffer()
 {
-	return d3d11_camera_matrix_constant_buffer_.GetAddressOf();
+	return camera_matrix_constant_buffer_.GetAddressOf();
 }
  
 void Camera::UpdateViewMatrix()
@@ -59,7 +59,7 @@ void Camera::UpdateViewMatrix()
 void Camera::UpdateConstantBuffer()
 {
 	D3D11_MAPPED_SUBRESOURCE mapped_subresource;
-	DeviceManager::GetInstance()->GetD3D11ImmediateContext()->Map(d3d11_camera_matrix_constant_buffer_.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped_subresource);
+	DeviceManager::GetInstance()->GetD3D11ImmediateContext()->Map(camera_matrix_constant_buffer_.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped_subresource);
 	CameraMatrix* camera_matrix = reinterpret_cast<CameraMatrix*>(mapped_subresource.pData);
 	DirectX::XMMATRIX xm_view_matrix = DirectX::XMLoadFloat4x4A(&camera_matrix_.view_matrix);         
 	DirectX::XMMATRIX xm_projection_matrix = DirectX::XMLoadFloat4x4A(&camera_matrix_.projection_matrix);
@@ -70,7 +70,7 @@ void Camera::UpdateConstantBuffer()
 	camera_matrix->camera_position.x = world_matrix_._41;
 	camera_matrix->camera_position.y = world_matrix_._42;
 	camera_matrix->camera_position.z = world_matrix_._43;
-	DeviceManager::GetInstance()->GetD3D11ImmediateContext()->Unmap(d3d11_camera_matrix_constant_buffer_.Get(), 0);
+	DeviceManager::GetInstance()->GetD3D11ImmediateContext()->Unmap(camera_matrix_constant_buffer_.Get(), 0);
 }
 
 void Camera::Move(DirectX::FXMVECTOR move_vector)

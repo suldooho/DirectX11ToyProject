@@ -31,7 +31,7 @@ void SwapChainManager::Initialize(unsigned int window_width, unsigned int window
 	Microsoft::WRL::ComPtr<IDXGIFactory> previous_factory;
 	previous_adapter->GetParent(__uuidof(IDXGIFactory), (void**)previous_factory.GetAddressOf());
 
-	HRESULT result = previous_factory->CreateSwapChain(DeviceManager::GetInstance()->GetD3D11Device(), &swap_chain_desc, d3d11_swap_chain_.GetAddressOf());
+	HRESULT result = previous_factory->CreateSwapChain(DeviceManager::GetInstance()->GetD3D11Device(), &swap_chain_desc, swap_chain_.GetAddressOf());
 	 
 	if (result != S_OK)
 	{
@@ -41,5 +41,5 @@ void SwapChainManager::Initialize(unsigned int window_width, unsigned int window
 
 IDXGISwapChain* SwapChainManager::GetDXGISwapChain() const
 {
-	return d3d11_swap_chain_.Get();
+	return swap_chain_.Get();
 }

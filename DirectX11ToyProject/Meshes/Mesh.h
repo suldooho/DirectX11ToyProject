@@ -12,7 +12,7 @@ protected:
 	unsigned int stride_;
 	unsigned int offset_;
 
-	Microsoft::WRL::ComPtr<ID3D11Buffer> d3d11_vertex_buffer_;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> vertex_buffer_;
 	
 protected:
 	std::vector<unsigned int> indices_;
@@ -21,7 +21,7 @@ protected:
 	unsigned int start_index_;
 	int base_vertex_;
 
-	Microsoft::WRL::ComPtr<ID3D11Buffer> d3d11_index_buffer_;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> index_buffer_;
 	  
 protected:
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState> rasterizer_state_;

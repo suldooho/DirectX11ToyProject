@@ -18,8 +18,10 @@ protected:
 	virtual unsigned int GetVertexBufferByteWidth() override;  
 	virtual void* GetVertexData() override; 
 
-private:
+public:
+	virtual void Initialize(std::string file_path) override;
 
+private: 
 	const int kRadius_ = 100;
 	const unsigned int kStackCount_ = 100;
 	const unsigned int kSliceCount_ = 100;

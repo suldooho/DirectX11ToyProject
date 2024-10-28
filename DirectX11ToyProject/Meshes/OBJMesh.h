@@ -23,8 +23,8 @@ protected:
 	virtual unsigned int GetVertexBufferByteWidth() override;  
 	virtual void* GetVertexData() override;  
 
-public: 
-	void Initialize(std::string obj_file_path);
+public:
+	virtual void Initialize(std::string file_path) override;
 
 	class ID3D11ShaderResourceView** GetNormal();
 };

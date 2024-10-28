@@ -9,7 +9,7 @@ protected:
 	DirectX::XMFLOAT4X4A world_matrix_;
 
 protected:
-	Microsoft::WRL::ComPtr<ID3D11CommandList> d3d11_command_list_;
+	Microsoft::WRL::ComPtr<ID3D11CommandList> command_list_;
 
 public:
 	Object();

@@ -15,6 +15,7 @@ protected:
 	void CreateSamplerState();
 
 public:
+	virtual void Initialize(std::string file_path) = 0;
 	class ID3D11ShaderResourceView** GetDiffuse();
 	class ID3D11SamplerState** GetSampler();
 };

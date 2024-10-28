@@ -28,13 +28,13 @@ ID3D11Texture2D* OutputMerger::CreateGBufferTexture(DXGI_FORMAT format, unsigned
 void OutputMerger::CreateGBufferTextures(unsigned int client_width, unsigned int client_height)
 {
 	ID3D11Texture2D* gbuffer_position = CreateGBufferTexture(DXGI_FORMAT_R32G32B32A32_FLOAT, client_width, client_height);
-	d3d11_gbuffer_container_["PositionBuffer"] = gbuffer_position; 
+	gbuffer_container_["PositionBuffer"] = gbuffer_position; 
 	ID3D11Texture2D* gbuffer_normal = CreateGBufferTexture(DXGI_FORMAT_R16G16B16A16_FLOAT, client_width, client_height);
-	d3d11_gbuffer_container_["NormalBuffer"] = gbuffer_normal;
+	gbuffer_container_["NormalBuffer"] = gbuffer_normal;
 	ID3D11Texture2D* gbuffer_diffuse = CreateGBufferTexture(DXGI_FORMAT_R8G8B8A8_UNORM, client_width, client_height);
-	d3d11_gbuffer_container_["DiffuseBuffer"] = gbuffer_diffuse;
+	gbuffer_container_["DiffuseBuffer"] = gbuffer_diffuse;
 	ID3D11Texture2D* gbuffer_view_direction = CreateGBufferTexture(DXGI_FORMAT_R8G8B8A8_UNORM, client_width, client_height);
-	d3d11_gbuffer_container_["ViewDirectionBuffer"] = gbuffer_view_direction;
+	gbuffer_container_["ViewDirectionBuffer"] = gbuffer_view_direction;
 }
 
 void OutputMerger::CreateRenderTargetViewAndShaderResourceView(ID3D11Texture2D* texture, ID3D11RenderTargetView** render_target_view, ID3D11ShaderResourceView** shader_resource_view)
@@ -56,42 +56,42 @@ void OutputMerger::CreateRenderTargetViewsAndShaderResourceViews()
 {
 	ID3D11RenderTargetView* gbuffer_render_target_view_position;
 	ID3D11ShaderResourceView* gbuffer_shader_resource_view_position;
-	CreateRenderTargetViewAndShaderResourceView(d3d11_gbuffer_container_["PositionBuffer"].Get(), &gbuffer_render_target_view_position, &gbuffer_shader_resource_view_position);
-	d3d11_render_target_view_container_["GBufferPositionView"] = gbuffer_render_target_view_position;
-	d3d11_shader_resource_view_container_["GBufferPositionView"] = gbuffer_shader_resource_view_position; 
+	CreateRenderTargetViewAndShaderResourceView(gbuffer_container_["PositionBuffer"].Get(), &gbuffer_render_target_view_position, &gbuffer_shader_resource_view_position);
+	render_target_view_container_["GBufferPositionView"] = gbuffer_render_target_view_position;
+	shader_resource_view_container_["GBufferPositionView"] = gbuffer_shader_resource_view_position; 
 
 	ID3D11RenderTargetView* gbuffer_render_target_view_normal;
 	ID3D11ShaderResourceView* gbuffer_shader_resource_view_normal;
-	CreateRenderTargetViewAndShaderResourceView(d3d11_gbuffer_container_["NormalBuffer"].Get(), &gbuffer_render_target_view_normal, &gbuffer_shader_resource_view_normal);
-	d3d11_render_target_view_container_["GBufferNormalView"] = gbuffer_render_target_view_normal;
-	d3d11_shader_resource_view_container_["GBufferNormalView"] = gbuffer_shader_resource_view_normal;
+	CreateRenderTargetViewAndShaderResourceView(gbuffer_container_["NormalBuffer"].Get(), &gbuffer_render_target_view_normal, &gbuffer_shader_resource_view_normal);
+	render_target_view_container_["GBufferNormalView"] = gbuffer_render_target_view_normal;
+	shader_resource_view_container_["GBufferNormalView"] = gbuffer_shader_resource_view_normal;
 
 	ID3D11RenderTargetView* gbuffer_render_target_view_diffuse;
 	ID3D11ShaderResourceView* gbuffer_shader_resource_view_diffuse;
-	CreateRenderTargetViewAndShaderResourceView(d3d11_gbuffer_container_["DiffuseBuffer"].Get(), &gbuffer_render_target_view_diffuse, &gbuffer_shader_resource_view_diffuse);
-	d3d11_render_target_view_container_["GBufferDiffuseView"] = gbuffer_render_target_view_diffuse;
-	d3d11_shader_resource_view_container_["GBufferDiffuseView"] = gbuffer_shader_resource_view_diffuse;
+	CreateRenderTargetViewAndShaderResourceView(gbuffer_container_["DiffuseBuffer"].Get(), &gbuffer_render_target_view_diffuse, &gbuffer_shader_resource_view_diffuse);
+	render_target_view_container_["GBufferDiffuseView"] = gbuffer_render_target_view_diffuse;
+	shader_resource_view_container_["GBufferDiffuseView"] = gbuffer_shader_resource_view_diffuse;
 
 	ID3D11RenderTargetView* gbuffer_render_target_view_view_direction;
 	ID3D11ShaderResourceView* gbuffer_shader_resource_view_view_direction;
-	CreateRenderTargetViewAndShaderResourceView(d3d11_gbuffer_container_["ViewDirectionBuffer"].Get(), &gbuffer_render_target_view_view_direction, &gbuffer_shader_resource_view_view_direction);
-	d3d11_render_target_view_container_["GBufferViewDirectionView"] = gbuffer_render_target_view_view_direction;
-	d3d11_shader_resource_view_container_["GBufferViewDirectionView"] = gbuffer_shader_resource_view_view_direction;
+	CreateRenderTargetViewAndShaderResourceView(gbuffer_container_["ViewDirectionBuffer"].Get(), &gbuffer_render_target_view_view_direction, &gbuffer_shader_resource_view_view_direction);
+	render_target_view_container_["GBufferViewDirectionView"] = gbuffer_render_target_view_view_direction;
+	shader_resource_view_container_["GBufferViewDirectionView"] = gbuffer_shader_resource_view_view_direction;
 }
 
 void OutputMerger::CreateBackBufferView()
 {
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> back_buffer;
 	SwapChainManager::GetInstance()->GetDXGISwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(back_buffer.GetAddressOf()));
-	ID3D11RenderTargetView* d3d11_render_target_view = nullptr;
-	HRESULT result = DeviceManager::GetInstance()->GetD3D11Device()->CreateRenderTargetView(back_buffer.Get(), 0, &d3d11_render_target_view);
+	ID3D11RenderTargetView* render_target_view = nullptr;
+	HRESULT result = DeviceManager::GetInstance()->GetD3D11Device()->CreateRenderTargetView(back_buffer.Get(), 0, &render_target_view);
 
 	if (result != S_OK)
 	{
 		throw std::string("Can Not Create Back Buffer View");
 	}
 
-	d3d11_render_target_view_container_["BackBufferView"] = d3d11_render_target_view;	
+	render_target_view_container_["BackBufferView"] = render_target_view;	
 }
 
 void OutputMerger::CreateRenderTargetViews(unsigned int client_width, unsigned int client_height)
@@ -116,9 +116,9 @@ void OutputMerger::CreateDepthStencilView(unsigned int client_width, unsigned in
 	depth_stencil_buffer_desc.CPUAccessFlags = 0;
 	depth_stencil_buffer_desc.MiscFlags = 0;
 
-	DeviceManager::GetInstance()->GetD3D11Device()->CreateTexture2D(&depth_stencil_buffer_desc, nullptr, d3d11_depth_stencil_buffer_.GetAddressOf());
+	DeviceManager::GetInstance()->GetD3D11Device()->CreateTexture2D(&depth_stencil_buffer_desc, nullptr, depth_stencil_buffer_.GetAddressOf());
 	
-	HRESULT result = DeviceManager::GetInstance()->GetD3D11Device()->CreateDepthStencilView(d3d11_depth_stencil_buffer_.Get(), nullptr, d3d11_depth_stencil_view_.GetAddressOf());
+	HRESULT result = DeviceManager::GetInstance()->GetD3D11Device()->CreateDepthStencilView(depth_stencil_buffer_.Get(), nullptr, depth_stencil_view_.GetAddressOf());
 
 	if (result != S_OK)
 	{
@@ -128,13 +128,13 @@ void OutputMerger::CreateDepthStencilView(unsigned int client_width, unsigned in
 
 void OutputMerger::CreateViewPort(unsigned int client_width, unsigned int client_height)
 {
-	d3d11_viewport_ = std::make_unique<D3D11_VIEWPORT>();
-	d3d11_viewport_.get()->TopLeftX = 0.0f;
-	d3d11_viewport_.get()->TopLeftY = 0.0f;
-	d3d11_viewport_.get()->Width = static_cast<float>(client_width);
-	d3d11_viewport_.get()->Height = static_cast<float>(client_height);
-	d3d11_viewport_.get()->MinDepth = 0.0f;
-	d3d11_viewport_.get()->MaxDepth = 1.0f;
+	viewport_ = std::make_unique<D3D11_VIEWPORT>();
+	viewport_.get()->TopLeftX = 0.0f;
+	viewport_.get()->TopLeftY = 0.0f;
+	viewport_.get()->Width = static_cast<float>(client_width);
+	viewport_.get()->Height = static_cast<float>(client_height);
+	viewport_.get()->MinDepth = 0.0f;
+	viewport_.get()->MaxDepth = 1.0f;
 }
 
 void OutputMerger::CreateSecondPassDepthStencilState()
@@ -170,7 +170,7 @@ void OutputMerger::CreateSecondPassDepthStencilState()
 		throw std::string("Can Not Create Depth Stencil State");
 	}
 
-	d3d11_depth_stencil_state_container_["SecondPassState"] = depth_stencil_state;
+	depth_stencil_state_container_["SecondPassState"] = depth_stencil_state;
 }
 
 void OutputMerger::CreateDepthStencilStates()
@@ -189,9 +189,9 @@ void OutputMerger::Initialize(unsigned int client_width, unsigned int client_hei
 
 ID3D11Texture2D* OutputMerger::GetGbuffer(std::string gbuffer_name)
 {
-	if (d3d11_gbuffer_container_.find(gbuffer_name) != d3d11_gbuffer_container_.end())
+	if (gbuffer_container_.find(gbuffer_name) != gbuffer_container_.end())
 	{
-		return d3d11_gbuffer_container_[gbuffer_name].Get();
+		return gbuffer_container_[gbuffer_name].Get();
 	}
 
 	throw std::string("Gbuffer Name Error");
@@ -199,9 +199,9 @@ ID3D11Texture2D* OutputMerger::GetGbuffer(std::string gbuffer_name)
 
 ID3D11RenderTargetView* OutputMerger::GetRenderTargetView(std::string view_name)
 {
-	if (d3d11_render_target_view_container_.find(view_name) != d3d11_render_target_view_container_.end())
+	if (render_target_view_container_.find(view_name) != render_target_view_container_.end())
 	{
-		return d3d11_render_target_view_container_[view_name].Get();
+		return render_target_view_container_[view_name].Get();
 	}
 
 	throw std::string("Render Target View Name Error");
@@ -209,9 +209,9 @@ ID3D11RenderTargetView* OutputMerger::GetRenderTargetView(std::string view_name)
 
 ID3D11ShaderResourceView* OutputMerger::GetShaderResourceView(std::string view_name)
 {
-	if (d3d11_shader_resource_view_container_.find(view_name) != d3d11_shader_resource_view_container_.end())
+	if (shader_resource_view_container_.find(view_name) != shader_resource_view_container_.end())
 	{
-		return d3d11_shader_resource_view_container_[view_name].Get();
+		return shader_resource_view_container_[view_name].Get();
 	}
 
 	throw std::string("Shader Resource View Name Error");
@@ -219,9 +219,9 @@ ID3D11ShaderResourceView* OutputMerger::GetShaderResourceView(std::string view_n
 
 ID3D11DepthStencilState* OutputMerger::GetDepthStencilState(std::string state_name)
 {
-	if (d3d11_depth_stencil_state_container_.find(state_name) != d3d11_depth_stencil_state_container_.end())
+	if (depth_stencil_state_container_.find(state_name) != depth_stencil_state_container_.end())
 	{
-		return d3d11_depth_stencil_state_container_[state_name].Get();
+		return depth_stencil_state_container_[state_name].Get();
 	}
 
 	throw std::string("Depth Stencil State Name Error");
@@ -229,10 +229,10 @@ ID3D11DepthStencilState* OutputMerger::GetDepthStencilState(std::string state_na
 
 ID3D11DepthStencilView* OutputMerger::GetDepthStencilView() const
 {
-	return d3d11_depth_stencil_view_.Get();
+	return depth_stencil_view_.Get();
 }
 
 D3D11_VIEWPORT* OutputMerger::GetViewport() const
 {
-	return d3d11_viewport_.get();
+	return viewport_.get();
 }

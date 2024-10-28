@@ -19,7 +19,7 @@ void LightsManager::Initialize()
     {
         throw std::string("Failed To Create Point Light Buffer");
     }
-    d3d11_light_buffer_container_["PointLightBuffer"] = point_light_buffer;
+    light_buffer_container_["PointLightBuffer"] = point_light_buffer;
      
     D3D11_SHADER_RESOURCE_VIEW_DESC shader_resource_view_desc;
     ZeroMemory(&shader_resource_view_desc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
@@ -28,12 +28,12 @@ void LightsManager::Initialize()
     shader_resource_view_desc.Buffer.FirstElement = 0;
     shader_resource_view_desc.Buffer.NumElements = kMaxPointLightNum_;
     ID3D11ShaderResourceView* point_light_shader_resource_view = nullptr;
-    result = DeviceManager::GetInstance()->GetD3D11Device()->CreateShaderResourceView(d3d11_light_buffer_container_["PointLightBuffer"].Get(), &shader_resource_view_desc, &point_light_shader_resource_view);
+    result = DeviceManager::GetInstance()->GetD3D11Device()->CreateShaderResourceView(light_buffer_container_["PointLightBuffer"].Get(), &shader_resource_view_desc, &point_light_shader_resource_view);
     if (result != S_OK)
     {
         throw std::string("Failed To Create Point Light Shader Resource View");
     }
-    d3d11_shader_resource_view_container_["PointLightView"] = point_light_shader_resource_view;
+    shader_resource_view_container_["PointLightView"] = point_light_shader_resource_view;
 
      
     buffer_desc.ByteWidth = sizeof(SpotLight) * kMaxSpotLightNum_;
@@ -44,16 +44,16 @@ void LightsManager::Initialize()
     {
         throw std::string("Failed To Create Spot Light Buffer");
     }
-    d3d11_light_buffer_container_["SpotLightBuffer"] = spot_light_buffer;
+    light_buffer_container_["SpotLightBuffer"] = spot_light_buffer;
 
     shader_resource_view_desc.Buffer.NumElements = kMaxSpotLightNum_;
     ID3D11ShaderResourceView* spot_light_shader_resource_view = nullptr;
-    result = DeviceManager::GetInstance()->GetD3D11Device()->CreateShaderResourceView(d3d11_light_buffer_container_["SpotLightBuffer"].Get(), &shader_resource_view_desc, &spot_light_shader_resource_view);
+    result = DeviceManager::GetInstance()->GetD3D11Device()->CreateShaderResourceView(light_buffer_container_["SpotLightBuffer"].Get(), &shader_resource_view_desc, &spot_light_shader_resource_view);
     if (result != S_OK)
     {
         throw std::string("Failed to create Spot Light Shader Resource View");
     }
-    d3d11_shader_resource_view_container_["SpotLightView"] = spot_light_shader_resource_view; 
+    shader_resource_view_container_["SpotLightView"] = spot_light_shader_resource_view; 
 }
 
 void LightsManager::UpdateLightBuffers()
@@ -89,27 +89,27 @@ void LightsManager::UpdateLightBuffers()
 
     // Point Light Buffer에 데이터 전송
     D3D11_MAPPED_SUBRESOURCE mappedResource;
-    HRESULT hr = context->Map(d3d11_light_buffer_container_["PointLightBuffer"].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+    HRESULT hr = context->Map(light_buffer_container_["PointLightBuffer"].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
     if (SUCCEEDED(hr))
     {
         memcpy(mappedResource.pData, pointLights.data(), sizeof(PointLight) * pointLights.size());
-        context->Unmap(d3d11_light_buffer_container_["PointLightBuffer"].Get(), 0);
+        context->Unmap(light_buffer_container_["PointLightBuffer"].Get(), 0);
     }
 
     // Spot Light Buffer에 데이터 전송
-    hr = context->Map(d3d11_light_buffer_container_["SpotLightBuffer"].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+    hr = context->Map(light_buffer_container_["SpotLightBuffer"].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
     if (SUCCEEDED(hr))
     {
         memcpy(mappedResource.pData, spotLights.data(), sizeof(SpotLight) * spotLights.size());
-        context->Unmap(d3d11_light_buffer_container_["SpotLightBuffer"].Get(), 0);
+        context->Unmap(light_buffer_container_["SpotLightBuffer"].Get(), 0);
     }
 }
 
 ID3D11ShaderResourceView** LightsManager::GetLightShaderResourceView(std::string view_name)
 {
-    if (d3d11_shader_resource_view_container_.find(view_name) != d3d11_shader_resource_view_container_.end())
+    if (shader_resource_view_container_.find(view_name) != shader_resource_view_container_.end())
     {
-        return d3d11_shader_resource_view_container_[view_name].GetAddressOf();
+        return shader_resource_view_container_[view_name].GetAddressOf();
     }
 
     throw std::string("Light Shader Resource View Name Error");
