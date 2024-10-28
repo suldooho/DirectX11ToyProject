@@ -33,7 +33,7 @@ void Mesh::CreateIndexBuffer()
 	DeviceManager::GetInstance()->GetD3D11Device()->CreateBuffer(&buffer_desc, &init_data, d3d11_index_buffer_.GetAddressOf());
 }
 
-void Mesh::CreateSolidRasterizerState()
+void Mesh::CreateRasterizerState()
 { 
 	D3D11_RASTERIZER_DESC rasterizer_desc;
 	ZeroMemory(&rasterizer_desc, sizeof(D3D11_RASTERIZER_DESC));
@@ -43,7 +43,17 @@ void Mesh::CreateSolidRasterizerState()
 	DeviceManager::GetInstance()->GetD3D11Device()->CreateRasterizerState(&rasterizer_desc, rasterizer_state_.GetAddressOf()); 
 }
 
-void Mesh::Initialize()
+unsigned int Mesh::GetIndexBufferByteWidth()
+{
+	return sizeof(unsigned int) * indices_.size();
+}
+
+void* Mesh::GetIndexData()
+{
+	return indices_.data();
+}
+
+void Mesh::CreateFaceData()
 {
 	CreateVertices();
 	CreateIndices();
@@ -51,7 +61,7 @@ void Mesh::Initialize()
 	CreateVertexBuffer();
 	CreateIndexBuffer();
 
-	CreateSolidRasterizerState();
+	CreateRasterizerState();
 }
 
 D3D_PRIMITIVE_TOPOLOGY Mesh::GetPrimitiveTopology() const

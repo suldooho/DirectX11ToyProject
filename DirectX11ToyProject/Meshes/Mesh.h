@@ -1,9 +1,10 @@
 #pragma once
 #include <wrl.h>
 #include <d3d11.h>
+#include <vector>
 
 class Mesh
-{
+{ 
 protected:
 	enum D3D_PRIMITIVE_TOPOLOGY primitive_topology_;
 
@@ -13,7 +14,9 @@ protected:
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer> d3d11_vertex_buffer_;
 	
-protected: 
+protected:
+	std::vector<unsigned int> indices_;
+
 	unsigned int num_indices_;
 	unsigned int start_index_;
 	int base_vertex_;
@@ -26,20 +29,20 @@ protected:
 private:
 	void CreateVertexBuffer();
 	void CreateIndexBuffer();
-	void CreateSolidRasterizerState();
 
 protected:
+	virtual void CreateRasterizerState();
+
 	virtual void CreateVertices() = 0;
 	virtual void CreateIndices() = 0;
 
 	virtual unsigned int GetVertexBufferByteWidth() = 0;
-	virtual unsigned int GetIndexBufferByteWidth() = 0;
+	unsigned int GetIndexBufferByteWidth();
 
 	virtual void* GetVertexData() = 0;
-	virtual void* GetIndexData() = 0;
-
-public:
-	void Initialize();
+	void* GetIndexData();
+	 
+	void CreateFaceData();
 
 public:
 	enum D3D_PRIMITIVE_TOPOLOGY GetPrimitiveTopology() const;

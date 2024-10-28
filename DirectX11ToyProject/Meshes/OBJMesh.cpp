@@ -39,7 +39,7 @@ void OBJMesh::LoadVertices(std::string obj_file_path)
             iss >> vertex.normal.x >> vertex.normal.y >> vertex.normal.z;
         }
         else if (line.find("-------------------------") != std::string::npos) {
-            vertices_.push_back(vertex);
+            vertices_.emplace_back(vertex);
         }
     }
 
@@ -66,53 +66,13 @@ void OBJMesh::LoadIndices(std::string obj_indices_file_path)
             std::string dummy;
             iss >> dummy >> i1 >> i2 >> i3;
 
-            indices_.push_back(i1);
-            indices_.push_back(i2);
-            indices_.push_back(i3);
+            indices_.emplace_back(i1);
+            indices_.emplace_back(i2);
+            indices_.emplace_back(i3);
         }
     }
 
     file.close();
-}
-
-class ID3D11ShaderResourceView* OBJMesh::LoadTexture(std::string obj_texture_file_path)
-{  
-    DirectX::TexMetadata metadata;
-    DirectX::ScratchImage scratchImg;
-      
-    std::wstring w_obj_texture_file_path;
-    w_obj_texture_file_path.assign(obj_texture_file_path.begin(), obj_texture_file_path.end());
-
-    CoInitialize(NULL);
-    HRESULT result = DirectX::LoadFromWICFile(w_obj_texture_file_path.c_str(), DirectX::WIC_FLAGS_NONE, &metadata, scratchImg);
-
-    if (result != S_OK)
-    {
-        throw std::string("Can Not Load " + obj_texture_file_path);
-    }
-     
-    ID3D11ShaderResourceView* texture_view;
-    result = DirectX::CreateShaderResourceView(DeviceManager::GetInstance()->GetD3D11Device(), scratchImg.GetImages(), scratchImg.GetImageCount(), metadata, &texture_view);              
-
-    if (result != S_OK)
-    {
-        throw std::string("Can Not Create Texture View");
-    } 
-
-    return texture_view;
-}
-
-void OBJMesh::CreateSamplerState()
-{
-    D3D11_SAMPLER_DESC sampler_desc;
-    ZeroMemory(&sampler_desc, sizeof(D3D11_SAMPLER_DESC));
-    sampler_desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-    sampler_desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-    sampler_desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-    sampler_desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;  
-    sampler_desc.MaxLOD = D3D11_FLOAT32_MAX;
-
-    DeviceManager::GetInstance()->GetD3D11Device()->CreateSamplerState(&sampler_desc, sampler_state_.GetAddressOf());
 } 
 
 void OBJMesh::CreateVertices()
@@ -132,22 +92,12 @@ void OBJMesh::CreateIndices()
 unsigned int OBJMesh::GetVertexBufferByteWidth()
 {
 	return sizeof(BumpMappingVertex) * vertices_.size();
-}
-
-unsigned int OBJMesh::GetIndexBufferByteWidth()
-{
-	return sizeof(unsigned int) * indices_.size();
-}
+} 
 
 void* OBJMesh::GetVertexData()
 {
 	return vertices_.data();
-}
-
-void* OBJMesh::GetIndexData()
-{
-	return indices_.data();
-}
+} 
 
 void OBJMesh::Initialize(std::string obj_file_path)
 {
@@ -167,21 +117,10 @@ void OBJMesh::Initialize(std::string obj_file_path)
     normal_ = LoadTexture(obj_file_path + "_Normal.png"); 
     CreateSamplerState();
 
-    Mesh::Initialize();
-}
-
-ID3D11ShaderResourceView** OBJMesh::GetDiffuse() 
-{
-    return diffuse_.GetAddressOf();
-}
+    CreateFaceData();
+} 
 
 ID3D11ShaderResourceView** OBJMesh::GetNormal()
 {
     return normal_.GetAddressOf();
 }
-
-ID3D11SamplerState** OBJMesh::GetSampler()
-{
-    return sampler_state_.GetAddressOf();
-}
-

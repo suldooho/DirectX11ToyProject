@@ -132,6 +132,12 @@
     <ClInclude Include="Objects\LightsManager.h">
       <Filter>헤더 파일\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Meshes\SkySphereMesh.h">
+      <Filter>헤더 파일\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshes\TextureMesh.h">
+      <Filter>헤더 파일\Meshes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX11ToyProject.cpp">
@@ -208,6 +214,12 @@
     </ClCompile>
     <ClCompile Include="Objects\LightsManager.cpp">
       <Filter>소스 파일\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshes\SkySphereMesh.cpp">
+      <Filter>소스 파일\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshes\TextureMesh.cpp">
+      <Filter>소스 파일\Meshes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
