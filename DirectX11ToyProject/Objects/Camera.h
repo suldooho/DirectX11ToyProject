@@ -35,7 +35,7 @@ private:
 public:
 	void Initialize(float client_width, float client_height);
 
-	class ID3D11Buffer** GetAddressOfCameraConstantBuffer(); 
+	class ID3D11Buffer** GetCameraConstantBuffer();
 	void UpdateViewMatrix();
 	void UpdateConstantBuffer();
 

@@ -4,17 +4,11 @@
 
 class MovableObject : public Object
 {
-protected:
-	Microsoft::WRL::ComPtr<class ID3D11Buffer> world_matrix_constant_buffer_;
-
+protected: 
 	float move_speed_;
 	 
-public:
-	virtual void Initialize() override;
-
+public:  
 	void SetMoveSpeed(float move_speed);
 	void Move(DirectX::FXMVECTOR move_vector);
-
-	void UpdateConstantBuffer();
 };
 

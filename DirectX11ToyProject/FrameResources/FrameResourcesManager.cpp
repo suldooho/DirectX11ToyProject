@@ -1,6 +1,6 @@
 #include "FrameResourcesManager.h"
 #include "../framework.h"
-#include "ColorShader.h"
+#include "SkySphereShader.h"
 #include "BumpMappingShader.h"
 #include "OutputMerger.h"
 #include "SecondPassShader.h"
@@ -9,9 +9,9 @@ FrameResourcesManager* FrameResourcesManager::instance_ = nullptr;
 
 void FrameResourcesManager::Initialize(unsigned int client_width, unsigned int client_height)
 {
-	frame_resource_container_["ColorShader"] = std::make_unique<ColorShader>();
-	ColorShader* color_shader = dynamic_cast<ColorShader*>(frame_resource_container_["ColorShader"].get());
-	color_shader->Initialize();
+	frame_resource_container_["SkySphereShader"] = std::make_unique<SkySphereShader>();
+	SkySphereShader* sky_sphere_shader = dynamic_cast<SkySphereShader*>(frame_resource_container_["SkySphereShader"].get());
+	sky_sphere_shader->Initialize();
 
 	frame_resource_container_["BumpMappingShader"] = std::make_unique<BumpMappingShader>();
 	BumpMappingShader* bump_mapping_shader = dynamic_cast<BumpMappingShader*>(frame_resource_container_["BumpMappingShader"].get());

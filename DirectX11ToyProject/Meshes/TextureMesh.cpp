@@ -1,20 +1,20 @@
 #include "TextureMesh.h"
 #include "../framework.h"
 
-ID3D11ShaderResourceView* TextureMesh::LoadTexture(std::string obj_texture_file_path)
+ID3D11ShaderResourceView* TextureMesh::LoadTexture(std::string file_path)
 {
     DirectX::TexMetadata metadata;
     DirectX::ScratchImage scratchImg;
 
     std::wstring w_obj_texture_file_path;
-    w_obj_texture_file_path.assign(obj_texture_file_path.begin(), obj_texture_file_path.end());
+    w_obj_texture_file_path.assign(file_path.begin(), file_path.end());
 
     CoInitialize(NULL);
     HRESULT result = DirectX::LoadFromWICFile(w_obj_texture_file_path.c_str(), DirectX::WIC_FLAGS_NONE, &metadata, scratchImg);
 
     if (result != S_OK)
     {
-        throw std::string("Can Not Load " + obj_texture_file_path);
+        throw std::string("Can Not Load " + file_path);
     }
 
     ID3D11ShaderResourceView* texture_view;

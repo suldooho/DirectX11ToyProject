@@ -138,6 +138,12 @@
     <ClInclude Include="Meshes\TextureMesh.h">
       <Filter>헤더 파일\Meshes</Filter>
     </ClInclude>
+    <ClInclude Include="Objects\SkySphereObject.h">
+      <Filter>헤더 파일\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameResources\SkySphereShader.h">
+      <Filter>헤더 파일\FrameResources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX11ToyProject.cpp">
@@ -221,6 +227,12 @@
     <ClCompile Include="Meshes\TextureMesh.cpp">
       <Filter>소스 파일\Meshes</Filter>
     </ClCompile>
+    <ClCompile Include="Objects\SkySphereObject.cpp">
+      <Filter>소스 파일\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameResources\SkySphereShader.cpp">
+      <Filter>소스 파일\FrameResources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectX11ToyProject.rc">
@@ -243,6 +255,9 @@
       <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="HLSL\SecondPass.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="HLSL\SkySphere.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
   </ItemGroup>

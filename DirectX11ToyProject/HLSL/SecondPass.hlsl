@@ -51,7 +51,7 @@ float4 PS(PixelInput input) : SV_TARGET
 
     // 2. Point Light °è»ê
     [loop]
-    for (uint i = 0; i < 1; i++)
+    for (uint i = 0; i < 0; i++)
     { 
         // output.position = mul(worldPosition, View);
         // output.position = mul(output.position, Projection);

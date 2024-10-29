@@ -1,14 +1,14 @@
 #include "MeshesManager.h"
-#include "BoxMesh.h"
+#include "SkySphereMesh.h"
 #include "OBJMesh.h"
 
 MeshesManager* MeshesManager::instance_ = nullptr;
 
 void MeshesManager::Initialize()
 {
-	mesh_container_["BoxMesh"] = std::make_unique<BoxMesh>();
-	BoxMesh* box_mesh = dynamic_cast<BoxMesh*>(mesh_container_["BoxMesh"].get());
-	box_mesh->Initialize();
+	mesh_container_["SkySphereMesh"] = std::make_unique<SkySphereMesh>();
+	SkySphereMesh* sky_sphere_mesh = dynamic_cast<SkySphereMesh*>(mesh_container_["SkySphereMesh"].get());
+	sky_sphere_mesh->Initialize("/Resources/SkySphere");
 	 
 	mesh_container_["GunMesh"] = std::make_unique<OBJMesh>();
 	OBJMesh* obj_mesh = dynamic_cast<OBJMesh*>(mesh_container_["GunMesh"].get());

@@ -1,16 +1,16 @@
 #include "ObjectsManager.h"
 #include "../framework.h"
-#include "BoxObject.h"
+#include "SkySphereObject.h"
 #include "../FrameResources/OutputMerger.h"
 #include "DeferredRenderingSecondPass.h"
 
 ObjectsManager* ObjectsManager::instance_ = nullptr;
 
-void ObjectsManager::CreateMovableObjects()
+void ObjectsManager::CreateObjects()
 {
-	BoxObject* box_object = new BoxObject();
-	box_object->Initialize();
-	movable_objects_.emplace_back(box_object);
+	SkySphereObject* sky_sphere_object = new SkySphereObject();
+	sky_sphere_object->Initialize();
+	objects_.emplace_back(sky_sphere_object);
 }
 
 void ObjectsManager::ExecuteCommandListPlayer()
@@ -22,21 +22,21 @@ void ObjectsManager::ExecuteCommandListPlayer()
 	player_->ExecuteCommandList();
 }
 
-void ObjectsManager::ExecuteCommandListMovableObjects()
+void ObjectsManager::ExecuteCommandListObjects()
 {
-	for (unsigned int i = 0; i < movable_objects_.size(); ++i)
+	for (unsigned int i = 0; i < objects_.size(); ++i)
 	{
-		movable_objects_[i].get()->UpdateConstantBuffer();
-		movable_objects_[i].get()->ExecuteCommandList();
+		objects_[i].get()->UpdateConstantBuffer();
+		objects_[i].get()->ExecuteCommandList();
 	}
 }
 
-void ObjectsManager::ExecuteCommandSecondPassOfDeferredRendering()
+void ObjectsManager::ExecuteCommandSecondPass()
 {
 	deferred_rendering_second_pass_->ExecuteCommandList();
 }
 
-void ObjectsManager::ClearDepthStencilView()
+void ObjectsManager::ClearRenderTargetViewAndDepthStencilView()
 {
 	OutputMerger* output_merger = dynamic_cast<OutputMerger*>(FrameResourcesManager::GetInstance()->GetFrameResource("OutputMerger"));
 	if (output_merger == nullptr)
@@ -44,7 +44,11 @@ void ObjectsManager::ClearDepthStencilView()
 		throw std::string("OutputMerger dynamic_cast Fail");
 	}
 
-	float clear_color[4] = { 0.125f,  0.125f,  0.125f, 1.0f };
+	float clear_color[4] = { 0.0f,  0.0f,  0.0f, 0.0f };
+	DeviceManager::GetInstance()->GetD3D11ImmediateContext()->ClearRenderTargetView(output_merger->GetRenderTargetView("GBufferPositionView"), clear_color);
+	DeviceManager::GetInstance()->GetD3D11ImmediateContext()->ClearRenderTargetView(output_merger->GetRenderTargetView("GBufferNormalView"), clear_color);
+	DeviceManager::GetInstance()->GetD3D11ImmediateContext()->ClearRenderTargetView(output_merger->GetRenderTargetView("GBufferDiffuseView"), clear_color);
+	DeviceManager::GetInstance()->GetD3D11ImmediateContext()->ClearRenderTargetView(output_merger->GetRenderTargetView("GBufferViewDirectionView"), clear_color);
 	DeviceManager::GetInstance()->GetD3D11ImmediateContext()->ClearRenderTargetView(output_merger->GetRenderTargetView("BackBufferView"), clear_color);
 	DeviceManager::GetInstance()->GetD3D11ImmediateContext()->ClearDepthStencilView(output_merger->GetDepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0.0f); 
 }
@@ -109,7 +113,7 @@ void ObjectsManager::Initialize(float client_width, float client_height)
 	deferred_rendering_second_pass_ = std::make_unique<DeferredRenderingSecondPass>();
 	deferred_rendering_second_pass_->Initialize();
 
-	CreateMovableObjects();
+	CreateObjects();
 }
 
 void ObjectsManager::PushButton(unsigned int direction)
@@ -128,9 +132,9 @@ void ObjectsManager::SetRotationValue(float yaw, float pitch)
 	camera_pitch_ = pitch * kRotationSensitivity_;
 } 
 
-ID3D11Buffer** ObjectsManager::GetAddressOfCameraConstantBuffer() const
+ID3D11Buffer** ObjectsManager::GetCameraConstantBuffer() const
 {
-	return camera_->GetAddressOfCameraConstantBuffer();
+	return camera_->GetCameraConstantBuffer();
 }
 
 void ObjectsManager::AnimateObjects()
@@ -144,11 +148,11 @@ void ObjectsManager::AnimateObjects()
 
 void ObjectsManager::ExecuteCommandList()
 {  
-	ClearDepthStencilView();
+	ClearRenderTargetViewAndDepthStencilView();
 
 	ExecuteCommandListPlayer();
-	ExecuteCommandListMovableObjects();
-	ExecuteCommandSecondPassOfDeferredRendering();
+	ExecuteCommandListObjects();
+	ExecuteCommandSecondPass();
 
 	SwapChainManager::GetInstance()->GetDXGISwapChain()->Present(0, 0);
 }

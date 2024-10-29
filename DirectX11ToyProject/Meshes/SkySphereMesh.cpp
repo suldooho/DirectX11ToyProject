@@ -7,7 +7,7 @@ void SkySphereMesh::CreateRasterizerState()
 	ZeroMemory(&rasterizer_desc, sizeof(D3D11_RASTERIZER_DESC));
 	rasterizer_desc.CullMode = D3D11_CULL_FRONT;
 	rasterizer_desc.FillMode = D3D11_FILL_SOLID;
-	rasterizer_desc.FrontCounterClockwise = false; // TEST
+    rasterizer_desc.FrontCounterClockwise = false;
 	DeviceManager::GetInstance()->GetD3D11Device()->CreateRasterizerState(&rasterizer_desc, rasterizer_state_.GetAddressOf());
 }
 
@@ -35,6 +35,9 @@ void SkySphereMesh::CreateVertices()
      
     vertices_.emplace_back(SkySphereVertex(DirectX::XMFLOAT3(0.0f, -kRadius_, 0.0f), DirectX::XMFLOAT2(1.0f, 1.0f)));
 
+    num_vertices_ = vertices_.size();
+    stride_ = sizeof(SkySphereVertex);
+    offset_ = 0;
 }
 
 void SkySphereMesh::CreateIndices()
@@ -71,6 +74,10 @@ void SkySphereMesh::CreateIndices()
         indices_.emplace_back(base_index + i);
         indices_.emplace_back(base_index + i + 1);
     }
+
+    num_indices_ = indices_.size();
+    start_index_ = 0;
+    base_vertex_ = 0;
 }
 
 unsigned int SkySphereMesh::GetVertexBufferByteWidth()

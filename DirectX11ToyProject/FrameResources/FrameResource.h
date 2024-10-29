@@ -2,6 +2,6 @@
 class FrameResource
 {
 public:
-    virtual ~FrameResource() = default;  
+    virtual ~FrameResource() = 0;  
 };
 

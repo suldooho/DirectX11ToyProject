@@ -22,7 +22,7 @@ public:
 	virtual void Initialize(std::string file_path) override;
 
 private: 
-	const int kRadius_ = 100;
+	const int kRadius_ = 1000;
 	const unsigned int kStackCount_ = 100;
 	const unsigned int kSliceCount_ = 100;
 };

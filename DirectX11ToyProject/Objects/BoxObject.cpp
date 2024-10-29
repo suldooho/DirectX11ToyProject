@@ -8,7 +8,7 @@
 
 void BoxObject::Initialize()
 {
-	MovableObject::Initialize();
+	CreateConstantBuffer();
 
 	SetPosition(0.0f, 0.0f, 10.0f);
 
@@ -43,7 +43,7 @@ void BoxObject::Initialize()
 	ID3D11RenderTargetView* back_buffer_view = output_merger->GetRenderTargetView("BackBufferView");
 	deferred_context->OMSetRenderTargets(1, &back_buffer_view, output_merger->GetDepthStencilView());
 	deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kVertexShaderSlotWorldMatrix_, 1, world_matrix_constant_buffer_.GetAddressOf());
-	deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstance()->GetAddressOfCameraConstantBuffer());
+	deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstance()->GetCameraConstantBuffer());
 	deferred_context->DrawIndexed(box_mesh->GetNumIndices(), 0, 0);
 
 	deferred_context->FinishCommandList(true, command_list_.GetAddressOf());

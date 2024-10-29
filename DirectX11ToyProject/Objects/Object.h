@@ -8,12 +8,15 @@ class Object
 protected:
 	DirectX::XMFLOAT4X4A world_matrix_;
 
-protected:
+	Microsoft::WRL::ComPtr<class ID3D11Buffer> world_matrix_constant_buffer_; 
 	Microsoft::WRL::ComPtr<ID3D11CommandList> command_list_;
 
 public:
 	Object();
 	virtual ~Object() = default;
+
+protected:
+	void CreateConstantBuffer();
 
 public:
 	virtual void Initialize() = 0;
@@ -29,5 +32,7 @@ public:
 	DirectX::XMVECTOR GetUp() const;
 	DirectX::XMVECTOR GetLook() const;
 	DirectX::XMVECTOR GetPosition() const;
+
+	void UpdateConstantBuffer();
 };
 

@@ -30,10 +30,10 @@ void Camera::Initialize(float client_width, float client_height)
 { 
 	move_speed_ = 20.0f;
 	CreateConstantBuffer();
-	CreateProjectionMatrix(90.0f, client_width / client_height, 1.0f, 500.0f);
+	CreateProjectionMatrix(90.0f, client_width / client_height, 1.0f, 2000.0f);
 }
 
-ID3D11Buffer** Camera::GetAddressOfCameraConstantBuffer()
+ID3D11Buffer** Camera::GetCameraConstantBuffer()
 {
 	return camera_matrix_constant_buffer_.GetAddressOf();
 }

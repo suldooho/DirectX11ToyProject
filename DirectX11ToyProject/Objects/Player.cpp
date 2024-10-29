@@ -9,7 +9,7 @@
  
 void Player::Initialize()
 {
-	MovableObject::Initialize();
+	CreateConstantBuffer();
 	SetPosition(kPlayerToCameraOffset.x, kPlayerToCameraOffset.y, kPlayerToCameraOffset.z); 
 
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> deferred_context;
@@ -50,7 +50,7 @@ void Player::Initialize()
 	};
 	deferred_context->OMSetRenderTargets(4, render_target_views, output_merger->GetDepthStencilView());
 	deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kVertexShaderSlotWorldMatrix_, 1, world_matrix_constant_buffer_.GetAddressOf());
-	deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstance()->GetAddressOfCameraConstantBuffer());
+	deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstance()->GetCameraConstantBuffer());
 	deferred_context->PSSetShaderResources(0, 1, obj_mesh->GetDiffuse());
 	deferred_context->PSSetShaderResources(1, 1, obj_mesh->GetNormal()); 
 	deferred_context->PSSetSamplers(0, 1, obj_mesh->GetSampler());

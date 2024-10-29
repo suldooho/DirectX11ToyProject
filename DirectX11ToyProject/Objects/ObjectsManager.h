@@ -36,16 +36,16 @@ private:
 	std::unique_ptr<Player> player_;
 	std::unique_ptr<Camera> camera_;
 
-	std::vector<std::unique_ptr<MovableObject>> movable_objects_;
+	std::vector<std::unique_ptr<Object>> objects_;
 	std::unique_ptr<DeferredRenderingSecondPass> deferred_rendering_second_pass_;
 
 private:
-	void CreateMovableObjects();
+	void CreateObjects();
 	void ExecuteCommandListPlayer();
-	void ExecuteCommandListMovableObjects();
-	void ExecuteCommandSecondPassOfDeferredRendering();
+	void ExecuteCommandListObjects();
+	void ExecuteCommandSecondPass();
 
-	void ClearDepthStencilView();
+	void ClearRenderTargetViewAndDepthStencilView();
 
 	void MoveCamera(float delta_time);
 	void RotateCamera(float delta_time);
@@ -59,7 +59,7 @@ public:
 	void SetRotationValue(float yaw, float pitch);
 
 public:
-	class ID3D11Buffer** GetAddressOfCameraConstantBuffer() const;
+	class ID3D11Buffer** GetCameraConstantBuffer() const;
 
 	void AnimateObjects();
 	void ExecuteCommandList();

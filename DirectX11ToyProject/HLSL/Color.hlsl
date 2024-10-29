@@ -6,15 +6,15 @@ struct VertexInput
     float4 color : COLOR;
 };
 
-struct VertexOutput
+struct PixelInput
 {
     float4 position : SV_POSITION;
     float4 color : COLOR0;
 };
  
-VertexOutput main(VertexInput input)
+PixelInput main(VertexInput input)
 {
-    VertexOutput output = (VertexOutput) 0;
+    PixelInput output = (PixelInput) 0;
     output.position = mul(float4(input.position, 1.0f), World);
     output.position = mul(output.position, View);
     output.position = mul(output.position, Projection);
@@ -22,7 +22,7 @@ VertexOutput main(VertexInput input)
     return output;
 }
  
-float4 PS(VertexOutput input) : SV_Target
+float4 PS(PixelInput input) : SV_Target
 {
     return input.color; 
 }

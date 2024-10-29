@@ -12,13 +12,11 @@ private:
 	std::unordered_map<std::string, Microsoft::WRL::ComPtr<class ID3D11ShaderResourceView>> shader_resource_view_container_; // position normal diffuse view_direction  
 	std::unordered_map<std::string, Microsoft::WRL::ComPtr<class ID3D11DepthStencilState>> depth_stencil_state_container_;
 
-	Microsoft::WRL::ComPtr<class ID3D11Texture2D> depth_stencil_buffer_; 
-	//Microsoft::WRL::ComPtr<class ID3D11RenderTargetView> render_target_view_;
+	Microsoft::WRL::ComPtr<class ID3D11Texture2D> depth_stencil_buffer_;  
 	Microsoft::WRL::ComPtr<class ID3D11DepthStencilView> depth_stencil_view_;
 
 	std::unique_ptr<class D3D11_VIEWPORT> viewport_;
-
-
+	 
 private:
 	class ID3D11Texture2D* CreateGBufferTexture(enum DXGI_FORMAT format, unsigned int client_width, unsigned int client_height);
 	void CreateGBufferTextures(unsigned int client_width, unsigned int client_height);
