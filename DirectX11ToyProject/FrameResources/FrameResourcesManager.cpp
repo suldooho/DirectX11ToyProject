@@ -2,6 +2,7 @@
 #include "../framework.h"
 #include "SkySphereShader.h"
 #include "BumpMappingShader.h"
+#include "FloorShader.h"
 #include "OutputMerger.h"
 #include "SecondPassShader.h"
 
@@ -16,6 +17,10 @@ void FrameResourcesManager::Initialize(unsigned int client_width, unsigned int c
 	frame_resource_container_["BumpMappingShader"] = std::make_unique<BumpMappingShader>();
 	BumpMappingShader* bump_mapping_shader = dynamic_cast<BumpMappingShader*>(frame_resource_container_["BumpMappingShader"].get());
 	bump_mapping_shader->Initialize();
+
+	frame_resource_container_["FloorShader"] = std::make_unique<FloorShader>();
+	FloorShader* floor_shader = dynamic_cast<FloorShader*>(frame_resource_container_["FloorShader"].get());
+	floor_shader->Initialize();
 
 	frame_resource_container_["OutputMerger"] = std::make_unique<OutputMerger>();
 	OutputMerger* output_merger = dynamic_cast<OutputMerger*>(frame_resource_container_["OutputMerger"].get());

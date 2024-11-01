@@ -3,8 +3,6 @@
 
 void Mesh::CreateVertexBuffer()
 {
-	primitive_topology_ = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST; 
-	
 	D3D11_BUFFER_DESC buffer_desc;
 	buffer_desc.Usage = D3D11_USAGE_IMMUTABLE;
 	buffer_desc.ByteWidth = GetVertexBufferByteWidth();

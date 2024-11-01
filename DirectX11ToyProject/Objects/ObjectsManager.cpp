@@ -1,6 +1,7 @@
 #include "ObjectsManager.h"
 #include "../framework.h"
 #include "SkySphereObject.h"
+#include "FloorObject.h"
 #include "../FrameResources/OutputMerger.h"
 #include "DeferredRenderingSecondPass.h"
 
@@ -11,6 +12,10 @@ void ObjectsManager::CreateObjects()
 	SkySphereObject* sky_sphere_object = new SkySphereObject();
 	sky_sphere_object->Initialize();
 	objects_.emplace_back(sky_sphere_object);
+
+	FloorObject* floor_object = new FloorObject();
+	floor_object->Initialize();
+	objects_.emplace_back(floor_object);
 }
 
 void ObjectsManager::ExecuteCommandListPlayer()

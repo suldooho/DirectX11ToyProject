@@ -46,13 +46,13 @@ void OBJMesh::LoadVertices(std::string obj_file_path)
     file.close();
 }
 
-void OBJMesh::LoadIndices(std::string obj_indices_file_path)
+void OBJMesh::LoadIndices(std::string obj_file_path)
 {
-    std::ifstream file(obj_indices_file_path);
+    std::ifstream file(obj_file_path);
 
     if (!file.is_open()) 
     {
-        throw std::string("Can Not Load " + obj_indices_file_path); 
+        throw std::string("Can Not Load " + obj_file_path);
     }
 
     std::string line;
@@ -77,6 +77,8 @@ void OBJMesh::LoadIndices(std::string obj_indices_file_path)
 
 void OBJMesh::CreateVertices()
 {
+    primitive_topology_ = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+
     num_vertices_ = vertices_.size();
     stride_ = sizeof(BumpMappingVertex);
     offset_ = 0;
@@ -113,14 +115,9 @@ void OBJMesh::Initialize(std::string file_path)
     LoadVertices(file_path + ".txt");
     LoadIndices(file_path + "_Index.txt");
 
-    diffuse_ = LoadTexture(file_path + "_Diffuse.png");
-    normal_ = LoadTexture(file_path + "_Normal.png");
+    shader_resource_view_container_["DiffuseView"] = LoadTexture(file_path + "_Diffuse.png");
+    shader_resource_view_container_["NormalView"] = LoadTexture(file_path + "_Normal.png");
     CreateSamplerState();
 
     CreateFaceData();
-} 
-
-ID3D11ShaderResourceView** OBJMesh::GetNormal()
-{
-    return normal_.GetAddressOf();
-}
+}  

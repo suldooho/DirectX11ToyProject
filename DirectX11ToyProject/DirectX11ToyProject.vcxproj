@@ -140,6 +140,7 @@
     <ClInclude Include="DirectX11ToyProject.h" />
     <ClInclude Include="FrameResources\BumpMappingShader.h" />
     <ClInclude Include="FrameResources\ColorShader.h" />
+    <ClInclude Include="FrameResources\FloorShader.h" />
     <ClInclude Include="FrameResources\FrameResource.h" />
     <ClInclude Include="FrameResources\FrameResourcesManager.h" />
     <ClInclude Include="FrameResources\IncludeHandler.h" />
@@ -149,6 +150,7 @@
     <ClInclude Include="FrameResources\SkySphereShader.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Meshes\BoxMesh.h" />
+    <ClInclude Include="Meshes\FloorMesh.h" />
     <ClInclude Include="Meshes\Mesh.h" />
     <ClInclude Include="Meshes\MeshesManager.h" />
     <ClInclude Include="Meshes\OBJMesh.h" />
@@ -158,6 +160,7 @@
     <ClInclude Include="Objects\BoxObject.h" />
     <ClInclude Include="Objects\Camera.h" />
     <ClInclude Include="Objects\DeferredRenderingSecondPass.h" />
+    <ClInclude Include="Objects\FloorObject.h" />
     <ClInclude Include="Objects\LightsManager.h" />
     <ClInclude Include="Objects\MovableObject.h" />
     <ClInclude Include="Objects\Object.h" />
@@ -176,6 +179,7 @@
     <ClCompile Include="DirectX11ToyProject.cpp" />
     <ClCompile Include="FrameResources\BumpMappingShader.cpp" />
     <ClCompile Include="FrameResources\ColorShader.cpp" />
+    <ClCompile Include="FrameResources\FloorShader.cpp" />
     <ClCompile Include="FrameResources\FrameResource.cpp" />
     <ClCompile Include="FrameResources\FrameResourcesManager.cpp" />
     <ClCompile Include="FrameResources\OutputMerger.cpp" />
@@ -183,6 +187,7 @@
     <ClCompile Include="FrameResources\Shader.cpp" />
     <ClCompile Include="FrameResources\SkySphereShader.cpp" />
     <ClCompile Include="Meshes\BoxMesh.cpp" />
+    <ClCompile Include="Meshes\FloorMesh.cpp" />
     <ClCompile Include="Meshes\Mesh.cpp" />
     <ClCompile Include="Meshes\MeshesManager.cpp" />
     <ClCompile Include="Meshes\OBJMesh.cpp" />
@@ -191,6 +196,7 @@
     <ClCompile Include="Objects\BoxObject.cpp" />
     <ClCompile Include="Objects\Camera.cpp" />
     <ClCompile Include="Objects\DeferredRenderingSecondPass.cpp" />
+    <ClCompile Include="Objects\FloorObject.cpp" />
     <ClCompile Include="Objects\LightsManager.cpp" />
     <ClCompile Include="Objects\MovableObject.cpp" />
     <ClCompile Include="Objects\Object.cpp" />
@@ -218,6 +224,16 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="HLSL\Floor.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Domain</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Domain</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Domain</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Domain</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="HLSL\SecondPass.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>

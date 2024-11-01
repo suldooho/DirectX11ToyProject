@@ -4,6 +4,8 @@ static const float3 kLightDirection = float3(0.2182f, -0.9759f, 0.0f);
 static const float kDirectionalLightSpecularPower = 100.0f;
 static const float kPointLightSpecularPower = 1.0f;
 static const float kSpotLightSpecularPower = 1.0f;
+static const float kMinTessDistance = 0.0f;
+static const float kMaxTessDistance = 20.0f;
 
 cbuffer WorldMatrix : register(b0)
 {
@@ -40,7 +42,8 @@ StructuredBuffer<PointLight> PointLights : register(t0);
 StructuredBuffer<SpotLight> SpotLights : register(t1);  
  
 Texture2D DiffuseMap : register(t0);
-Texture2D NormalMap : register(t1); 
+Texture2D NormalMap : register(t1);
+Texture2D HeightMap : register(t2);
  
 Texture2D<float4> GBufferPosition : register(t4);
 Texture2D<float4> GBufferNormal : register(t5);

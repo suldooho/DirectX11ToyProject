@@ -7,7 +7,7 @@
 class SkySphereMesh : public TextureMesh
 {
 private:
-	std::vector<SkySphereVertex> vertices_;
+	std::vector<TextureVertex> vertices_;
 
 protected:
 	virtual void CreateRasterizerState() override;

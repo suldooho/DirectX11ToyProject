@@ -39,11 +39,16 @@ void TextureMesh::CreateSamplerState()
     sampler_desc.MaxLOD = D3D11_FLOAT32_MAX;
 
     DeviceManager::GetInstance()->GetD3D11Device()->CreateSamplerState(&sampler_desc, sampler_state_.GetAddressOf());
-}
+} 
 
-ID3D11ShaderResourceView** TextureMesh::GetDiffuse()
-{
-    return diffuse_.GetAddressOf();
+ID3D11ShaderResourceView** TextureMesh::GetTextureShaderResourceView(std::string texture_name)
+{ 
+    if (shader_resource_view_container_.find(texture_name) != shader_resource_view_container_.end())
+    {
+        return shader_resource_view_container_[texture_name].GetAddressOf();
+    }
+    
+    throw std::string("Texture Resource View Name Error"); 
 }
 
 ID3D11SamplerState** TextureMesh::GetSampler()

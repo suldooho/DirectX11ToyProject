@@ -8,13 +8,11 @@
 class OBJMesh : public TextureMesh
 {
 private:
-	std::vector<BumpMappingVertex> vertices_; 
-
-	Microsoft::WRL::ComPtr<class ID3D11ShaderResourceView> normal_; 
+	std::vector<BumpMappingVertex> vertices_;  
 
 private:
 	void LoadVertices(std::string obj_file_path);
-	void LoadIndices(std::string obj_indices_file_path);
+	void LoadIndices(std::string obj_file_path);
 
 protected:
 	virtual void CreateVertices() override;
@@ -24,8 +22,6 @@ protected:
 	virtual void* GetVertexData() override;  
 
 public:
-	virtual void Initialize(std::string file_path) override;
-
-	class ID3D11ShaderResourceView** GetNormal();
+	virtual void Initialize(std::string file_path) override; 
 };
 

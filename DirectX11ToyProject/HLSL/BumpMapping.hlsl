@@ -11,13 +11,13 @@ struct VertexInput
 
 struct PixelInput
 {
-    float4 position : SV_POSITION;
+    float4 positionH : SV_POSITION;
     float2 texcoord : TEXCOORD0;
-    float3 T : TANGENT;
-    float3 B : BITANGENT;
-    float3 N : NORMAL;
-    float3 viewDirection : TEXCOORD1;
-    float3 worldPosition : TEXCOORD2; // 추가된 월드 위치
+    float3 tangentW : TANGENT;
+    float3 bitangentW : BITANGENT;
+    float3 normalW : NORMAL;
+    float3 viewDirection : VIEWDIRECTION;
+    float3 positionW : POSITION;
 };
 
 struct GBufferOutput
@@ -34,18 +34,18 @@ PixelInput main(VertexInput input)
      
     // 월드 위치 계산
     float4 worldPosition = mul(float4(input.position, 1.0f), World);
-    output.position = mul(worldPosition, View);
-    output.position = mul(output.position, Projection);
+    output.positionH = mul(worldPosition, View);
+    output.positionH = mul(output.positionH, Projection);
      
     output.texcoord = input.texcoord;
 
     // 월드 공간의 접선(Tangent), 비노멀(Bitangent), 노멀(Normal) 벡터 계산
-    output.T = normalize(mul(input.tangent, (float3x3) World));
-    output.B = normalize(mul(input.bitangent, (float3x3) World));
-    output.N = normalize(mul(input.normal, (float3x3) World));
+    output.tangentW = normalize(mul(input.tangent, (float3x3) World));
+    output.bitangentW = normalize(mul(input.bitangent, (float3x3) World));
+    output.normalW = normalize(mul(input.normal, (float3x3) World));
     
     // 월드 위치 전달
-    output.worldPosition = worldPosition.xyz;
+    output.positionW = worldPosition.xyz;
     
     // 뷰 방향 계산
     output.viewDirection = normalize(CameraPosition - worldPosition.xyz);
@@ -56,9 +56,11 @@ PixelInput main(VertexInput input)
 GBufferOutput PS(PixelInput input)
 {
     GBufferOutput output;
-
-    // TBN 행렬 생성
-    float3x3 TBN = float3x3(input.T, input.B, input.N);
+    
+    input.tangentW = normalize(input.tangentW);
+    input.bitangentW = normalize(input.bitangentW);
+    input.normalW = normalize(input.normalW);
+    float3x3 TBN = float3x3(input.tangentW, input.bitangentW, input.normalW);
 
     // 범프 맵에서 노멀 벡터 샘플링 및 [-1, 1] 범위로 변환
     float3 normalFromMap = NormalMap.Sample(Sampler, input.texcoord).xyz * 2.0f - 1.0f;
@@ -67,7 +69,7 @@ GBufferOutput PS(PixelInput input)
     float3 normal = normalize(mul(normalFromMap, TBN));
 
     // 픽셀 셰이더에서 받은 월드 위치 사용
-    float3 worldPosition = input.worldPosition;
+    float3 worldPosition = input.positionW;
 
     // 뷰 방향 (정점 셰이더에서 계산한 값을 사용)
     float3 viewDir = input.viewDirection;

@@ -53,6 +53,50 @@ void Shader::CreateInputLayoutAndVertexShaderFromFile(LPCWSTR shader_file, LPCST
 	}
 }
 
+void Shader::CreateHullShaderFromFile(LPCWSTR shader_file, LPCSTR entry_point)
+{
+	IncludeHandler include_handler;
+	Microsoft::WRL::ComPtr<ID3DBlob> code_blob = nullptr;
+	Microsoft::WRL::ComPtr<ID3DBlob> error_blob = nullptr;
+
+	HRESULT result = D3DCompileFromFile(shader_file, nullptr, &include_handler, entry_point, "hs_5_0", 0, 0, code_blob.GetAddressOf(), error_blob.GetAddressOf());
+
+	if (result != S_OK)
+	{
+		OutputDebugStringA((char*)error_blob->GetBufferPointer());
+		throw std::string("Can Not Compile Hull Shader");
+	}
+
+	result = DeviceManager::GetInstance()->GetD3D11Device()->CreateHullShader(code_blob->GetBufferPointer(), code_blob->GetBufferSize(), nullptr, hull_shader_.GetAddressOf());
+
+	if (result != S_OK)
+	{
+		throw std::string("Can Not Create Hull Shader");
+	}
+}
+
+void Shader::CreateDomainShaderFromFile(LPCWSTR shader_file, LPCSTR entry_point)
+{
+	IncludeHandler include_handler;
+	Microsoft::WRL::ComPtr<ID3DBlob> code_blob = nullptr;
+	Microsoft::WRL::ComPtr<ID3DBlob> error_blob = nullptr;
+
+	HRESULT result = D3DCompileFromFile(shader_file, nullptr, &include_handler, entry_point, "ds_5_0", 0, 0, code_blob.GetAddressOf(), error_blob.GetAddressOf());
+
+	if (result != S_OK)
+	{
+		OutputDebugStringA((char*)error_blob->GetBufferPointer());
+		throw std::string("Can Not Compile Domian Shader");
+	}
+
+	result = DeviceManager::GetInstance()->GetD3D11Device()->CreateDomainShader(code_blob->GetBufferPointer(), code_blob->GetBufferSize(), nullptr, domain_shader_.GetAddressOf());
+
+	if (result != S_OK)
+	{
+		throw std::string("Can Not Create Domian  Shader");
+	}
+}
+
 void Shader::CreatePixelShaderFromFile(LPCWSTR shader_file, LPCSTR entry_point)
 {
 	IncludeHandler include_handler;
@@ -82,6 +126,16 @@ ID3D11InputLayout* Shader::GetInputLayout() const
 ID3D11VertexShader* Shader::GetVertexShader() const
 {
 	return vertex_shader_.Get();
+}
+
+ID3D11HullShader* Shader::GetHullShader() const
+{
+	return hull_shader_.Get();
+}
+
+ID3D11DomainShader* Shader::GetDomainShader() const
+{
+	return domain_shader_.Get();
 }
 
 ID3D11PixelShader* Shader::GetPixelShader() const

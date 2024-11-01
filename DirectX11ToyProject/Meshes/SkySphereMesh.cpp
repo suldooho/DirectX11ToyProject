@@ -12,8 +12,10 @@ void SkySphereMesh::CreateRasterizerState()
 }
 
 void SkySphereMesh::CreateVertices()
-{ 
-    vertices_.emplace_back(SkySphereVertex(DirectX::XMFLOAT3(0.0f, kRadius_, 0.0f), DirectX::XMFLOAT2(0.0f, 0.0f)));
+{
+    primitive_topology_ = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+
+    vertices_.emplace_back(TextureVertex(DirectX::XMFLOAT3(0.0f, kRadius_, 0.0f), DirectX::XMFLOAT2(0.0f, 0.0f)));
      
     float phi_step = DirectX::XM_PI / kStackCount_;
     float theta_step = 2.0f * DirectX::XM_PI / kSliceCount_;
@@ -33,10 +35,10 @@ void SkySphereMesh::CreateVertices()
         }
     }
      
-    vertices_.emplace_back(SkySphereVertex(DirectX::XMFLOAT3(0.0f, -kRadius_, 0.0f), DirectX::XMFLOAT2(1.0f, 1.0f)));
+    vertices_.emplace_back(TextureVertex(DirectX::XMFLOAT3(0.0f, -kRadius_, 0.0f), DirectX::XMFLOAT2(1.0f, 1.0f)));
 
     num_vertices_ = vertices_.size();
-    stride_ = sizeof(SkySphereVertex);
+    stride_ = sizeof(TextureVertex);
     offset_ = 0;
 }
 
@@ -82,7 +84,7 @@ void SkySphereMesh::CreateIndices()
 
 unsigned int SkySphereMesh::GetVertexBufferByteWidth()
 {
-    return sizeof(SkySphereVertex) * vertices_.size();
+    return sizeof(TextureVertex) * vertices_.size();
 } 
 
 void* SkySphereMesh::GetVertexData()
@@ -101,7 +103,7 @@ void SkySphereMesh::Initialize(std::string file_path)
     w_obj_file_path = std::wstring(current_path) + w_obj_file_path;
     file_path.assign(w_obj_file_path.begin(), w_obj_file_path.end());
       
-    diffuse_ = LoadTexture(file_path + "_Diffuse.png"); 
+    shader_resource_view_container_["DiffuseView"] = LoadTexture(file_path + "_Diffuse.png");
     CreateSamplerState();
 
     CreateFaceData();
