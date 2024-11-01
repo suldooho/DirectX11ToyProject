@@ -51,7 +51,7 @@ void FloorObject::Initialize()
 	deferred_context->DSSetConstantBuffers(ObjectsManager::GetInstance()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstance()->GetCameraConstantBuffer());
 	deferred_context->PSSetShaderResources(0, 1, floor_mesh->GetTextureShaderResourceView("DiffuseView"));
 	deferred_context->PSSetShaderResources(1, 1, floor_mesh->GetTextureShaderResourceView("NormalView"));
-	deferred_context->PSSetShaderResources(2, 1, floor_mesh->GetTextureShaderResourceView("HeightView"));
+	deferred_context->DSSetShaderResources(2, 1, floor_mesh->GetTextureShaderResourceView("HeightView"));
 	deferred_context->PSSetSamplers(0, 1, floor_mesh->GetSampler());
 	deferred_context->Draw(floor_mesh->GetNumVertices(), 0);
 

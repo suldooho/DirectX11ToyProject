@@ -5,7 +5,7 @@ static const float kDirectionalLightSpecularPower = 100.0f;
 static const float kPointLightSpecularPower = 1.0f;
 static const float kSpotLightSpecularPower = 1.0f;
 static const float kMinTessDistance = 0.0f;
-static const float kMaxTessDistance = 20.0f;
+static const float kMaxTessDistance = 50.0f;
 
 cbuffer WorldMatrix : register(b0)
 {

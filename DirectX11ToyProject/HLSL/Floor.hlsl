@@ -71,7 +71,7 @@ PatchTess ConstantHS(InputPatch<HullInput, 4> patch, uint PatchID : SV_Primitive
 }
 
 [domain("quad")]
-[partitioning("fractional_even")]
+[partitioning("integer")] //fractional_even
 [outputtopology("triangle_cw")]
 [outputcontrolpoints(4)]
 [patchconstantfunc("ConstantHS")]
@@ -90,16 +90,29 @@ DomainInput HS(InputPatch<HullInput, 4> controlPoint, uint i : SV_OutputControlP
 PixelInput main(PatchTess patchTess, float2 uv : SV_DomainLocation, const OutputPatch<DomainInput, 4> quad)
 {
     PixelInput output;
-
-    // 텍스처 좌표와 월드 위치 보간
-    output.positionW = lerp(lerp(quad[0].positionW, quad[1].positionW, uv.x), lerp(quad[2].positionW, quad[3].positionW, uv.x), uv.y);
+    
     output.texcoord = lerp(lerp(quad[0].texcoord, quad[1].texcoord, uv.x), lerp(quad[2].texcoord, quad[3].texcoord, uv.x), uv.y);
       
-    float4 positionH = mul(float4(output.positionW, 1.0f), View);
-    output.positionH = mul(positionH, Projection);
-
-    return output;
-
+    // 텍스처 좌표와 월드 위치 보간
+    output.positionW = lerp(lerp(quad[0].positionW, quad[1].positionW, uv.x), lerp(quad[2].positionW, quad[3].positionW, uv.x), uv.y);
+    
+    float3 viewDir = normalize(CameraPosition - output.positionW);
+    // 카메라와 픽셀 위치 간 거리 계산
+    float distance = length(viewDir);
+    
+    // 거리 기반으로 높이맵 강도 조절
+    float heightFactor = (distance < kMaxTessDistance) ? 2.5f : 0.0f; // 가까울수록 강도 적용
+     
+    if (heightFactor > 0.0f)
+    {
+        float height = HeightMap.SampleLevel(Sampler, output.texcoord, 0.0f).r;
+        output.positionW.y += height * heightFactor;
+    }
+    
+    output.positionH = mul(float4(output.positionW, 1.0f), View);
+    output.positionH = mul(output.positionH, Projection);
+     
+    return output; 
 } 
 
 GBufferOutput PS(PixelInput input)
@@ -113,22 +126,9 @@ GBufferOutput PS(PixelInput input)
     // 뷰 방향 계산
     float3 viewDir = normalize(CameraPosition - input.positionW);
 
-    // 카메라와 픽셀 위치 간 거리 계산
-    float distance = length(viewDir);
-    
-    // 거리 기반으로 높이맵 강도 조절
-    float heightFactor = (distance < kMaxTessDistance) ? 0.1f : 0.0f; // 가까울수록 강도 적용
-    
-    // 높이맵 적용
-    float3 modifiedPositionW = input.positionW; // 높이맵 적용된 위치
-    if (heightFactor > 0.0f)
-    {
-        float height = HeightMap.Sample(Sampler, input.texcoord).r;
-        modifiedPositionW.y += height * heightFactor;
-    }
 
     // GBuffer에 필요한 정보 설정
-    output.pos = float4(modifiedPositionW, 1.0f); // G-버퍼에 저장되는 월드 좌표
+    output.pos = float4(input.positionW, 1.0f); // G-버퍼에 저장되는 월드 좌표
     output.normal = float4(normalW, 0.0f);
     output.diffuse = DiffuseMap.Sample(Sampler, input.texcoord);
     output.viewDir = float4(viewDir, 0.0f);

@@ -32,9 +32,9 @@ void DeviceManager::Initialize()
 	create_device_flags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-	D3D_FEATURE_LEVEL feature_levels[] = { D3D_FEATURE_LEVEL_11_0 }; 
+	D3D_FEATURE_LEVEL feature_levels[] = { D3D_FEATURE_LEVEL_11_1 }; 
 
-	D3D_FEATURE_LEVEL feature_level = D3D_FEATURE_LEVEL_11_0;
+	D3D_FEATURE_LEVEL feature_level = D3D_FEATURE_LEVEL_11_1;
 	 
 	HRESULT result = D3D11CreateDevice(adapter, D3D_DRIVER_TYPE_UNKNOWN, NULL, create_device_flags, feature_levels, 1, D3D11_SDK_VERSION, device_.GetAddressOf(), &feature_level, immediate_context_.GetAddressOf());
 	

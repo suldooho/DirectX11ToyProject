@@ -8,6 +8,8 @@ private:
 	std::vector<TextureVertex> vertices_;
 
 protected:
+	virtual void CreateRasterizerState() override;
+
 	virtual void CreateVertices() override;
 	virtual void CreateIndices() override;
 
