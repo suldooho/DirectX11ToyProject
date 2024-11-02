@@ -81,9 +81,9 @@ unsigned int* Mesh::GetOffset()
 	return &offset_;
 }
 
-ID3D11Buffer** Mesh::GetVertexBuffer()
+ID3D11Buffer* Mesh::GetVertexBuffer()
 {
-	return vertex_buffer_.GetAddressOf();
+	return vertex_buffer_.Get();
 }
 
 unsigned int Mesh::GetNumIndices() const

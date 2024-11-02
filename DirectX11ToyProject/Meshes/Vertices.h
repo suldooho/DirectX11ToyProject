@@ -47,7 +47,7 @@ struct BumpMappingVertex
 	}
 };
  
-struct InstanceData 
+struct WorldInstanceData 
 {
 	DirectX::XMFLOAT4X4 world_matrix;
 };

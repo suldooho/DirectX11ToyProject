@@ -11,7 +11,7 @@ void FloorMesh::CreateRasterizerState()
     D3D11_RASTERIZER_DESC rasterizer_desc;
     ZeroMemory(&rasterizer_desc, sizeof(D3D11_RASTERIZER_DESC));
     rasterizer_desc.CullMode = D3D11_CULL_BACK;
-    rasterizer_desc.FillMode = D3D11_FILL_SOLID;
+    rasterizer_desc.FillMode = D3D11_FILL_WIREFRAME;
     rasterizer_desc.FrontCounterClockwise = false;
     DeviceManager::GetInstance()->GetD3D11Device()->CreateRasterizerState(&rasterizer_desc, rasterizer_state_.GetAddressOf());
 }

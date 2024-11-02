@@ -34,7 +34,8 @@ void Player::Initialize()
 	} 
 
 	deferred_context->IASetPrimitiveTopology(player_mesh->GetPrimitiveTopology());
-	deferred_context->IASetVertexBuffers(0, 1, player_mesh->GetVertexBuffer(), player_mesh->GetStride(), player_mesh->GetOffset());
+	ID3D11Buffer* buffer_pointers[1] = { player_mesh->GetVertexBuffer() };
+	deferred_context->IASetVertexBuffers(0, 1, buffer_pointers, player_mesh->GetStride(), player_mesh->GetOffset());
 	deferred_context->IASetIndexBuffer(player_mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
 	deferred_context->IASetInputLayout(bump_mapping_shader->GetInputLayout());
 	deferred_context->VSSetShader(bump_mapping_shader->GetVertexShader(), nullptr, 0);

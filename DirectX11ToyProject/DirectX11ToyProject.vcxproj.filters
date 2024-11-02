@@ -46,6 +46,12 @@
     <Filter Include="소스 파일\Meshes\Components">
       <UniqueIdentifier>{7bf16b73-4b7c-499d-86c7-e5e2c050376c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\Objects\Components">
+      <UniqueIdentifier>{9c737d21-fbe2-4313-b03e-12cf1ac627ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Objects\Components">
+      <UniqueIdentifier>{af01cac0-d871-42eb-b9a7-d327f18ffaeb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -162,6 +168,9 @@
     <ClInclude Include="Meshes\PlayerMesh.h">
       <Filter>헤더 파일\Meshes</Filter>
     </ClInclude>
+    <ClInclude Include="Objects\InstanceComponent.h">
+      <Filter>헤더 파일\Objects\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX11ToyProject.cpp">
@@ -262,6 +271,9 @@
     </ClCompile>
     <ClCompile Include="Meshes\PlayerMesh.cpp">
       <Filter>소스 파일\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\InstanceComponent.cpp">
+      <Filter>소스 파일\Objects\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

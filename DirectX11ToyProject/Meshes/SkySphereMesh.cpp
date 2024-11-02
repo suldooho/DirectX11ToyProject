@@ -97,11 +97,11 @@ void SkySphereMesh::Initialize(std::string file_name)
 {
     vertices_ = std::make_unique<std::vector<TextureVertex>>();
     indices_ = std::make_unique<std::vector<unsigned int>>();
-    texture_component_ = std::make_unique<TextureComponent>();
+    texture_component_ = std::make_unique<TextureComponent>(); 
      
     texture_component_->Initialize();
     std::string file_path = texture_component_->GetAbsolutePathPath(file_name);
-    texture_component_->LoadTexture(file_path + "/Diffuse.png");
+    texture_component_->LoadTexture(file_path + "/Diffuse.png"); 
 
     CreateFaceData();
 }

@@ -6,11 +6,18 @@ static const float kPointLightSpecularPower = 1.0f;
 static const float kSpotLightSpecularPower = 1.0f;
 static const float kMinTessDistance = 0.0f;
 static const float kMaxTessDistance = 50.0f;
+static const uint kNumInstances = 25;
 
 cbuffer WorldMatrix : register(b0)
 {
     matrix World : packoffset(c0);
 };
+
+cbuffer InstanceBuffer : register(b0)  
+{
+    matrix InstanceWorldMatrixArray[kNumInstances];
+};
+
  
 cbuffer ViewProjectionMatrix : register(b1)
 {

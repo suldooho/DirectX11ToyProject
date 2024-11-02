@@ -33,6 +33,6 @@ public:
 	DirectX::XMVECTOR GetLook() const;
 	DirectX::XMVECTOR GetPosition() const;
 
-	void UpdateConstantBuffer();
+	virtual void UpdateConstantBuffer();
 };
 

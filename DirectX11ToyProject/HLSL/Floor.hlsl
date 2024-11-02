@@ -4,6 +4,10 @@ struct VertexInput
 {
     float3 positionL : POSITION;
     float2 texcoord : TEXCOORD; 
+    float4 worldRow0 : WORLD0;
+    float4 worldRow1 : WORLD1;
+    float4 worldRow2 : WORLD2;
+    float4 worldRow3 : WORLD3;
 };
 
 struct HullInput
@@ -39,11 +43,16 @@ struct GBufferOutput
     float4 viewDir : SV_TARGET3;
 };
 
-HullInput VS(VertexInput input)
+HullInput VS(VertexInput input, uint instanceID : SV_InstanceID)
 {
     HullInput output;
     
-    output.positionW = mul(float4(input.positionL, 1.0f), World);
+    float4 worldPos = float4(input.positionL, 1.0f);
+    output.positionW =
+        worldPos.x * input.worldRow0 +
+        worldPos.y * input.worldRow1 +
+        worldPos.z * input.worldRow2 +
+        worldPos.w * input.worldRow3;
     output.texcoord = input.texcoord;  
     
     return output;
@@ -121,14 +130,13 @@ GBufferOutput PS(PixelInput input)
      
     // 노멀맵을 이용하여 표면 노멀 계산
     float3 normalFromMap = NormalMap.Sample(Sampler, input.texcoord).xzy * 2.0f - 1.0f; // TBN계산 생략
-    normalFromMap = normalize(normalFromMap);
-    normalFromMap = mul(float4(normalFromMap, 0.0f), World);
+    normalFromMap = normalize(normalFromMap); // floor 메쉬는 회전이 없다.
 
     // 뷰 방향 계산
     float3 viewDir = normalize(CameraPosition - input.positionW);
      
     // GBuffer에 필요한 정보 설정
-    output.pos = float4(input.positionW, 0.0f); // G-버퍼에 저장되는 월드 좌표
+    output.pos = float4(input.positionW, 0.0f);  
     output.normal = float4(normalFromMap, 0.0f);
     output.diffuse = DiffuseMap.Sample(Sampler, input.texcoord);
     output.viewDir = float4(viewDir, 0.0f);

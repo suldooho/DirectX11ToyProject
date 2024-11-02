@@ -32,8 +32,9 @@ void BoxObject::Initialize()
 	{
 		throw std::string("OutputMerger dynamic_cast Fail");
 	}
-	deferred_context->IASetPrimitiveTopology(box_mesh->GetPrimitiveTopology()); 
-	deferred_context->IASetVertexBuffers(0, 1, box_mesh->GetVertexBuffer(), box_mesh->GetStride(), box_mesh->GetOffset());
+	deferred_context->IASetPrimitiveTopology(box_mesh->GetPrimitiveTopology());
+	ID3D11Buffer* buffer_pointers[1] = { box_mesh->GetVertexBuffer() };
+	deferred_context->IASetVertexBuffers(0, 1, buffer_pointers, box_mesh->GetStride(), box_mesh->GetOffset());
 	deferred_context->IASetIndexBuffer(box_mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
 	deferred_context->IASetInputLayout(color_shader->GetInputLayout());
 	deferred_context->VSSetShader(color_shader->GetVertexShader(), nullptr, 0);

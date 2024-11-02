@@ -162,6 +162,7 @@
     <ClInclude Include="Objects\Camera.h" />
     <ClInclude Include="Objects\DeferredRenderingSecondPass.h" />
     <ClInclude Include="Objects\FloorObject.h" />
+    <ClInclude Include="Objects\InstanceComponent.h" />
     <ClInclude Include="Objects\LightsManager.h" />
     <ClInclude Include="Objects\MovableObject.h" />
     <ClInclude Include="Objects\Object.h" />
@@ -199,6 +200,7 @@
     <ClCompile Include="Objects\Camera.cpp" />
     <ClCompile Include="Objects\DeferredRenderingSecondPass.cpp" />
     <ClCompile Include="Objects\FloorObject.cpp" />
+    <ClCompile Include="Objects\InstanceComponent.cpp" />
     <ClCompile Include="Objects\LightsManager.cpp" />
     <ClCompile Include="Objects\MovableObject.cpp" />
     <ClCompile Include="Objects\Object.cpp" />

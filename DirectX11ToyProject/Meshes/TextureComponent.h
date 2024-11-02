@@ -20,7 +20,7 @@ public:
 
 	std::string GetAbsolutePathPath(std::string file_path);
 
-public: // has-a
+public:  
 	class ID3D11ShaderResourceView** GetTextureShaderResourceView(std::string texture_name);
 	class ID3D11SamplerState** GetSampler();
 };

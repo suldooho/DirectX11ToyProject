@@ -66,6 +66,7 @@ public:
 
 public:
 	const unsigned int kVertexShaderSlotWorldMatrix_ = 0;
+	const unsigned int kInstanceVertexShaderSlotWorldMatrix_ = 0;
 	const unsigned int kCameraShaderSlotWorldMatrix_ = 1;
 
 	const unsigned int kAKey_ = 0x01;

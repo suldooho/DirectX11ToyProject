@@ -30,7 +30,8 @@ void SkySphereObject::Initialize()
 	}
 
 	deferred_context->IASetPrimitiveTopology(sky_sphere_mesh->GetPrimitiveTopology());
-	deferred_context->IASetVertexBuffers(0, 1, sky_sphere_mesh->GetVertexBuffer(), sky_sphere_mesh->GetStride(), sky_sphere_mesh->GetOffset());
+	ID3D11Buffer* buffer_pointers[1] = { sky_sphere_mesh->GetVertexBuffer() };
+	deferred_context->IASetVertexBuffers(0, 1, buffer_pointers, sky_sphere_mesh->GetStride(), sky_sphere_mesh->GetOffset());
 	deferred_context->IASetIndexBuffer(sky_sphere_mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
 	deferred_context->IASetInputLayout(sky_sphere_shader->GetInputLayout());
 	deferred_context->VSSetShader(sky_sphere_shader->GetVertexShader(), nullptr, 0);
