@@ -4,9 +4,9 @@
 struct ColorVertex
 {
 	DirectX::XMFLOAT3 position;
-	DirectX::XMFLOAT4 color;
+	DirectX::XMFLOAT3 color;
 
-	ColorVertex(DirectX::XMFLOAT3 new_position, DirectX::XMFLOAT4 new_color)
+	ColorVertex(DirectX::XMFLOAT3 new_position, DirectX::XMFLOAT3 new_color)
 	{
 		position = new_position;
 		color = new_color;
@@ -49,5 +49,5 @@ struct BumpMappingVertex
  
 struct WorldInstanceData 
 {
-	DirectX::XMFLOAT4X4 world_matrix;
+	DirectX::XMFLOAT3 position;
 };

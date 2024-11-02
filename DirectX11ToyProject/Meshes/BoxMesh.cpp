@@ -3,18 +3,14 @@
 
 void BoxMesh::CreateVertices()
 {
-	vertices_->emplace_back(ColorVertex(DirectX::XMFLOAT3(-1.0f, 1.0f, -1.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f)));
-	vertices_->emplace_back(ColorVertex(DirectX::XMFLOAT3(1.0f, 1.0f, -1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
-	vertices_->emplace_back(ColorVertex(DirectX::XMFLOAT3(1.0f, -1.0f, -1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f)));
-	vertices_->emplace_back(ColorVertex(DirectX::XMFLOAT3(-1.0f, -1.0f, -1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f)));
-	vertices_->emplace_back(ColorVertex(DirectX::XMFLOAT3(-1.0f, 1.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f)));
-	vertices_->emplace_back(ColorVertex(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f)));
-	vertices_->emplace_back(ColorVertex(DirectX::XMFLOAT3(1.0f, -1.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f)));
-	vertices_->emplace_back(ColorVertex(DirectX::XMFLOAT3(-1.0f, -1.0f, 1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f)));
-
-	num_vertices_ = vertices_->size();
-	stride_ = sizeof(ColorVertex);
-	offset_ = 0;
+	vertices_->emplace_back(ColorVertex(DirectX::XMFLOAT3(-1.0f, 1.0f, -1.0f), DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f)));
+	vertices_->emplace_back(ColorVertex(DirectX::XMFLOAT3(1.0f, 1.0f, -1.0f), DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f)));
+	vertices_->emplace_back(ColorVertex(DirectX::XMFLOAT3(1.0f, -1.0f, -1.0f), DirectX::XMFLOAT3(1.0f, 0.0f, 0.0f)));
+	vertices_->emplace_back(ColorVertex(DirectX::XMFLOAT3(-1.0f, -1.0f, -1.0f), DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f)));
+	vertices_->emplace_back(ColorVertex(DirectX::XMFLOAT3(-1.0f, 1.0f, 1.0f), DirectX::XMFLOAT3(0.0f, 0.0f, 1.0f)));
+	vertices_->emplace_back(ColorVertex(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f), DirectX::XMFLOAT3(1.0f, 1.0f, 0.0f)));
+	vertices_->emplace_back(ColorVertex(DirectX::XMFLOAT3(1.0f, -1.0f, 1.0f), DirectX::XMFLOAT3(0.0f, 1.0f, 1.0f)));
+	vertices_->emplace_back(ColorVertex(DirectX::XMFLOAT3(-1.0f, -1.0f, 1.0f), DirectX::XMFLOAT3(1.0f, 0.0f, 1.0f)));
 }
 
 void BoxMesh::CreateIndices()
@@ -55,23 +51,9 @@ void BoxMesh::CreateIndices()
 	indices_->emplace_back(3);
 	indices_->emplace_back(6);
 	indices_->emplace_back(7); 
-
-	num_indices_ = indices_->size();
-	start_index_ = 0;
-	base_vertex_ = 0;
 }
 
-unsigned int BoxMesh::GetVertexBufferByteWidth()
+void BoxMesh::Initialize(std::string file_name)
 {
-	return sizeof(ColorVertex) * vertices_->size();
+	Mesh<ColorVertex>::Initialize();
 } 
-
-void* BoxMesh::GetVertexData()
-{
-	return vertices_->data();
-} 
-
-void BoxMesh::Initialize()
-{
-	CreateFaceData();
-}

@@ -15,7 +15,7 @@ void BoxObject::Initialize()
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> deferred_context;
 	DeviceManager::GetInstance()->GetD3D11Device()->CreateDeferredContext(0, deferred_context.GetAddressOf());
 
-	BoxMesh* box_mesh = dynamic_cast<BoxMesh*>(MeshesManager::GetInstance()->GetMesh("BoxMesh"));
+	BoxMesh* box_mesh = dynamic_cast<BoxMesh*>(MeshesManager::GetInstance()->GetMesh<ColorVertex>("BoxMesh"));
 	if (box_mesh == nullptr)
 	{
 		throw std::string("BoxMesh dynamic_cast Fail");
@@ -33,8 +33,10 @@ void BoxObject::Initialize()
 		throw std::string("OutputMerger dynamic_cast Fail");
 	}
 	deferred_context->IASetPrimitiveTopology(box_mesh->GetPrimitiveTopology());
-	ID3D11Buffer* buffer_pointers[1] = { box_mesh->GetVertexBuffer() };
-	deferred_context->IASetVertexBuffers(0, 1, buffer_pointers, box_mesh->GetStride(), box_mesh->GetOffset());
+	ID3D11Buffer* buffer_pointers[1] = { box_mesh->GetVertexBuffer() }; 
+	UINT strides[1] = { box_mesh->GetStride() };
+	UINT offsets[1] = { box_mesh->GetOffset() };
+	deferred_context->IASetVertexBuffers(0, 1, buffer_pointers, strides, offsets);
 	deferred_context->IASetIndexBuffer(box_mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
 	deferred_context->IASetInputLayout(color_shader->GetInputLayout());
 	deferred_context->VSSetShader(color_shader->GetVertexShader(), nullptr, 0);

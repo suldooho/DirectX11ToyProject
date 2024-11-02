@@ -171,6 +171,12 @@
     <ClInclude Include="Objects\InstanceComponent.h">
       <Filter>헤더 파일\Objects\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Meshes\EnemyMesh.h">
+      <Filter>헤더 파일\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshes\MeshBase.h">
+      <Filter>헤더 파일\Meshes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX11ToyProject.cpp">
@@ -274,6 +280,12 @@
     </ClCompile>
     <ClCompile Include="Objects\InstanceComponent.cpp">
       <Filter>소스 파일\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshes\EnemyMesh.cpp">
+      <Filter>소스 파일\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshes\MeshBase.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -108,6 +108,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -150,8 +151,10 @@
     <ClInclude Include="FrameResources\SkySphereShader.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Meshes\BoxMesh.h" />
+    <ClInclude Include="Meshes\EnemyMesh.h" />
     <ClInclude Include="Meshes\FloorMesh.h" />
     <ClInclude Include="Meshes\Mesh.h" />
+    <ClInclude Include="Meshes\MeshBase.h" />
     <ClInclude Include="Meshes\MeshesManager.h" />
     <ClInclude Include="Meshes\OBJImporterComponent.h" />
     <ClInclude Include="Meshes\PlayerMesh.h" />
@@ -189,8 +192,10 @@
     <ClCompile Include="FrameResources\Shader.cpp" />
     <ClCompile Include="FrameResources\SkySphereShader.cpp" />
     <ClCompile Include="Meshes\BoxMesh.cpp" />
+    <ClCompile Include="Meshes\EnemyMesh.cpp" />
     <ClCompile Include="Meshes\FloorMesh.cpp" />
     <ClCompile Include="Meshes\Mesh.cpp" />
+    <ClCompile Include="Meshes\MeshBase.cpp" />
     <ClCompile Include="Meshes\MeshesManager.cpp" />
     <ClCompile Include="Meshes\OBJImporterComponent.cpp" />
     <ClCompile Include="Meshes\PlayerMesh.cpp" />

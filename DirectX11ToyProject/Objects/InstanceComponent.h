@@ -3,7 +3,7 @@
 #include <d3d11.h>
 #include <vector>
 #include <memory>
-#include <functional> // 람다 함수를 매개변수로 받기 위해 필요
+#include <functional>
 #include "../Core/DeviceManager.h"
 
 template <typename T>

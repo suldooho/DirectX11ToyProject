@@ -4,19 +4,13 @@
 #include <vector>
 #include <memory>
 
-class BoxMesh : public Mesh
-{
-private:
-	std::unique_ptr<std::vector<ColorVertex>> vertices_;
-
+class BoxMesh : public Mesh<ColorVertex>
+{  
 protected:
 	virtual void CreateVertices() override;
-	virtual void CreateIndices() override;
+	virtual void CreateIndices() override; 
 
-	virtual unsigned int GetVertexBufferByteWidth() override;  
-	virtual void* GetVertexData() override; 
-
-public:
-	void Initialize();
+public: 
+	virtual void Initialize(std::string file_name) override;
 };
 

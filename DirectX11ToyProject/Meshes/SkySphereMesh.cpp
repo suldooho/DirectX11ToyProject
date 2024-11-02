@@ -36,11 +36,7 @@ void SkySphereMesh::CreateVertices()
         }
     }
      
-    vertices_->emplace_back(TextureVertex(DirectX::XMFLOAT3(0.0f, -kRadius_, 0.0f), DirectX::XMFLOAT2(1.0f, 1.0f)));
-
-    num_vertices_ = vertices_->size();
-    stride_ = sizeof(TextureVertex);
-    offset_ = 0;
+    vertices_->emplace_back(TextureVertex(DirectX::XMFLOAT3(0.0f, -kRadius_, 0.0f), DirectX::XMFLOAT2(1.0f, 1.0f))); 
 }
 
 void SkySphereMesh::CreateIndices()
@@ -76,33 +72,15 @@ void SkySphereMesh::CreateIndices()
         indices_->emplace_back(south_pole_index);
         indices_->emplace_back(base_index + i);
         indices_->emplace_back(base_index + i + 1);
-    }
-
-    num_indices_ = indices_->size();
-    start_index_ = 0;
-    base_vertex_ = 0;
-}
-
-unsigned int SkySphereMesh::GetVertexBufferByteWidth()
-{
-    return sizeof(TextureVertex) * vertices_->size();
+    } 
 } 
-
-void* SkySphereMesh::GetVertexData()
-{
-    return vertices_->data();
-}
 
 void SkySphereMesh::Initialize(std::string file_name)
 {
-    vertices_ = std::make_unique<std::vector<TextureVertex>>();
-    indices_ = std::make_unique<std::vector<unsigned int>>();
-    texture_component_ = std::make_unique<TextureComponent>(); 
-     
-    texture_component_->Initialize();
-    std::string file_path = texture_component_->GetAbsolutePathPath(file_name);
-    texture_component_->LoadTexture(file_path + "/Diffuse.png"); 
+    Mesh<TextureVertex>::Initialize();
 
-    CreateFaceData();
+    texture_component_ = std::make_unique<TextureComponent>();  
+    texture_component_->Initialize(); 
+    texture_component_->LoadTexture(texture_component_->GetAbsolutePathPath(file_name) + "/Diffuse.png");
 }
  

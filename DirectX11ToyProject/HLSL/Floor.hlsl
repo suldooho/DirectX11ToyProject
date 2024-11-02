@@ -4,10 +4,7 @@ struct VertexInput
 {
     float3 positionL : POSITION;
     float2 texcoord : TEXCOORD; 
-    float4 worldRow0 : WORLD0;
-    float4 worldRow1 : WORLD1;
-    float4 worldRow2 : WORLD2;
-    float4 worldRow3 : WORLD3;
+    float3 instancePosition : INSTANCEPOSITION; 
 };
 
 struct HullInput
@@ -46,13 +43,8 @@ struct GBufferOutput
 HullInput VS(VertexInput input, uint instanceID : SV_InstanceID)
 {
     HullInput output;
-    
-    float4 worldPos = float4(input.positionL, 1.0f);
-    output.positionW =
-        worldPos.x * input.worldRow0 +
-        worldPos.y * input.worldRow1 +
-        worldPos.z * input.worldRow2 +
-        worldPos.w * input.worldRow3;
+     
+    output.positionW = input.positionL + input.instancePosition;
     output.texcoord = input.texcoord;  
     
     return output;
@@ -67,7 +59,7 @@ PatchTess ConstantHS(InputPatch<HullInput, 4> patch, uint PatchID : SV_Primitive
     float distance = length(CameraPosition - patchCenter);
     
     // 거리 기반 테셀레이션 팩터 계산
-    float tessFactor = lerp(64.0f, 0.0f, saturate(distance / kMaxTessDistance));
+    float tessFactor = lerp(64.0f, kMinTessFactor, saturate(distance / kMaxTessDistance));
     
     patchTess.EdgeTess[0] = tessFactor;
     patchTess.EdgeTess[1] = tessFactor;

@@ -11,7 +11,7 @@ void SkySphereObject::Initialize()
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> deferred_context;
 	DeviceManager::GetInstance()->GetD3D11Device()->CreateDeferredContext(0, deferred_context.GetAddressOf());
 
-	SkySphereMesh* sky_sphere_mesh = dynamic_cast<SkySphereMesh*>(MeshesManager::GetInstance()->GetMesh("SkySphereMesh"));
+	SkySphereMesh* sky_sphere_mesh = dynamic_cast<SkySphereMesh*>(MeshesManager::GetInstance()->GetMesh<TextureVertex>("SkySphereMesh"));
 	if (sky_sphere_mesh == nullptr)
 	{
 		throw std::string("SkySphereMesh dynamic_cast Fail");
@@ -31,7 +31,9 @@ void SkySphereObject::Initialize()
 
 	deferred_context->IASetPrimitiveTopology(sky_sphere_mesh->GetPrimitiveTopology());
 	ID3D11Buffer* buffer_pointers[1] = { sky_sphere_mesh->GetVertexBuffer() };
-	deferred_context->IASetVertexBuffers(0, 1, buffer_pointers, sky_sphere_mesh->GetStride(), sky_sphere_mesh->GetOffset());
+	UINT strides[1] = { sky_sphere_mesh->GetStride() };
+	UINT offsets[1] = { sky_sphere_mesh->GetOffset() };
+	deferred_context->IASetVertexBuffers(0, 1, buffer_pointers, strides, offsets);
 	deferred_context->IASetIndexBuffer(sky_sphere_mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
 	deferred_context->IASetInputLayout(sky_sphere_shader->GetInputLayout());
 	deferred_context->VSSetShader(sky_sphere_shader->GetVertexShader(), nullptr, 0);

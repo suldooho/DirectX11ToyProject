@@ -2,17 +2,20 @@
 #include "../framework.h"
 #include <fstream>
 #include <sstream>
-
-std::string OBJImporterComponent::GetAbsolutePathPath(std::string file_path)
+ 
+void OBJImporterComponent::SetAbsolutePathPath()
 {
     wchar_t current_path[MAX_PATH];
     GetCurrentDirectory(MAX_PATH, current_path);
     std::wstring w_obj_file_path;
-    w_obj_file_path.assign(file_path.begin(), file_path.end());
+    w_obj_file_path.assign(file_name_.begin(), file_name_.end());
     w_obj_file_path = std::wstring(current_path) + w_obj_file_path;
-    file_path.assign(w_obj_file_path.begin(), w_obj_file_path.end());
+    file_name_.assign(w_obj_file_path.begin(), w_obj_file_path.end()); 
+}
 
-    return file_path;
+std::string OBJImporterComponent::GetAbsolutePathPath()
+{
+    return file_name_;
 }
 
 std::unique_ptr<std::vector<BumpMappingVertex>> OBJImporterComponent::LoadVertices(std::string obj_file_path)
@@ -93,4 +96,9 @@ std::unique_ptr<std::vector<unsigned int>> OBJImporterComponent::LoadIndices(std
     file.close();
 
     return indices_;
-}  
+}
+void OBJImporterComponent::Initialize(std::string file_name)
+{
+    file_name_ = file_name;
+    SetAbsolutePathPath();
+}

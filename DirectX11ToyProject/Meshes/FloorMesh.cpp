@@ -24,36 +24,21 @@ void FloorMesh::CreateVertices()
     vertices_->emplace_back(TextureVertex(DirectX::XMFLOAT3(10.0f, 0.0f, 10.0f), DirectX::XMFLOAT2(1.0f, 0.0f)));
     vertices_->emplace_back(TextureVertex(DirectX::XMFLOAT3(-10.0f, 0.0f, -10.0f), DirectX::XMFLOAT2(0.0f, 1.0f)));
     vertices_->emplace_back(TextureVertex(DirectX::XMFLOAT3(10.0f, 0.0f, -10.0f), DirectX::XMFLOAT2(1.0f, 1.0f)));
-
-    num_vertices_ = vertices_->size();
-    stride_ = sizeof(TextureVertex);
-    offset_ = 0;
 }
 
 void FloorMesh::CreateIndices()
 {
-}
-
-unsigned int FloorMesh::GetVertexBufferByteWidth()
-{
-    return sizeof(TextureVertex) * vertices_->size();
-}
-
-void* FloorMesh::GetVertexData()
-{
-    return vertices_->data();
-}
+} 
 
 void FloorMesh::Initialize(std::string file_name)
 {
-    vertices_ = std::make_unique<std::vector<TextureVertex>>();
-    texture_component_ = std::make_unique<TextureComponent>();
-     
+    Mesh<TextureVertex>::Initialize();
+
+    texture_component_ = std::make_unique<TextureComponent>(); 
     texture_component_->Initialize();
     std::string file_path = texture_component_->GetAbsolutePathPath(file_name);
     texture_component_->LoadTexture(file_path + "/Diffuse.png"); 
     texture_component_->LoadTexture(file_path + "/Normal.png");
-    texture_component_->LoadTexture(file_path + "/Height.png"); 
+    texture_component_->LoadTexture(file_path + "/Height.png");
 
-    CreateFaceData();
 }

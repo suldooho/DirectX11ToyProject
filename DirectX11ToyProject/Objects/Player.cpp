@@ -15,7 +15,7 @@ void Player::Initialize()
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> deferred_context;
 	DeviceManager::GetInstance()->GetD3D11Device()->CreateDeferredContext(0, deferred_context.GetAddressOf());
 	 
-	PlayerMesh* player_mesh = dynamic_cast<PlayerMesh*>(MeshesManager::GetInstance()->GetMesh("PlayerMesh"));
+	PlayerMesh* player_mesh = dynamic_cast<PlayerMesh*>(MeshesManager::GetInstance()->GetMesh<BumpMappingVertex>("PlayerMesh"));
 	if (player_mesh == nullptr)
 	{
 		throw std::string("PlayerMesh dynamic_cast Fail");
@@ -35,7 +35,9 @@ void Player::Initialize()
 
 	deferred_context->IASetPrimitiveTopology(player_mesh->GetPrimitiveTopology());
 	ID3D11Buffer* buffer_pointers[1] = { player_mesh->GetVertexBuffer() };
-	deferred_context->IASetVertexBuffers(0, 1, buffer_pointers, player_mesh->GetStride(), player_mesh->GetOffset());
+	UINT strides[1] = { player_mesh->GetStride() };
+	UINT offsets[1] = { player_mesh->GetOffset() };
+	deferred_context->IASetVertexBuffers(0, 1, buffer_pointers, strides, offsets);
 	deferred_context->IASetIndexBuffer(player_mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
 	deferred_context->IASetInputLayout(bump_mapping_shader->GetInputLayout());
 	deferred_context->VSSetShader(bump_mapping_shader->GetVertexShader(), nullptr, 0);

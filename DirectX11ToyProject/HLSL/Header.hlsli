@@ -4,7 +4,7 @@ static const float3 kLightDirection = float3(1.0f, -1.0f, 0.0f);
 static const float kDirectionalLightSpecularPower = 100.0f;
 static const float kPointLightSpecularPower = 1.0f;
 static const float kSpotLightSpecularPower = 1.0f;
-static const float kMinTessDistance = 0.0f;
+static const float kMinTessFactor = 1.0f;
 static const float kMaxTessDistance = 50.0f;
 static const uint kNumInstances = 25;
 

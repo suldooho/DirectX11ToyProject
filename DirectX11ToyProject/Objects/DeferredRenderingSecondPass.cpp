@@ -10,7 +10,7 @@ void DeferredRenderingSecondPass::Initialize()
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> deferred_context;
 	DeviceManager::GetInstance()->GetD3D11Device()->CreateDeferredContext(0, deferred_context.GetAddressOf());
 
-	PlayerMesh* player_mesh = dynamic_cast<PlayerMesh*>(MeshesManager::GetInstance()->GetMesh("PlayerMesh"));
+	PlayerMesh* player_mesh = dynamic_cast<PlayerMesh*>(MeshesManager::GetInstance()->GetMesh<BumpMappingVertex>("PlayerMesh"));
 	if (player_mesh == nullptr)
 	{
 		throw std::string("PlayerMesh dynamic_cast Fail");

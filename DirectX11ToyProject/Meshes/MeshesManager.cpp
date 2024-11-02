@@ -18,14 +18,4 @@ void MeshesManager::Initialize()
 	mesh_container_["FloorMesh"] = std::make_unique<FloorMesh>();
 	FloorMesh* floor_mesh = dynamic_cast<FloorMesh*>(mesh_container_["FloorMesh"].get());
 	floor_mesh->Initialize("/Resources/Floor");
-}
-
-Mesh* MeshesManager::GetMesh(std::string class_name)
-{
-	if (mesh_container_.find(class_name) != mesh_container_.end())
-	{
-		return mesh_container_[class_name].get();
-	}
-
-	throw std::string("Mesh Name Error");
-}
+} 

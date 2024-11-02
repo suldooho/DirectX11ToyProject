@@ -10,7 +10,7 @@ void FloorObject::InitializeComponents()
 
 	// 람다 함수를 사용하여 5x5 그리드로 인스턴스 위치를 초기화
 	instance_component_->Initialize([]() -> std::unique_ptr<std::vector<WorldInstanceData>> {
-		unsigned int grid_size = 6;
+		unsigned int grid_size = 8;
 		float spacing = 20.0f; // 인스턴스 간의 간격
 
 		// unique_ptr로 vector 생성
@@ -26,12 +26,7 @@ void FloorObject::InitializeComponents()
 				unsigned int index = i * grid_size + j;
 
 				// 각 인스턴스의 월드 위치 설정
-				(*instances)[index].world_matrix = {
-					1.0f, 0.0f, 0.0f, 0.0f,
-					0.0f, 1.0f, 0.0f, 0.0f,
-					0.0f, 0.0f, 1.0f, 0.0f,
-					j * spacing + x_offset, -10.0f, i * spacing + z_offset, 1.0f // x, y, z, w
-				};
+				(*instances)[index].position = { j * spacing + x_offset, -10.0f, i * spacing + z_offset };
 			}
 		}
 
@@ -47,7 +42,7 @@ void FloorObject::Initialize()
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> deferred_context;
 	DeviceManager::GetInstance()->GetD3D11Device()->CreateDeferredContext(0, deferred_context.GetAddressOf());
 
-	FloorMesh* floor_mesh = dynamic_cast<FloorMesh*>(MeshesManager::GetInstance()->GetMesh("FloorMesh"));
+	FloorMesh* floor_mesh = dynamic_cast<FloorMesh*>(MeshesManager::GetInstance()->GetMesh<TextureVertex>("FloorMesh"));
 	if (floor_mesh == nullptr)
 	{
 		throw std::string("FloorMesh dynamic_cast Fail");
@@ -67,8 +62,8 @@ void FloorObject::Initialize()
 
 	deferred_context->IASetPrimitiveTopology(floor_mesh->GetPrimitiveTopology());
 	ID3D11Buffer* buffer_pointers[2] = { floor_mesh->GetVertexBuffer(), instance_component_->GetInstanceVertexBuffer()};
-	UINT strides[2] = { *(floor_mesh->GetStride()), instance_component_->GetStride() };
-	UINT offsets[2] = { *(floor_mesh->GetOffset()), instance_component_->GetOffset() };
+	UINT strides[2] = { floor_mesh->GetStride(), instance_component_->GetStride() };
+	UINT offsets[2] = { floor_mesh->GetOffset(), instance_component_->GetOffset() };
 	deferred_context->IASetVertexBuffers(0, 2, buffer_pointers, strides, offsets);
 	deferred_context->IASetInputLayout(floor_shader->GetInputLayout());
 	deferred_context->VSSetShader(floor_shader->GetVertexShader(), nullptr, 0);
