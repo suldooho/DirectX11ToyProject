@@ -47,8 +47,8 @@ void SkySphereObject::Initialize()
 	deferred_context->OMSetRenderTargets(4, render_target_views, output_merger->GetDepthStencilView());
 	deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kVertexShaderSlotWorldMatrix_, 1, world_matrix_constant_buffer_.GetAddressOf());
 	deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstance()->GetCameraConstantBuffer());
-	deferred_context->PSSetShaderResources(0, 1, sky_sphere_mesh->GetTextureShaderResourceView("DiffuseView"));
-	deferred_context->PSSetSamplers(0, 1, sky_sphere_mesh->GetSampler());
+	deferred_context->PSSetShaderResources(0, 1, sky_sphere_mesh->texture_component_->GetTextureShaderResourceView("DiffuseView"));
+	deferred_context->PSSetSamplers(0, 1, sky_sphere_mesh->texture_component_->GetSampler());
 	deferred_context->DrawIndexed(sky_sphere_mesh->GetNumIndices(), 0, 0);
 
 	deferred_context->FinishCommandList(true, command_list_.GetAddressOf());

@@ -2,6 +2,7 @@
 #include <wrl.h>
 #include <d3d11.h>
 #include <vector>
+#include <memory>
 
 class Mesh
 { 
@@ -15,7 +16,7 @@ protected:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> vertex_buffer_;
 	
 protected:
-	std::vector<unsigned int> indices_;
+	std::unique_ptr<std::vector<unsigned int>> indices_;
 
 	unsigned int num_indices_;
 	unsigned int start_index_;
@@ -26,9 +27,12 @@ protected:
 protected:
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState> rasterizer_state_;
 
+public:
+	~Mesh();
+
 private:
 	void CreateVertexBuffer();
-	void CreateIndexBuffer();
+	virtual void CreateIndexBuffer();
 
 protected:
 	virtual void CreateRasterizerState();

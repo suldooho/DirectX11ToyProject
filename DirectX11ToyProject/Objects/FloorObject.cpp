@@ -47,12 +47,13 @@ void FloorObject::Initialize()
 		output_merger->GetRenderTargetView("GBufferViewDirectionView")
 	};
 	deferred_context->OMSetRenderTargets(4, render_target_views, output_merger->GetDepthStencilView());
-	deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kVertexShaderSlotWorldMatrix_, 1, world_matrix_constant_buffer_.GetAddressOf()); 
+	deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kVertexShaderSlotWorldMatrix_, 1, world_matrix_constant_buffer_.GetAddressOf());
+	deferred_context->PSSetConstantBuffers(ObjectsManager::GetInstance()->kVertexShaderSlotWorldMatrix_, 1, world_matrix_constant_buffer_.GetAddressOf());
 	deferred_context->DSSetConstantBuffers(ObjectsManager::GetInstance()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstance()->GetCameraConstantBuffer());
-	deferred_context->PSSetShaderResources(0, 1, floor_mesh->GetTextureShaderResourceView("DiffuseView"));
-	deferred_context->PSSetShaderResources(1, 1, floor_mesh->GetTextureShaderResourceView("NormalView"));
-	deferred_context->DSSetShaderResources(2, 1, floor_mesh->GetTextureShaderResourceView("HeightView"));
-	deferred_context->PSSetSamplers(0, 1, floor_mesh->GetSampler());
+	deferred_context->PSSetShaderResources(0, 1, floor_mesh->texture_component_->GetTextureShaderResourceView("DiffuseView"));
+	deferred_context->PSSetShaderResources(1, 1, floor_mesh->texture_component_->GetTextureShaderResourceView("NormalView"));
+	deferred_context->DSSetShaderResources(2, 1, floor_mesh->texture_component_->GetTextureShaderResourceView("HeightView"));
+	deferred_context->PSSetSamplers(0, 1, floor_mesh->texture_component_->GetSampler());
 	deferred_context->Draw(floor_mesh->GetNumVertices(), 0);
 
 	deferred_context->FinishCommandList(true, command_list_.GetAddressOf());

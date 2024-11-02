@@ -1,13 +1,22 @@
 #pragma once
-#include "TextureMesh.h"
-#include "Vertices.h"
+#include "Mesh.h"
+#include "Vertices.h" 
+#include "TextureComponent.h"
+#include <vector>
+#include <string>
+#include <memory>
 
-class FloorMesh : public TextureMesh
+class FloorMesh : public Mesh
 {
 private:
-	std::vector<TextureVertex> vertices_;
+	std::unique_ptr<std::vector<TextureVertex>> vertices_;
+
+public: // Component´Â public
+	std::unique_ptr<TextureComponent> texture_component_;
 
 protected:
+	virtual void CreateIndexBuffer() override;
+
 	virtual void CreateRasterizerState() override;
 
 	virtual void CreateVertices() override;
@@ -17,7 +26,7 @@ protected:
 	virtual void* GetVertexData() override;
 
 public:
-	virtual void Initialize(std::string file_path);
+	void Initialize(std::string file_name);
 };
 
 

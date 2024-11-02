@@ -4,19 +4,23 @@
 #include <string>
 #include <unordered_map>
 
-class TextureMesh : public Mesh
+class TextureComponent
 {
-protected:
+private:
 	std::unordered_map<std::string, Microsoft::WRL::ComPtr<class ID3D11ShaderResourceView>> shader_resource_view_container_;
 
 	Microsoft::WRL::ComPtr<class ID3D11SamplerState> sampler_state_;
-
-protected: 
-	class ID3D11ShaderResourceView* LoadTexture(std::string obj_texture_file_path);
-	virtual void CreateSamplerState();
+	 
+protected:
+	void CreateSamplerState();
 
 public:
-	virtual void Initialize(std::string file_path) = 0;
+	void Initialize();
+	void LoadTexture(std::string texture_file_path);
+
+	std::string GetAbsolutePathPath(std::string file_path);
+
+public: // has-a
 	class ID3D11ShaderResourceView** GetTextureShaderResourceView(std::string texture_name);
 	class ID3D11SamplerState** GetSampler();
 };

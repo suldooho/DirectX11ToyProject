@@ -2,7 +2,7 @@
 #include "../framework.h"
 #include "../Meshes/MeshesManager.h"
 #include "../Meshes/BoxMesh.h"
-#include "../Meshes/OBJMesh.h"
+#include "../Meshes/PlayerMesh.h"
 #include "../FrameResources/FrameResource.h"
 #include "../FrameResources/BumpMappingShader.h"
 #include "../FrameResources/OutputMerger.h"
@@ -15,10 +15,10 @@ void Player::Initialize()
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> deferred_context;
 	DeviceManager::GetInstance()->GetD3D11Device()->CreateDeferredContext(0, deferred_context.GetAddressOf());
 	 
-	OBJMesh* obj_mesh = dynamic_cast<OBJMesh*>(MeshesManager::GetInstance()->GetMesh("GunMesh"));
-	if (obj_mesh == nullptr)
+	PlayerMesh* player_mesh = dynamic_cast<PlayerMesh*>(MeshesManager::GetInstance()->GetMesh("PlayerMesh"));
+	if (player_mesh == nullptr)
 	{
-		throw std::string("OBJMesh dynamic_cast Fail");
+		throw std::string("PlayerMesh dynamic_cast Fail");
 	}
 
 	BumpMappingShader* bump_mapping_shader = dynamic_cast<BumpMappingShader*>(FrameResourcesManager::GetInstance()->GetFrameResource("BumpMappingShader"));
@@ -33,14 +33,14 @@ void Player::Initialize()
 		throw std::string("OutputMerger dynamic_cast Fail");
 	} 
 
-	deferred_context->IASetPrimitiveTopology(obj_mesh->GetPrimitiveTopology());  
-	deferred_context->IASetVertexBuffers(0, 1, obj_mesh->GetVertexBuffer(), obj_mesh->GetStride(), obj_mesh->GetOffset());
-	deferred_context->IASetIndexBuffer(obj_mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
+	deferred_context->IASetPrimitiveTopology(player_mesh->GetPrimitiveTopology());
+	deferred_context->IASetVertexBuffers(0, 1, player_mesh->GetVertexBuffer(), player_mesh->GetStride(), player_mesh->GetOffset());
+	deferred_context->IASetIndexBuffer(player_mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
 	deferred_context->IASetInputLayout(bump_mapping_shader->GetInputLayout());
 	deferred_context->VSSetShader(bump_mapping_shader->GetVertexShader(), nullptr, 0);
 	deferred_context->PSSetShader(bump_mapping_shader->GetPixelShader(), nullptr, 0);
 	deferred_context->RSSetViewports(1, output_merger->GetViewport());
-	deferred_context->RSSetState(obj_mesh->GetRasterizerState());
+	deferred_context->RSSetState(player_mesh->GetRasterizerState());
 	ID3D11RenderTargetView* render_target_views[4] = 
 	{ 
 		output_merger->GetRenderTargetView("GBufferPositionView"),
@@ -51,10 +51,10 @@ void Player::Initialize()
 	deferred_context->OMSetRenderTargets(4, render_target_views, output_merger->GetDepthStencilView());
 	deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kVertexShaderSlotWorldMatrix_, 1, world_matrix_constant_buffer_.GetAddressOf());
 	deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstance()->GetCameraConstantBuffer());
-	deferred_context->PSSetShaderResources(0, 1, obj_mesh->GetTextureShaderResourceView("DiffuseView"));
-	deferred_context->PSSetShaderResources(1, 1, obj_mesh->GetTextureShaderResourceView("NormalView"));
-	deferred_context->PSSetSamplers(0, 1, obj_mesh->GetSampler());
-	deferred_context->DrawIndexed(obj_mesh->GetNumIndices(), 0, 0);
+	deferred_context->PSSetShaderResources(0, 1, player_mesh->texture_component_->GetTextureShaderResourceView("DiffuseView"));
+	deferred_context->PSSetShaderResources(1, 1, player_mesh->texture_component_->GetTextureShaderResourceView("NormalView"));
+	deferred_context->PSSetSamplers(0, 1, player_mesh->texture_component_->GetSampler());
+	deferred_context->DrawIndexed(player_mesh->GetNumIndices(), 0, 0);
 
 	deferred_context->FinishCommandList(true, command_list_.GetAddressOf()); 
 }

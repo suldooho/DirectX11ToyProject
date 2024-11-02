@@ -2,7 +2,7 @@
 #include "../framework.h"
 #include "../FrameResources/FrameResource.h"
 #include "../FrameResources/OutputMerger.h"
-#include "../Meshes/OBJMesh.h"
+#include "../Meshes/PlayerMesh.h"
 #include "../FrameResources/SecondPassShader.h"
 
 void DeferredRenderingSecondPass::Initialize()
@@ -10,10 +10,10 @@ void DeferredRenderingSecondPass::Initialize()
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> deferred_context;
 	DeviceManager::GetInstance()->GetD3D11Device()->CreateDeferredContext(0, deferred_context.GetAddressOf());
 
-	OBJMesh* obj_mesh = dynamic_cast<OBJMesh*>(MeshesManager::GetInstance()->GetMesh("GunMesh"));
-	if (obj_mesh == nullptr)
+	PlayerMesh* player_mesh = dynamic_cast<PlayerMesh*>(MeshesManager::GetInstance()->GetMesh("PlayerMesh"));
+	if (player_mesh == nullptr)
 	{
-		throw std::string("OBJMesh dynamic_cast Fail");
+		throw std::string("PlayerMesh dynamic_cast Fail");
 	}
 
 	SecondPassShader* second_pass_shader = dynamic_cast<SecondPassShader*>(FrameResourcesManager::GetInstance()->GetFrameResource("SecondPassShader"));
@@ -33,7 +33,7 @@ void DeferredRenderingSecondPass::Initialize()
 	deferred_context->VSSetShader(second_pass_shader->GetVertexShader(), nullptr, 0);
 	deferred_context->PSSetShader(second_pass_shader->GetPixelShader(), nullptr, 0);
 	deferred_context->RSSetViewports(1, output_merger->GetViewport()); 
-	deferred_context->RSSetState(obj_mesh->GetRasterizerState());
+	deferred_context->RSSetState(player_mesh->GetRasterizerState());
 	ID3D11ShaderResourceView* shader_resource_views[4] =
 	{
 		output_merger->GetShaderResourceView("GBufferPositionView"),
@@ -44,7 +44,7 @@ void DeferredRenderingSecondPass::Initialize()
 	deferred_context->PSSetShaderResources(4, 4, shader_resource_views);
 	deferred_context->PSSetShaderResources(0, 1, LightsManager::GetInstance()->GetLightShaderResourceView("PointLightView"));
 	deferred_context->PSSetShaderResources(1, 1, LightsManager::GetInstance()->GetLightShaderResourceView("SpotLightView"));
-	deferred_context->PSSetSamplers(0, 1, obj_mesh->GetSampler()); 
+	deferred_context->PSSetSamplers(0, 1, player_mesh->texture_component_->GetSampler());
 	deferred_context->OMSetDepthStencilState(output_merger->GetDepthStencilState("SecondPassState"), 1);
 	ID3D11RenderTargetView* back_buffer_view = output_merger->GetRenderTargetView("BackBufferView");
 	deferred_context->OMSetRenderTargets(1, &back_buffer_view, output_merger->GetDepthStencilView());

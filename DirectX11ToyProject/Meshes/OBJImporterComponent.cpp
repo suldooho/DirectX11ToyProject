@@ -1,10 +1,24 @@
-#include "OBJMesh.h"
+#include "OBJImporterComponent.h"
 #include "../framework.h"
 #include <fstream>
 #include <sstream>
 
-void OBJMesh::LoadVertices(std::string obj_file_path)
+std::string OBJImporterComponent::GetAbsolutePathPath(std::string file_path)
 {
+    wchar_t current_path[MAX_PATH];
+    GetCurrentDirectory(MAX_PATH, current_path);
+    std::wstring w_obj_file_path;
+    w_obj_file_path.assign(file_path.begin(), file_path.end());
+    w_obj_file_path = std::wstring(current_path) + w_obj_file_path;
+    file_path.assign(w_obj_file_path.begin(), w_obj_file_path.end());
+
+    return file_path;
+}
+
+std::unique_ptr<std::vector<BumpMappingVertex>> OBJImporterComponent::LoadVertices(std::string obj_file_path)
+{
+    auto vertices_ = std::make_unique<std::vector<BumpMappingVertex>>(); // heap memory~!
+
     std::ifstream file(obj_file_path);
 
     if (!file.is_open()) 
@@ -39,15 +53,19 @@ void OBJMesh::LoadVertices(std::string obj_file_path)
             iss >> vertex.normal.x >> vertex.normal.y >> vertex.normal.z;
         }
         else if (line.find("-------------------------") != std::string::npos) {
-            vertices_.emplace_back(vertex);
+            vertices_->emplace_back(vertex);
         }
     }
 
     file.close();
-}
 
-void OBJMesh::LoadIndices(std::string obj_file_path)
+    return vertices_;
+} 
+
+std::unique_ptr<std::vector<unsigned int>> OBJImporterComponent::LoadIndices(std::string obj_file_path)
 {
+    auto indices_ = std::make_unique<std::vector<unsigned int>>(); // heap memory~!
+
     std::ifstream file(obj_file_path);
 
     if (!file.is_open()) 
@@ -66,58 +84,13 @@ void OBJMesh::LoadIndices(std::string obj_file_path)
             std::string dummy;
             iss >> dummy >> i1 >> i2 >> i3;
 
-            indices_.emplace_back(i1);
-            indices_.emplace_back(i2);
-            indices_.emplace_back(i3);
+            indices_->emplace_back(i1);
+            indices_->emplace_back(i2);
+            indices_->emplace_back(i3);
         }
     }
 
     file.close();
-} 
 
-void OBJMesh::CreateVertices()
-{
-    primitive_topology_ = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-
-    num_vertices_ = vertices_.size();
-    stride_ = sizeof(BumpMappingVertex);
-    offset_ = 0;
-}
-
-void OBJMesh::CreateIndices()
-{
-    num_indices_ = indices_.size();
-    start_index_ = 0;
-    base_vertex_ = 0;
-}
-
-unsigned int OBJMesh::GetVertexBufferByteWidth()
-{
-	return sizeof(BumpMappingVertex) * vertices_.size();
-} 
-
-void* OBJMesh::GetVertexData()
-{
-	return vertices_.data();
-} 
-
-void OBJMesh::Initialize(std::string file_path)
-{
-    wchar_t current_path[MAX_PATH];
-    GetCurrentDirectory(MAX_PATH, current_path);
-
-    std::wstring w_obj_file_path;
-    w_obj_file_path.assign(file_path.begin(), file_path.end());
-
-    w_obj_file_path = std::wstring(current_path) + w_obj_file_path;
-    file_path.assign(w_obj_file_path.begin(), w_obj_file_path.end());
-
-    LoadVertices(file_path + ".txt");
-    LoadIndices(file_path + "_Index.txt");
-
-    shader_resource_view_container_["DiffuseView"] = LoadTexture(file_path + "_Diffuse.png");
-    shader_resource_view_container_["NormalView"] = LoadTexture(file_path + "_Normal.png");
-    CreateSamplerState();
-
-    CreateFaceData();
+    return indices_;
 }  

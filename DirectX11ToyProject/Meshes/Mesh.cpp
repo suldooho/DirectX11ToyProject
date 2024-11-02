@@ -1,6 +1,10 @@
 #include "Mesh.h"
 #include "../framework.h"
 
+Mesh::~Mesh()
+{
+}
+
 void Mesh::CreateVertexBuffer()
 {
 	D3D11_BUFFER_DESC buffer_desc;
@@ -43,12 +47,12 @@ void Mesh::CreateRasterizerState()
 
 unsigned int Mesh::GetIndexBufferByteWidth()
 {
-	return sizeof(unsigned int) * indices_.size();
+	return sizeof(unsigned int) * indices_->size();
 }
 
 void* Mesh::GetIndexData()
 {
-	return indices_.data();
+	return indices_->data();
 }
 
 void Mesh::CreateFaceData()

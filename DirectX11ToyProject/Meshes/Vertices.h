@@ -6,10 +6,10 @@ struct ColorVertex
 	DirectX::XMFLOAT3 position;
 	DirectX::XMFLOAT4 color;
 
-	ColorVertex(DirectX::XMFLOAT3 newPosition, DirectX::XMFLOAT4 newColor)
+	ColorVertex(DirectX::XMFLOAT3 new_position, DirectX::XMFLOAT4 new_color)
 	{
-		position = newPosition;
-		color = newColor;
+		position = new_position;
+		color = new_color;
 	}
 };
 
@@ -18,10 +18,10 @@ struct TextureVertex
 	DirectX::XMFLOAT3 position;
 	DirectX::XMFLOAT2 texcoord; 
 
-	TextureVertex(DirectX::XMFLOAT3 newPosition, DirectX::XMFLOAT2 newTexcoord)
+	TextureVertex(DirectX::XMFLOAT3 new_position, DirectX::XMFLOAT2 new_texcoord)
 	{
-		position = newPosition;
-		texcoord = newTexcoord;
+		position = new_position;
+		texcoord = new_texcoord;
 	}
 };
 
@@ -37,13 +37,17 @@ struct BumpMappingVertex
 	{ 
 	}
 	 
-	BumpMappingVertex(DirectX::XMFLOAT3 newPosition, DirectX::XMFLOAT2 newTexcoord, DirectX::XMFLOAT3 newTangent, DirectX::XMFLOAT3 newBitangent, DirectX::XMFLOAT3 newNormal)
+	BumpMappingVertex(DirectX::XMFLOAT3 new_position, DirectX::XMFLOAT2 new_texcoord, DirectX::XMFLOAT3 new_tangent, DirectX::XMFLOAT3 new_bitangent, DirectX::XMFLOAT3 new_normal)
 	{
-		position = newPosition;
-		texcoord = newTexcoord;
-		tangent = newTangent;
-		bitangent = newBitangent;
-		normal = newNormal;
+		position = new_position;
+		texcoord = new_texcoord;
+		tangent = new_tangent;
+		bitangent = new_bitangent;
+		normal = new_normal;
 	}
 };
  
+struct InstanceData 
+{
+	DirectX::XMFLOAT4X4 world_matrix;
+};

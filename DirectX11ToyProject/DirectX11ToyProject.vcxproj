@@ -153,9 +153,10 @@
     <ClInclude Include="Meshes\FloorMesh.h" />
     <ClInclude Include="Meshes\Mesh.h" />
     <ClInclude Include="Meshes\MeshesManager.h" />
-    <ClInclude Include="Meshes\OBJMesh.h" />
+    <ClInclude Include="Meshes\OBJImporterComponent.h" />
+    <ClInclude Include="Meshes\PlayerMesh.h" />
     <ClInclude Include="Meshes\SkySphereMesh.h" />
-    <ClInclude Include="Meshes\TextureMesh.h" />
+    <ClInclude Include="Meshes\TextureComponent.h" />
     <ClInclude Include="Meshes\Vertices.h" />
     <ClInclude Include="Objects\BoxObject.h" />
     <ClInclude Include="Objects\Camera.h" />
@@ -190,9 +191,10 @@
     <ClCompile Include="Meshes\FloorMesh.cpp" />
     <ClCompile Include="Meshes\Mesh.cpp" />
     <ClCompile Include="Meshes\MeshesManager.cpp" />
-    <ClCompile Include="Meshes\OBJMesh.cpp" />
+    <ClCompile Include="Meshes\OBJImporterComponent.cpp" />
+    <ClCompile Include="Meshes\PlayerMesh.cpp" />
     <ClCompile Include="Meshes\SkySphereMesh.cpp" />
-    <ClCompile Include="Meshes\TextureMesh.cpp" />
+    <ClCompile Include="Meshes\TextureComponent.cpp" />
     <ClCompile Include="Objects\BoxObject.cpp" />
     <ClCompile Include="Objects\Camera.cpp" />
     <ClCompile Include="Objects\DeferredRenderingSecondPass.cpp" />

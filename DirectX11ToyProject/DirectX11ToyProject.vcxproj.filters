@@ -40,6 +40,12 @@
     <Filter Include="헤더 파일\Meshes">
       <UniqueIdentifier>{0d3b197a-0c4b-4292-8a5f-b125c79a3393}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\Meshes\Components">
+      <UniqueIdentifier>{fd24594a-a971-4fea-b1cb-4fd5e880691e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Meshes\Components">
+      <UniqueIdentifier>{7bf16b73-4b7c-499d-86c7-e5e2c050376c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -117,9 +123,6 @@
     <ClInclude Include="Core\DebugLog.h">
       <Filter>헤더 파일\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Meshes\OBJMesh.h">
-      <Filter>헤더 파일\Meshes</Filter>
-    </ClInclude>
     <ClInclude Include="FrameResources\BumpMappingShader.h">
       <Filter>헤더 파일\FrameResources</Filter>
     </ClInclude>
@@ -133,9 +136,6 @@
       <Filter>헤더 파일\Objects</Filter>
     </ClInclude>
     <ClInclude Include="Meshes\SkySphereMesh.h">
-      <Filter>헤더 파일\Meshes</Filter>
-    </ClInclude>
-    <ClInclude Include="Meshes\TextureMesh.h">
       <Filter>헤더 파일\Meshes</Filter>
     </ClInclude>
     <ClInclude Include="Objects\SkySphereObject.h">
@@ -152,6 +152,15 @@
     </ClInclude>
     <ClInclude Include="Objects\FloorObject.h">
       <Filter>헤더 파일\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshes\OBJImporterComponent.h">
+      <Filter>헤더 파일\Meshes\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshes\TextureComponent.h">
+      <Filter>헤더 파일\Meshes\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshes\PlayerMesh.h">
+      <Filter>헤더 파일\Meshes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -215,9 +224,6 @@
     <ClCompile Include="Core\DebugLog.cpp">
       <Filter>소스 파일\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Meshes\OBJMesh.cpp">
-      <Filter>소스 파일\Meshes</Filter>
-    </ClCompile>
     <ClCompile Include="FrameResources\BumpMappingShader.cpp">
       <Filter>소스 파일\FrameResources</Filter>
     </ClCompile>
@@ -231,9 +237,6 @@
       <Filter>소스 파일\Objects</Filter>
     </ClCompile>
     <ClCompile Include="Meshes\SkySphereMesh.cpp">
-      <Filter>소스 파일\Meshes</Filter>
-    </ClCompile>
-    <ClCompile Include="Meshes\TextureMesh.cpp">
       <Filter>소스 파일\Meshes</Filter>
     </ClCompile>
     <ClCompile Include="Objects\SkySphereObject.cpp">
@@ -250,6 +253,15 @@
     </ClCompile>
     <ClCompile Include="Objects\FloorObject.cpp">
       <Filter>소스 파일\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshes\TextureComponent.cpp">
+      <Filter>소스 파일\Meshes\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshes\OBJImporterComponent.cpp">
+      <Filter>소스 파일\Meshes\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshes\PlayerMesh.cpp">
+      <Filter>소스 파일\Meshes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -71,7 +71,7 @@ PatchTess ConstantHS(InputPatch<HullInput, 4> patch, uint PatchID : SV_Primitive
 }
 
 [domain("quad")]
-[partitioning("integer")] //fractional_even
+[partitioning("fractional_even")] 
 [outputtopology("triangle_cw")]
 [outputcontrolpoints(4)]
 [patchconstantfunc("ConstantHS")]
@@ -121,15 +121,15 @@ GBufferOutput PS(PixelInput input)
      
     // 노멀맵을 이용하여 표면 노멀 계산
     float3 normalFromMap = NormalMap.Sample(Sampler, input.texcoord).xzy * 2.0f - 1.0f; // TBN계산 생략
-    float3 normalW = normalize(normalFromMap);
+    normalFromMap = normalize(normalFromMap);
+    normalFromMap = mul(float4(normalFromMap, 0.0f), World);
 
     // 뷰 방향 계산
     float3 viewDir = normalize(CameraPosition - input.positionW);
-
-
+     
     // GBuffer에 필요한 정보 설정
-    output.pos = float4(input.positionW, 1.0f); // G-버퍼에 저장되는 월드 좌표
-    output.normal = float4(normalW, 0.0f);
+    output.pos = float4(input.positionW, 0.0f); // G-버퍼에 저장되는 월드 좌표
+    output.normal = float4(normalFromMap, 0.0f);
     output.diffuse = DiffuseMap.Sample(Sampler, input.texcoord);
     output.viewDir = float4(viewDir, 0.0f);
 
