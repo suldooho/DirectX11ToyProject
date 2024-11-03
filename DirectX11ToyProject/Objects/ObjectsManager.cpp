@@ -23,7 +23,7 @@ void ObjectsManager::ExecuteCommandListPlayer()
 	camera_->UpdateViewMatrix();
 	camera_->UpdateConstantBuffer();
 
-	player_->UpdateConstantBuffer();
+	player_->UpdateBuffer();
 	player_->ExecuteCommandList();
 }
 
@@ -31,7 +31,7 @@ void ObjectsManager::ExecuteCommandListObjects()
 {
 	for (unsigned int i = 0; i < objects_.size(); ++i)
 	{
-		objects_[i].get()->UpdateConstantBuffer();
+		objects_[i].get()->UpdateBuffer();
 		objects_[i].get()->ExecuteCommandList();
 	}
 }

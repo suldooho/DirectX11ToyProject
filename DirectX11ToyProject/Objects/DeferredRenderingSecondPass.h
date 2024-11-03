@@ -1,7 +1,7 @@
 #pragma once
-#include "Object.h"
+#include "SingleObject.h"
 
-class DeferredRenderingSecondPass : public Object
+class DeferredRenderingSecondPass : public SingleObject
 {
 public:
 	virtual void Initialize(); 

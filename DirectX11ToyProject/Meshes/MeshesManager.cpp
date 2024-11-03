@@ -2,6 +2,7 @@
 #include "SkySphereMesh.h"
 #include "PlayerMesh.h"
 #include "FloorMesh.h"
+#include "EnemyMesh.h"
 
 MeshesManager* MeshesManager::instance_ = nullptr;
 
@@ -18,4 +19,8 @@ void MeshesManager::Initialize()
 	mesh_container_["FloorMesh"] = std::make_unique<FloorMesh>();
 	FloorMesh* floor_mesh = dynamic_cast<FloorMesh*>(mesh_container_["FloorMesh"].get());
 	floor_mesh->Initialize("/Resources/Floor");
+
+	mesh_container_["EnemyMesh"] = std::make_unique<EnemyMesh>();
+	EnemyMesh* enemy_mesh = dynamic_cast<EnemyMesh*>(mesh_container_["EnemyMesh"].get());
+	enemy_mesh->Initialize("/Resources/Enemy");
 } 

@@ -47,7 +47,7 @@ struct BumpMappingVertex
 	}
 };
  
-struct WorldInstanceData 
+struct PositionInstanceData 
 {
 	DirectX::XMFLOAT3 position;
 };

@@ -15,7 +15,7 @@ cbuffer WorldMatrix : register(b0)
 
 cbuffer InstanceBuffer : register(b0)  
 {
-    matrix InstanceWorldMatrixArray[kNumInstances];
+    matrix InstanceWorldArray[kNumInstances];
 };
 
  

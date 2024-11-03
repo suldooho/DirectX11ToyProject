@@ -1,7 +1,7 @@
 #pragma once
-#include "MovableObject.h"
+#include "SingleObject.h"
 
-class BoxObject : public MovableObject
+class BoxObject : public SingleObject
 {
 public:
 	virtual void Initialize() override;

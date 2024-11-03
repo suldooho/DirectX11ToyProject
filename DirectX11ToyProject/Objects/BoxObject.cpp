@@ -8,7 +8,7 @@
 
 void BoxObject::Initialize()
 {
-	CreateConstantBuffer();
+	CreateBuffer();
 
 	SetPosition(0.0f, 0.0f, 10.0f);
 

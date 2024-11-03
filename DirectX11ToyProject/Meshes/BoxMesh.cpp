@@ -53,7 +53,7 @@ void BoxMesh::CreateIndices()
 	indices_->emplace_back(7); 
 }
 
-void BoxMesh::Initialize(std::string file_name)
+void BoxMesh::Initialize(const std::string& file_name)
 {
 	Mesh<ColorVertex>::Initialize();
 } 

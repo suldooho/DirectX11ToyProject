@@ -164,13 +164,14 @@
     <ClInclude Include="Objects\BoxObject.h" />
     <ClInclude Include="Objects\Camera.h" />
     <ClInclude Include="Objects\DeferredRenderingSecondPass.h" />
+    <ClInclude Include="Objects\EnemyObject.h" />
     <ClInclude Include="Objects\FloorObject.h" />
-    <ClInclude Include="Objects\InstanceComponent.h" />
+    <ClInclude Include="Objects\InstanceObject.h" />
     <ClInclude Include="Objects\LightsManager.h" />
-    <ClInclude Include="Objects\MovableObject.h" />
     <ClInclude Include="Objects\Object.h" />
     <ClInclude Include="Objects\ObjectsManager.h" />
     <ClInclude Include="Objects\Player.h" />
+    <ClInclude Include="Objects\SingleObject.h" />
     <ClInclude Include="Objects\SkySphereObject.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
@@ -204,13 +205,14 @@
     <ClCompile Include="Objects\BoxObject.cpp" />
     <ClCompile Include="Objects\Camera.cpp" />
     <ClCompile Include="Objects\DeferredRenderingSecondPass.cpp" />
+    <ClCompile Include="Objects\EnemyObject.cpp" />
     <ClCompile Include="Objects\FloorObject.cpp" />
-    <ClCompile Include="Objects\InstanceComponent.cpp" />
+    <ClCompile Include="Objects\InstanceObject.cpp" />
     <ClCompile Include="Objects\LightsManager.cpp" />
-    <ClCompile Include="Objects\MovableObject.cpp" />
     <ClCompile Include="Objects\Object.cpp" />
     <ClCompile Include="Objects\ObjectsManager.cpp" />
     <ClCompile Include="Objects\Player.cpp" />
+    <ClCompile Include="Objects\SingleObject.cpp" />
     <ClCompile Include="Objects\SkySphereObject.cpp" />
   </ItemGroup>
   <ItemGroup>

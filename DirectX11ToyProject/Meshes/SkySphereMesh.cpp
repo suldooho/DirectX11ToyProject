@@ -75,7 +75,7 @@ void SkySphereMesh::CreateIndices()
     } 
 } 
 
-void SkySphereMesh::Initialize(std::string file_name)
+void SkySphereMesh::Initialize(const std::string& file_name)
 {
     Mesh<TextureVertex>::Initialize();
 

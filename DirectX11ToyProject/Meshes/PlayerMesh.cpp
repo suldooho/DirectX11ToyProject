@@ -9,8 +9,8 @@ void PlayerMesh::CreateIndices()
 {
     indices_ = obj_importer_component_->LoadIndices(obj_importer_component_->GetAbsolutePathPath() + "/Index.txt");
 } 
-
-void PlayerMesh::Initialize(std::string file_name)
+ 
+void PlayerMesh::Initialize(const std::string& file_name)
 {
     obj_importer_component_ = std::make_unique<OBJImporterComponent>();
     obj_importer_component_->Initialize(file_name);

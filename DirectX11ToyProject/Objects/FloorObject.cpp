@@ -4,17 +4,15 @@
 #include "../FrameResources/FloorShader.h"
 #include "../FrameResources/OutputMerger.h"
 
-void FloorObject::InitializeComponents()
+void FloorObject::Initialize()
 { 
-	instance_component_ = std::make_unique<InstanceComponent<WorldInstanceData>>();
-
 	// 람다 함수를 사용하여 5x5 그리드로 인스턴스 위치를 초기화
-	instance_component_->Initialize([]() -> std::unique_ptr<std::vector<WorldInstanceData>> {
+	SetInitializeValue([]() -> std::unique_ptr<std::vector<PositionInstanceData>> {
 		unsigned int grid_size = 8;
 		float spacing = 20.0f; // 인스턴스 간의 간격
 
 		// unique_ptr로 vector 생성
-		auto instances = std::make_unique<std::vector<WorldInstanceData>>(grid_size * grid_size);
+		auto instances = std::make_unique<std::vector<PositionInstanceData>>(grid_size * grid_size);
 
 		// 중앙 오프셋 계산: 타일들이 중앙 기준으로 배치되도록
 		float half_grid_size = (grid_size - 1) / 2.0f;
@@ -32,12 +30,11 @@ void FloorObject::InitializeComponents()
 
 		return instances; // unique_ptr<std::vector<WorldInstanceData>> 반환
 		});
-}
 
-void FloorObject::Initialize()
-{
-	InitializeComponents();
-	CreateConstantBuffer(); 
+
+	CreateBuffer();
+
+
 
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> deferred_context;
 	DeviceManager::GetInstance()->GetD3D11Device()->CreateDeferredContext(0, deferred_context.GetAddressOf());
@@ -61,9 +58,9 @@ void FloorObject::Initialize()
 	}
 
 	deferred_context->IASetPrimitiveTopology(floor_mesh->GetPrimitiveTopology());
-	ID3D11Buffer* buffer_pointers[2] = { floor_mesh->GetVertexBuffer(), instance_component_->GetInstanceVertexBuffer()};
-	UINT strides[2] = { floor_mesh->GetStride(), instance_component_->GetStride() };
-	UINT offsets[2] = { floor_mesh->GetOffset(), instance_component_->GetOffset() };
+	ID3D11Buffer* buffer_pointers[2] = { floor_mesh->GetVertexBuffer(), instance_vertex_buffer_.Get()};
+	UINT strides[2] = { floor_mesh->GetStride(), sizeof(PositionInstanceData)};
+	UINT offsets[2] = { floor_mesh->GetOffset(), 0 };
 	deferred_context->IASetVertexBuffers(0, 2, buffer_pointers, strides, offsets);
 	deferred_context->IASetInputLayout(floor_shader->GetInputLayout());
 	deferred_context->VSSetShader(floor_shader->GetVertexShader(), nullptr, 0);
@@ -81,17 +78,12 @@ void FloorObject::Initialize()
 	};
 	deferred_context->OMSetRenderTargets(4, render_target_views, output_merger->GetDepthStencilView());
 	deferred_context->HSSetConstantBuffers(ObjectsManager::GetInstance()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstance()->GetCameraConstantBuffer());
-	deferred_context->DSSetConstantBuffers(ObjectsManager::GetInstance()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstance()->GetCameraConstantBuffer()); 
+	deferred_context->DSSetConstantBuffers(ObjectsManager::GetInstance()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstance()->GetCameraConstantBuffer());
 	deferred_context->PSSetShaderResources(0, 1, floor_mesh->texture_component_->GetTextureShaderResourceView("DiffuseView"));
 	deferred_context->PSSetShaderResources(1, 1, floor_mesh->texture_component_->GetTextureShaderResourceView("NormalView"));
 	deferred_context->DSSetShaderResources(2, 1, floor_mesh->texture_component_->GetTextureShaderResourceView("HeightView"));
 	deferred_context->PSSetSamplers(0, 1, floor_mesh->texture_component_->GetSampler());
-	deferred_context->DrawInstanced(floor_mesh->GetNumVertices(), instance_component_->GetInstanceCount(), 0, 0);
+	deferred_context->DrawInstanced(floor_mesh->GetNumVertices(), instances_->size(), 0, 0);
 
 	deferred_context->FinishCommandList(true, command_list_.GetAddressOf());
-}
-
-void FloorObject::UpdateConstantBuffer()
-{ 
-}
-	
+} 

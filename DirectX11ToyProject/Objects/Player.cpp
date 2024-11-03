@@ -9,7 +9,7 @@
  
 void Player::Initialize()
 {
-	CreateConstantBuffer();
+	CreateBuffer();
 	SetPosition(kPlayerToCameraOffset.x, kPlayerToCameraOffset.y, kPlayerToCameraOffset.z); 
 
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> deferred_context;
@@ -71,4 +71,15 @@ void Player::SetRotationAndPosition(DirectX::FXMMATRIX camera_world_matrix)
 	world_matrix_._41 = DirectX::XMVectorGetX(offset_vector);
 	world_matrix_._42 = DirectX::XMVectorGetY(offset_vector);
 	world_matrix_._43 = DirectX::XMVectorGetZ(offset_vector);
+}
+
+void Player::SetMoveSpeed(float move_speed)
+{
+	move_speed_ = move_speed;
+}
+
+void Player::Move(DirectX::FXMVECTOR move_vector)
+{
+	DirectX::XMVECTOR new_position = DirectX::XMVectorAdd(GetPosition(), DirectX::XMVectorScale(move_vector, move_speed_));
+	SetPosition(new_position);
 }

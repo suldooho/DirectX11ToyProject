@@ -30,7 +30,7 @@ void FloorMesh::CreateIndices()
 {
 } 
 
-void FloorMesh::Initialize(std::string file_name)
+void FloorMesh::Initialize(const std::string& file_name)
 {
     Mesh<TextureVertex>::Initialize();
 

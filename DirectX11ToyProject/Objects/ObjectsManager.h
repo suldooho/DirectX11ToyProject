@@ -3,7 +3,7 @@
 #include <vector>
 #include "Player.h"
 #include "Camera.h"
-#include "MovableObject.h"
+#include "Object.h"
 #include "DeferredRenderingSecondPass.h"
 
 class ObjectsManager

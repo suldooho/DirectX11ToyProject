@@ -46,12 +46,6 @@
     <Filter Include="소스 파일\Meshes\Components">
       <UniqueIdentifier>{7bf16b73-4b7c-499d-86c7-e5e2c050376c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="헤더 파일\Objects\Components">
-      <UniqueIdentifier>{9c737d21-fbe2-4313-b03e-12cf1ac627ca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Objects\Components">
-      <UniqueIdentifier>{af01cac0-d871-42eb-b9a7-d327f18ffaeb}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -114,9 +108,6 @@
     <ClInclude Include="Objects\ObjectsManager.h">
       <Filter>헤더 파일\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\MovableObject.h">
-      <Filter>헤더 파일\Objects</Filter>
-    </ClInclude>
     <ClInclude Include="FrameResources\IncludeHandler.h">
       <Filter>헤더 파일\FrameResources</Filter>
     </ClInclude>
@@ -168,14 +159,20 @@
     <ClInclude Include="Meshes\PlayerMesh.h">
       <Filter>헤더 파일\Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\InstanceComponent.h">
-      <Filter>헤더 파일\Objects\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Meshes\EnemyMesh.h">
       <Filter>헤더 파일\Meshes</Filter>
     </ClInclude>
     <ClInclude Include="Meshes\MeshBase.h">
       <Filter>헤더 파일\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\EnemyObject.h">
+      <Filter>헤더 파일\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\InstanceObject.h">
+      <Filter>헤더 파일\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\SingleObject.h">
+      <Filter>헤더 파일\Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -227,9 +224,6 @@
     <ClCompile Include="Objects\ObjectsManager.cpp">
       <Filter>소스 파일\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\MovableObject.cpp">
-      <Filter>소스 파일\Objects</Filter>
-    </ClCompile>
     <ClCompile Include="Objects\BoxObject.cpp">
       <Filter>소스 파일\Objects</Filter>
     </ClCompile>
@@ -278,14 +272,20 @@
     <ClCompile Include="Meshes\PlayerMesh.cpp">
       <Filter>소스 파일\Meshes</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\InstanceComponent.cpp">
-      <Filter>소스 파일\Objects\Components</Filter>
-    </ClCompile>
     <ClCompile Include="Meshes\EnemyMesh.cpp">
       <Filter>소스 파일\Meshes</Filter>
     </ClCompile>
     <ClCompile Include="Meshes\MeshBase.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\EnemyObject.cpp">
+      <Filter>소스 파일\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\InstanceObject.cpp">
+      <Filter>소스 파일\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\SingleObject.cpp">
+      <Filter>소스 파일\Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

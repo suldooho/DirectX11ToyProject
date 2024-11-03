@@ -6,7 +6,7 @@
 
 void SkySphereObject::Initialize()
 {
-	CreateConstantBuffer(); 
+	CreateBuffer(); 
 
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> deferred_context;
 	DeviceManager::GetInstance()->GetD3D11Device()->CreateDeferredContext(0, deferred_context.GetAddressOf());

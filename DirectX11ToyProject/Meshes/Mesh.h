@@ -58,7 +58,7 @@ public:
 	ID3D11Buffer* GetIndexBuffer() const;
 	ID3D11RasterizerState* GetRasterizerState();
 
-	virtual void Initialize(std::string file_name) = 0;
+	virtual void Initialize(const std::string& file_name) = 0;
 };
 
 template<typename T>

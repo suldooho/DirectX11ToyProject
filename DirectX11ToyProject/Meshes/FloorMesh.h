@@ -19,7 +19,7 @@ protected:
 	virtual void CreateIndices() override; 
 
 public:
-	virtual void Initialize(std::string file_name) override;
+	virtual void Initialize(const std::string& file_name) override;
 };
 
 

@@ -2,6 +2,6 @@
 class MeshBase
 {
 public:
-    virtual ~MeshBase() = default;
+    virtual ~MeshBase() = 0;
 };
 

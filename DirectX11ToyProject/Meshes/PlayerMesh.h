@@ -18,6 +18,6 @@ protected:
 	virtual void CreateIndices() override; 
 
 public:
-	void Initialize(std::string file_path);
+	virtual void Initialize(const std::string& file_name) override;
 };
 
