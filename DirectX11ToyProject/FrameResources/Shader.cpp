@@ -42,7 +42,7 @@ void Shader::CreateInputLayoutAndVertexShaderFromFile(LPCWSTR shader_file, LPCST
 
 	if (result != S_OK)
 	{
-		throw std::string("Can Not Input Layout");
+		throw std::string("Can Not Create Input Layout");
 	}
 
 	result = DeviceManager::GetInstance()->GetD3D11Device()->CreateVertexShader(code_blob->GetBufferPointer(), code_blob->GetBufferSize(), nullptr, vertex_shader_.GetAddressOf());

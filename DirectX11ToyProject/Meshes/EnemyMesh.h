@@ -9,7 +9,7 @@ class EnemyMesh : public Mesh<TextureVertex>
 public:
 	std::unique_ptr<TextureComponent> texture_component_;
 
-protected:
+protected: 
 	virtual void CreateVertices() override;
 	virtual void CreateIndices() override;
 

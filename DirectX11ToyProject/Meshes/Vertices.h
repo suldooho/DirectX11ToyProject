@@ -51,3 +51,12 @@ struct PositionInstanceData
 {
 	DirectX::XMFLOAT3 position;
 };
+
+struct EnemyInstanceData
+{
+	DirectX::XMFLOAT4 world0;
+	DirectX::XMFLOAT4 world1;
+	DirectX::XMFLOAT4 world2;
+	DirectX::XMFLOAT4 world3;
+	DirectX::XMFLOAT3 color;
+};

@@ -36,14 +36,16 @@ private:
 	std::unique_ptr<Player> player_;
 	std::unique_ptr<Camera> camera_;
 
-	std::vector<std::unique_ptr<Object>> objects_;
+	std::vector<std::unique_ptr<Object>> forward_rendering_objects_;
+	std::vector<std::unique_ptr<Object>> deferred_rendering_objects_;
 	std::unique_ptr<DeferredRenderingSecondPass> deferred_rendering_second_pass_;
 
 private:
 	void CreateObjects();
 	void ExecuteCommandListPlayer();
-	void ExecuteCommandListObjects();
-	void ExecuteCommandSecondPass();
+	void DeferredRenderingExecuteCommandListObjects();
+	void ForwardRenderingExecuteCommandListObjects();
+	void DeferredRenderingExecuteCommandSecondPass();
 
 	void ClearRenderTargetViewAndDepthStencilView();
 
@@ -63,6 +65,7 @@ public:
 
 	void AnimateObjects();
 	void ExecuteCommandList();
+	DirectX::XMVECTOR GetCameraPosition();
 
 public:
 	const unsigned int kVertexShaderSlotWorldMatrix_ = 0;

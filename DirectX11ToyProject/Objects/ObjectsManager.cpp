@@ -2,6 +2,7 @@
 #include "../framework.h"
 #include "SkySphereObject.h"
 #include "FloorObject.h"
+#include "EnemyObject.h"
 #include "../FrameResources/OutputMerger.h"
 #include "DeferredRenderingSecondPass.h"
 
@@ -11,11 +12,15 @@ void ObjectsManager::CreateObjects()
 {
 	SkySphereObject* sky_sphere_object = new SkySphereObject();
 	sky_sphere_object->Initialize();
-	objects_.emplace_back(sky_sphere_object);
+	deferred_rendering_objects_.emplace_back(sky_sphere_object);
 
 	FloorObject* floor_object = new FloorObject();
 	floor_object->Initialize();
-	objects_.emplace_back(floor_object);
+	deferred_rendering_objects_.emplace_back(floor_object);
+	 
+	EnemyObject* enemy_object = new EnemyObject();
+	enemy_object->Initialize();
+	forward_rendering_objects_.emplace_back(enemy_object);
 }
 
 void ObjectsManager::ExecuteCommandListPlayer()
@@ -27,16 +32,25 @@ void ObjectsManager::ExecuteCommandListPlayer()
 	player_->ExecuteCommandList();
 }
 
-void ObjectsManager::ExecuteCommandListObjects()
+void ObjectsManager::DeferredRenderingExecuteCommandListObjects()
 {
-	for (unsigned int i = 0; i < objects_.size(); ++i)
+	for (unsigned int i = 0; i < deferred_rendering_objects_.size(); ++i)
 	{
-		objects_[i].get()->UpdateBuffer();
-		objects_[i].get()->ExecuteCommandList();
+		deferred_rendering_objects_[i].get()->UpdateBuffer();
+		deferred_rendering_objects_[i].get()->ExecuteCommandList();
 	}
 }
 
-void ObjectsManager::ExecuteCommandSecondPass()
+void ObjectsManager::ForwardRenderingExecuteCommandListObjects()
+{
+	for (unsigned int i = 0; i < forward_rendering_objects_.size(); ++i)
+	{
+		forward_rendering_objects_[i].get()->UpdateBuffer();
+		forward_rendering_objects_[i].get()->ExecuteCommandList();
+	}
+}
+
+void ObjectsManager::DeferredRenderingExecuteCommandSecondPass()
 {
 	deferred_rendering_second_pass_->ExecuteCommandList();
 }
@@ -149,6 +163,11 @@ void ObjectsManager::AnimateObjects()
 	MoveCamera(delta_time);
 	RotateCamera(delta_time);
 	SetPlayerRotationAndPosition(camera_->GetWorldMatrix());
+
+	for (auto& instance : forward_rendering_objects_)
+	{
+		instance->AnimateObject();
+	}
 }
 
 void ObjectsManager::ExecuteCommandList()
@@ -156,8 +175,14 @@ void ObjectsManager::ExecuteCommandList()
 	ClearRenderTargetViewAndDepthStencilView();
 
 	ExecuteCommandListPlayer();
-	ExecuteCommandListObjects();
-	ExecuteCommandSecondPass();
+	DeferredRenderingExecuteCommandListObjects();
+	DeferredRenderingExecuteCommandSecondPass();
+	ForwardRenderingExecuteCommandListObjects();
 
 	SwapChainManager::GetInstance()->GetDXGISwapChain()->Present(0, 0);
+}
+
+DirectX::XMVECTOR ObjectsManager::GetCameraPosition()
+{
+	return camera_->GetPosition();
 }

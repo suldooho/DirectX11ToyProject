@@ -13,6 +13,7 @@ protected:
 public:
 	virtual void Initialize() = 0;
 	virtual void UpdateBuffer() = 0;
+	virtual void AnimateObject();
 	void ExecuteCommandList();
 };
 

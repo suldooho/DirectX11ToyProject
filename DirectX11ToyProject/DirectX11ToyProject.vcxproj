@@ -141,6 +141,7 @@
     <ClInclude Include="DirectX11ToyProject.h" />
     <ClInclude Include="FrameResources\BumpMappingShader.h" />
     <ClInclude Include="FrameResources\ColorShader.h" />
+    <ClInclude Include="FrameResources\EnemyShader.h" />
     <ClInclude Include="FrameResources\FloorShader.h" />
     <ClInclude Include="FrameResources\FrameResource.h" />
     <ClInclude Include="FrameResources\FrameResourcesManager.h" />
@@ -185,6 +186,7 @@
     <ClCompile Include="DirectX11ToyProject.cpp" />
     <ClCompile Include="FrameResources\BumpMappingShader.cpp" />
     <ClCompile Include="FrameResources\ColorShader.cpp" />
+    <ClCompile Include="FrameResources\EnemyShader.cpp" />
     <ClCompile Include="FrameResources\FloorShader.cpp" />
     <ClCompile Include="FrameResources\FrameResource.cpp" />
     <ClCompile Include="FrameResources\FrameResourcesManager.cpp" />
@@ -231,6 +233,12 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="HLSL\Color.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="HLSL\Enemy.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
