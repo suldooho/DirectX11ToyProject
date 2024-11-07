@@ -69,7 +69,7 @@ void ObjectsManager::ClearRenderTargetViewAndDepthStencilView()
 	DeviceManager::GetInstance()->GetD3D11ImmediateContext()->ClearRenderTargetView(output_merger->GetRenderTargetView("GBufferDiffuseView"), clear_color);
 	DeviceManager::GetInstance()->GetD3D11ImmediateContext()->ClearRenderTargetView(output_merger->GetRenderTargetView("GBufferViewDirectionView"), clear_color);
 	DeviceManager::GetInstance()->GetD3D11ImmediateContext()->ClearRenderTargetView(output_merger->GetRenderTargetView("BackBufferView"), clear_color);
-	DeviceManager::GetInstance()->GetD3D11ImmediateContext()->ClearDepthStencilView(output_merger->GetDepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0.0f); 
+	DeviceManager::GetInstance()->GetD3D11ImmediateContext()->ClearDepthStencilView(output_merger->GetDepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0); 
 }
 
 void ObjectsManager::MoveCamera(float delta_time)

@@ -117,7 +117,7 @@ void OutputMerger::CreateDepthStencilView(unsigned int client_width, unsigned in
 	depth_stencil_buffer_desc.MiscFlags = 0;
 
 	DeviceManager::GetInstance()->GetD3D11Device()->CreateTexture2D(&depth_stencil_buffer_desc, nullptr, depth_stencil_buffer_.GetAddressOf());
-	
+	 
 	HRESULT result = DeviceManager::GetInstance()->GetD3D11Device()->CreateDepthStencilView(depth_stencil_buffer_.Get(), nullptr, depth_stencil_view_.GetAddressOf());
 
 	if (result != S_OK)
@@ -136,46 +136,111 @@ void OutputMerger::CreateViewPort(unsigned int client_width, unsigned int client
 	viewport_.get()->MinDepth = 0.0f;
 	viewport_.get()->MaxDepth = 1.0f;
 }
-
-void OutputMerger::CreateSecondPassDepthStencilState()
+ 
+void OutputMerger::CreateDepthStencilStates()
 {
 	// 깊이 스텐실 상태 설명
 	D3D11_DEPTH_STENCIL_DESC depth_stencil_desc;
 	ZeroMemory(&depth_stencil_desc, sizeof(D3D11_DEPTH_STENCIL_DESC));
 	depth_stencil_desc.DepthEnable = FALSE;
-	depth_stencil_desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	depth_stencil_desc.DepthFunc = D3D11_COMPARISON_ALWAYS; // 이 설정은 무시되지만 기본값으로 설정
+	depth_stencil_desc.StencilEnable = FALSE;
 
-	// 스텐실 테스트 활성화
-	depth_stencil_desc.StencilEnable = FALSE; // TEST 깊이 스텐실 정독하기
-	depth_stencil_desc.StencilReadMask = 0xFF;       // 모든 비트 읽기 허용
-	depth_stencil_desc.StencilWriteMask = 0xFF;       
-	 
-	depth_stencil_desc.FrontFace.StencilFunc = D3D11_COMPARISON_LESS_EQUAL;
-	depth_stencil_desc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	depth_stencil_desc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	depth_stencil_desc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-
-	depth_stencil_desc.BackFace.StencilFunc = D3D11_COMPARISON_LESS_EQUAL;
-	depth_stencil_desc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	depth_stencil_desc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	depth_stencil_desc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-
-	// 깊이 스텐실 상태 객체 생성
 	ID3D11DepthStencilState* depth_stencil_state = nullptr;
 	HRESULT result = DeviceManager::GetInstance()->GetD3D11Device()->CreateDepthStencilState(&depth_stencil_desc, &depth_stencil_state);
-	 
+
 	if (result != S_OK)
 	{
 		throw std::string("Can Not Create Depth Stencil State");
 	}
-
 	depth_stencil_state_container_["SecondPassState"] = depth_stencil_state;
+
+
+	D3D11_DEPTH_STENCIL_DESC depth_stencil_desc2;
+	ZeroMemory(&depth_stencil_desc2, sizeof(D3D11_DEPTH_STENCIL_DESC));
+	depth_stencil_desc2.DepthEnable = true;
+	depth_stencil_desc2.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	depth_stencil_desc2.DepthFunc = D3D11_COMPARISON_LESS;
+
+	depth_stencil_desc2.StencilEnable = true;
+	depth_stencil_desc2.StencilReadMask = 0x01;       // 모든 비트 읽기 허용
+	depth_stencil_desc2.StencilWriteMask = 0x01;
+
+	depth_stencil_desc2.FrontFace.StencilFunc = D3D11_COMPARISON_GREATER;
+	depth_stencil_desc2.FrontFace.StencilPassOp = D3D11_STENCIL_OP_INCR;
+	depth_stencil_desc2.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depth_stencil_desc2.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+
+	depth_stencil_desc2.BackFace.StencilFunc = D3D11_COMPARISON_GREATER;
+	depth_stencil_desc2.BackFace.StencilPassOp = D3D11_STENCIL_OP_ZERO;
+	depth_stencil_desc2.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depth_stencil_desc2.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+
+	// 깊이 스텐실 상태 객체 생성
+	ID3D11DepthStencilState* depth_stencil_state2 = nullptr;
+	result = DeviceManager::GetInstance()->GetD3D11Device()->CreateDepthStencilState(&depth_stencil_desc2, &depth_stencil_state2);
+
+	if (result != S_OK)
+	{
+		throw std::string("Can Not Create Depth Stencil State");
+	}
+	depth_stencil_state_container_["FirstPassState"] = depth_stencil_state2;
+
+
+	D3D11_DEPTH_STENCIL_DESC depth_stencil_desc3;
+	ZeroMemory(&depth_stencil_desc3, sizeof(D3D11_DEPTH_STENCIL_DESC));
+	depth_stencil_desc3.DepthEnable = true;
+	depth_stencil_desc3.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	depth_stencil_desc3.DepthFunc = D3D11_COMPARISON_LESS;
+
+	depth_stencil_desc3.StencilEnable = true;
+	depth_stencil_desc3.StencilReadMask = 0x01;
+	depth_stencil_desc3.StencilWriteMask = 0x01;
+
+	depth_stencil_desc3.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;
+	depth_stencil_desc3.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	depth_stencil_desc3.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depth_stencil_desc3.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+
+	depth_stencil_desc3.BackFace.StencilFunc = D3D11_COMPARISON_EQUAL;
+	depth_stencil_desc3.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	depth_stencil_desc3.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depth_stencil_desc3.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+
+	// 깊이 스텐실 상태 객체 생성
+	ID3D11DepthStencilState* depth_stencil_state3 = nullptr;
+	result = DeviceManager::GetInstance()->GetD3D11Device()->CreateDepthStencilState(&depth_stencil_desc3, &depth_stencil_state3);
+
+	if (result != S_OK)
+	{
+		throw std::string("Can Not Create Depth Stencil State");
+	}
+	depth_stencil_state_container_["ForwardPassState"] = depth_stencil_state3;
 }
 
-void OutputMerger::CreateDepthStencilStates()
+void OutputMerger::CreateBlendStates()
 {
-	CreateSecondPassDepthStencilState();
+	D3D11_BLEND_DESC blend_desc;
+	ZeroMemory(&blend_desc, sizeof(D3D11_BLEND_DESC));
+	blend_desc.AlphaToCoverageEnable = false;
+	blend_desc.IndependentBlendEnable = false;
+	blend_desc.RenderTarget[0].BlendEnable = true;
+	blend_desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	blend_desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	blend_desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	blend_desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	blend_desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	blend_desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	blend_desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+	ID3D11BlendState* blend_state = nullptr;
+	HRESULT result = DeviceManager::GetInstance()->GetD3D11Device()->CreateBlendState(&blend_desc, &blend_state);
+
+	if (result != S_OK)
+	{
+		throw std::string("Can Not Blend State");
+	}
+	blend_state_container_["Transparent"] = blend_state; 
+
 }
 
 void OutputMerger::Initialize(unsigned int client_width, unsigned int client_height)
@@ -184,6 +249,7 @@ void OutputMerger::Initialize(unsigned int client_width, unsigned int client_hei
 	CreateDepthStencilView(client_width, client_height);
 	CreateViewPort(client_width, client_height);
 	CreateDepthStencilStates();
+	CreateBlendStates();
 } 
 
 
@@ -225,6 +291,16 @@ ID3D11DepthStencilState* OutputMerger::GetDepthStencilState(std::string state_na
 	}
 
 	throw std::string("Depth Stencil State Name Error");
+}
+
+ID3D11BlendState* OutputMerger::GetBlendState(std::string state_name)
+{
+	if (blend_state_container_.find(state_name) != blend_state_container_.end())
+	{
+		return blend_state_container_[state_name].Get();
+	}
+
+	throw std::string("Blend State Name Error");
 }
 
 ID3D11DepthStencilView* OutputMerger::GetDepthStencilView() const

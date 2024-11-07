@@ -3,6 +3,7 @@
 #include "../Meshes/EnemyMesh.h"
 #include "../FrameResources/EnemyShader.h"
 #include "../FrameResources/OutputMerger.h"
+#include <algorithm>
 
 void EnemyObject::Initialize()
 {
@@ -76,7 +77,10 @@ void EnemyObject::Initialize()
 	deferred_context->RSSetViewports(1, output_merger->GetViewport());
 	deferred_context->RSSetState(enemy_mesh->GetRasterizerState());
 	ID3D11RenderTargetView* back_buffer_view = output_merger->GetRenderTargetView("BackBufferView");
-	deferred_context->OMSetRenderTargets(1, &back_buffer_view, nullptr);
+	deferred_context->OMSetRenderTargets(1, &back_buffer_view, output_merger->GetDepthStencilView());
+	deferred_context->OMSetDepthStencilState(output_merger->GetDepthStencilState("ForwardPassState"), 0x00);
+	float blendFactors[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	deferred_context->OMSetBlendState(output_merger->GetBlendState("Transparent"), blendFactors, 0xffffffff);
 	deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstance()->GetCameraConstantBuffer());
 	deferred_context->PSSetShaderResources(0, 1, enemy_mesh->texture_component_->GetTextureShaderResourceView("DiffuseView")); 
 	deferred_context->PSSetSamplers(0, 1, enemy_mesh->texture_component_->GetSampler());
@@ -87,6 +91,20 @@ void EnemyObject::Initialize()
 
 void EnemyObject::AnimateObject()
 {
+	// 거리 계산을 위한 람다 함수 정의
+	auto distanceFromCamera = [&](const EnemyInstanceData& instance) {
+		DirectX::XMFLOAT3 instancePosition = { instance.world3.x, instance.world3.y, instance.world3.z };
+		DirectX::XMVECTOR instancePosVec = DirectX::XMLoadFloat3(&instancePosition);
+		DirectX::XMVECTOR distanceVec = DirectX::XMVectorSubtract(ObjectsManager::GetInstance()->GetCameraPosition(), instancePosVec);
+		return DirectX::XMVectorGetX(DirectX::XMVector3Length(distanceVec));
+		};
+
+	// 거리 기준으로 정렬: 멀리 있는 객체가 0번째 인덱스에 오도록 내림차순 정렬
+	std::sort(instances_->begin(), instances_->end(),
+		[&](const EnemyInstanceData& a, const EnemyInstanceData& b) {
+			return distanceFromCamera(a) > distanceFromCamera(b);
+		});
+
 	for (auto& instance : *instances_)
 	{
 		// 인스턴스의 위치 추출 (world3은 위치를 포함)
@@ -109,9 +127,6 @@ void EnemyObject::AnimateObject()
 		// 월드 행렬의 행을 업데이트하여 카메라를 향하게 설정
 		DirectX::XMStoreFloat4(&instance.world0, DirectX::XMVectorSetW(rightDir, 0.0f)); // X축 (right 방향)
 		DirectX::XMStoreFloat4(&instance.world1, DirectX::XMVectorSetW(upDir, 0.0f));   // Y축 (up 방향)
-		DirectX::XMStoreFloat4(&instance.world2, DirectX::XMVectorSetW(lookAtDir, 0.0f)); // Z축 (forward 방향)
-
-		// world3은 기존 위치를 유지합니다.
-		// instance.world3는 변하지 않으므로 그대로 둡니다.
+		DirectX::XMStoreFloat4(&instance.world2, DirectX::XMVectorSetW(lookAtDir, 0.0f)); // Z축 (forward 방향) 
 	}
 }

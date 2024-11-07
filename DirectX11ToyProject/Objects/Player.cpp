@@ -52,6 +52,7 @@ void Player::Initialize()
 		output_merger->GetRenderTargetView("GBufferViewDirectionView")
 	};
 	deferred_context->OMSetRenderTargets(4, render_target_views, output_merger->GetDepthStencilView());
+	deferred_context->OMSetDepthStencilState(output_merger->GetDepthStencilState("FirstPassState"), 0x01);
 	deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kVertexShaderSlotWorldMatrix_, 1, world_matrix_constant_buffer_.GetAddressOf());
 	deferred_context->VSSetConstantBuffers(ObjectsManager::GetInstance()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstance()->GetCameraConstantBuffer());
 	deferred_context->PSSetShaderResources(0, 1, player_mesh->texture_component_->GetTextureShaderResourceView("DiffuseView"));

@@ -77,6 +77,7 @@ void FloorObject::Initialize()
 		output_merger->GetRenderTargetView("GBufferViewDirectionView")
 	};
 	deferred_context->OMSetRenderTargets(4, render_target_views, output_merger->GetDepthStencilView());
+	deferred_context->OMSetDepthStencilState(output_merger->GetDepthStencilState("FirstPassState"), 0x01);
 	deferred_context->HSSetConstantBuffers(ObjectsManager::GetInstance()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstance()->GetCameraConstantBuffer());
 	deferred_context->DSSetConstantBuffers(ObjectsManager::GetInstance()->kCameraShaderSlotWorldMatrix_, 1, ObjectsManager::GetInstance()->GetCameraConstantBuffer());
 	deferred_context->PSSetShaderResources(0, 1, floor_mesh->texture_component_->GetTextureShaderResourceView("DiffuseView"));

@@ -45,7 +45,7 @@ void DeferredRenderingSecondPass::Initialize()
 	deferred_context->PSSetShaderResources(0, 1, LightsManager::GetInstance()->GetLightShaderResourceView("PointLightView"));
 	deferred_context->PSSetShaderResources(1, 1, LightsManager::GetInstance()->GetLightShaderResourceView("SpotLightView"));
 	deferred_context->PSSetSamplers(0, 1, player_mesh->texture_component_->GetSampler());
-	deferred_context->OMSetDepthStencilState(output_merger->GetDepthStencilState("SecondPassState"), 1);
+	deferred_context->OMSetDepthStencilState(output_merger->GetDepthStencilState("SecondPassState"), 0);
 	ID3D11RenderTargetView* back_buffer_view = output_merger->GetRenderTargetView("BackBufferView");
 	deferred_context->OMSetRenderTargets(1, &back_buffer_view, output_merger->GetDepthStencilView());
 	deferred_context->Draw(6, 0);

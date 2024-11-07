@@ -42,12 +42,7 @@ PixelInput main(VertexInput input)
 float4 PS(PixelInput input) : SV_Target
 { 
     float4 alpha = DiffuseMap.Sample(Sampler, input.texcoord);
+     
     
-    
-    if (0.0f <= alpha.a && alpha.a <= 0.0001f)
-    {
-        discard;
-    }
-      
-    return float4(input.color * alpha.a, alpha.a);
+    return float4(input.color, alpha.a);
 }

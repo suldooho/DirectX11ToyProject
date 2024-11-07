@@ -11,6 +11,7 @@ private:
 	std::unordered_map<std::string, Microsoft::WRL::ComPtr<class ID3D11RenderTargetView>> render_target_view_container_; // position normal diffuse view_direction  
 	std::unordered_map<std::string, Microsoft::WRL::ComPtr<class ID3D11ShaderResourceView>> shader_resource_view_container_; // position normal diffuse view_direction  
 	std::unordered_map<std::string, Microsoft::WRL::ComPtr<class ID3D11DepthStencilState>> depth_stencil_state_container_;
+	std::unordered_map<std::string, Microsoft::WRL::ComPtr<class ID3D11BlendState>> blend_state_container_;
 
 	Microsoft::WRL::ComPtr<class ID3D11Texture2D> depth_stencil_buffer_;  
 	Microsoft::WRL::ComPtr<class ID3D11DepthStencilView> depth_stencil_view_;
@@ -29,9 +30,9 @@ private:
 	void CreateDepthStencilView(unsigned int client_width, unsigned int client_height);
 	void CreateViewPort(unsigned int client_width, unsigned int client_height);
 
-private:
-	void CreateSecondPassDepthStencilState();
+private: 
 	void CreateDepthStencilStates();
+	void CreateBlendStates();
 
 public:
 	void Initialize(unsigned int client_width, unsigned int client_height);
@@ -41,6 +42,7 @@ public:
 	class ID3D11RenderTargetView* GetRenderTargetView(std::string view_name);
 	class ID3D11ShaderResourceView* GetShaderResourceView(std::string view_name);
 	class ID3D11DepthStencilState* GetDepthStencilState(std::string state_name);
+	class ID3D11BlendState* GetBlendState(std::string state_name);
 	 
 	class ID3D11DepthStencilView* GetDepthStencilView() const;
 	class D3D11_VIEWPORT* GetViewport() const;
