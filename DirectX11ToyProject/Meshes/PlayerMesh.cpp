@@ -22,3 +22,13 @@ void PlayerMesh::Initialize(const std::string& file_name)
     texture_component_->LoadTexture(texture_component_->GetAbsolutePathPath(file_name) + "/Normal.png");
 
 }
+ 
+void PlayerMesh::CreateRasterizerState()
+{
+    D3D11_RASTERIZER_DESC rasterizer_desc;
+    ZeroMemory(&rasterizer_desc, sizeof(D3D11_RASTERIZER_DESC));
+    rasterizer_desc.CullMode = D3D11_CULL_BACK;
+    rasterizer_desc.FillMode = D3D11_FILL_SOLID;
+    rasterizer_desc.FrontCounterClockwise = false;
+    DeviceManager::GetInstance()->GetD3D11Device()->CreateRasterizerState(&rasterizer_desc, rasterizer_state_.GetAddressOf());
+}

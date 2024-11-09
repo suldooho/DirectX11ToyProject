@@ -3,8 +3,10 @@
 #include "SkySphereObject.h"
 #include "FloorObject.h"
 #include "EnemyObject.h"
+#include "BulletObject.h"
 #include "../FrameResources/OutputMerger.h"
 #include "DeferredRenderingSecondPass.h"
+#include "../Meshes/Vertices.h" 
 
 ObjectsManager* ObjectsManager::instance_ = nullptr;
 
@@ -17,15 +19,18 @@ void ObjectsManager::CreateObjects()
 	FloorObject* floor_object = new FloorObject();
 	floor_object->Initialize();
 	deferred_rendering_objects_.emplace_back(floor_object);
-	 
+
+	BulletObject* bullet_object = new BulletObject();
+	bullet_object->Initialize();
+	forward_rendering_objects_.emplace_back(bullet_object);
+
 	EnemyObject* enemy_object = new EnemyObject();
 	enemy_object->Initialize();
-	forward_rendering_objects_.emplace_back(enemy_object);
+	forward_rendering_objects_.emplace_back(enemy_object); 
 }
 
 void ObjectsManager::ExecuteCommandListPlayer()
 {
-	camera_->UpdateViewMatrix();
 	camera_->UpdateConstantBuffer();
 
 	player_->UpdateBuffer();
@@ -117,8 +122,72 @@ void ObjectsManager::SetPlayerRotationAndPosition(DirectX::FXMMATRIX camera_worl
 	player_->SetRotationAndPosition(camera_world_matrix);
 }
 
+DirectX::XMMATRIX ObjectsManager::ScreenToWorld()
+{
+	float clip_x = (client_width_ / 2.0f) / client_width_ * 2.0f - 1.0f;
+	float clip_y = 1.0f - (client_height_ / 2.0f) / client_height_ * 2.0f;
+	DirectX::XMVECTOR ray_clip = DirectX::XMVectorSet(clip_x, clip_y, 0.00f, 1.0f); 
+
+
+	// 역투영 변환
+	DirectX::XMMATRIX inv_view_projection = DirectX::XMMatrixInverse(nullptr, camera_->GetViewMatrix() * camera_->GetProjectionMatrix());
+	DirectX::XMVECTOR ray_world = DirectX::XMVector3TransformCoord(ray_clip, inv_view_projection);
+	DirectX::XMMATRIX camera_world = camera_->GetWorldMatrix();
+
+	DirectX::XMMATRIX bullet_world;
+	bullet_world.r[0] = camera_world.r[0];
+	bullet_world.r[1] = camera_world.r[1];
+	bullet_world.r[2] = camera_world.r[2]; 
+
+
+	DirectX::XMVECTOR right = DirectX::XMVectorScale(bullet_world.r[0], 1);
+	ray_world = DirectX::XMVectorAdd(ray_world, right);
+	DirectX::XMVECTOR up = DirectX::XMVectorScale(bullet_world.r[1], -0.5f);
+	ray_world = DirectX::XMVectorAdd(ray_world, up);
+	DirectX::XMVECTOR look = DirectX::XMVectorScale(bullet_world.r[2], 1.0f);
+	ray_world = DirectX::XMVectorAdd(ray_world, look);
+
+	bullet_world.r[3] = ray_world;
+
+	return bullet_world;
+}
+
+void ObjectsManager::SetBulletPosition()
+{ 
+	if (mouse_click_)
+	{
+		  
+		BulletObject* bullet_objects = dynamic_cast<BulletObject*>(forward_rendering_objects_[0].get());
+		if (bullet_objects == nullptr)
+		{
+			throw std::string("ParticleObject dynamic_cast Fail");
+		} 
+
+		// 비활성화된 총알을 찾는다.
+		for (unsigned int i = 0; i < bullet_objects->GetBulletCount(); ++i)
+		{
+			if (!bullet_objects->GetActiveOfIndex(i))
+			{
+				DirectX::XMMATRIX new_bullet_world = ScreenToWorld(); 
+				bullet_objects->SetActiveOfIndex(i); 
+				BulletInstanceData* bullet = bullet_objects->GetBulletDataOfIndex(i); 
+				 
+				DirectX::XMStoreFloat3(&bullet->position, new_bullet_world.r[3]);
+				DirectX::XMStoreFloat3(&bullet->prevPosition, new_bullet_world.r[3]);
+
+				break;
+			}
+		}
+		 
+		mouse_click_ = false;
+	}
+}
+
 void ObjectsManager::Initialize(float client_width, float client_height)
 {
+	client_width_ = static_cast<int>(client_width);
+	client_height_ = static_cast<int>(client_height);
+
 	camera_direction_ = 0;
 	camera_yaw_ = 0.0f;
 	camera_pitch_ = 0.0f;
@@ -149,6 +218,11 @@ void ObjectsManager::SetRotationValue(float yaw, float pitch)
 {
 	camera_yaw_ = yaw *  kRotationSensitivity_;
 	camera_pitch_ = pitch * kRotationSensitivity_;
+}
+
+void ObjectsManager::PushMouseLeftButton()
+{
+	mouse_click_ = true; 
 } 
 
 ID3D11Buffer** ObjectsManager::GetCameraConstantBuffer() const
@@ -162,11 +236,18 @@ void ObjectsManager::AnimateObjects()
 	 
 	MoveCamera(delta_time);
 	RotateCamera(delta_time);
-	SetPlayerRotationAndPosition(camera_->GetWorldMatrix());
-
-	for (auto& instance : forward_rendering_objects_)
+	SetPlayerRotationAndPosition(camera_->GetWorldMatrix()); 
+	camera_->UpdateViewMatrix();
+	SetBulletPosition();
+	 
+	for (const auto& object : deferred_rendering_objects_)
 	{
-		instance->AnimateObject();
+		object->AnimateObject();
+	}
+
+	for (const auto& object : forward_rendering_objects_)
+	{
+		object->AnimateObject();
 	}
 }
 
@@ -185,4 +266,19 @@ void ObjectsManager::ExecuteCommandList()
 DirectX::XMVECTOR ObjectsManager::GetCameraPosition()
 {
 	return camera_->GetPosition();
+}
+
+DirectX::XMVECTOR ObjectsManager::GetCameraLook()
+{
+	return camera_->GetLook();
+}
+
+DirectX::XMMATRIX ObjectsManager::GetCameraView()
+{
+	return DirectX::XMMATRIX();
+}
+
+DirectX::XMMATRIX ObjectsManager::GetCameraProjection()
+{
+	return DirectX::XMMATRIX();
 }

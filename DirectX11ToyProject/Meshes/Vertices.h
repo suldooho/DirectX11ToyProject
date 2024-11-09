@@ -1,6 +1,11 @@
 #pragma once
 #include <DirectXMath.h>
 
+struct NullVertex
+{
+
+};
+
 struct ColorVertex
 {
 	DirectX::XMFLOAT3 position;
@@ -58,5 +63,12 @@ struct EnemyInstanceData
 	DirectX::XMFLOAT4 world1;
 	DirectX::XMFLOAT4 world2;
 	DirectX::XMFLOAT4 world3;
+	DirectX::XMFLOAT3 color;
+};
+
+struct BulletInstanceData
+{ 
+	DirectX::XMFLOAT3 position;
+	DirectX::XMFLOAT3 prevPosition;
 	DirectX::XMFLOAT3 color;
 };

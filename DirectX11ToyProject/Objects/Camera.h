@@ -53,5 +53,7 @@ public:
 	DirectX::XMVECTOR GetPosition() const;
 
 	DirectX::XMMATRIX GetWorldMatrix();
+	DirectX::XMMATRIX GetViewMatrix();
+	DirectX::XMMATRIX GetProjectionMatrix();
 };
 

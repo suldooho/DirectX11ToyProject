@@ -6,10 +6,10 @@ class App
 private:
 	unsigned int window_width_;
 	unsigned int window_height_;
-	HWND hwnd_;
+	HWND hwnd_; 
 
 public:
-	App();
+	App(); 
 
 public:
 	void Initialize(unsigned int window_width, unsigned int window_height, HWND hwnd);

@@ -146,3 +146,13 @@ DirectX::XMMATRIX Camera::GetWorldMatrix()
 {
 	return DirectX::XMLoadFloat4x4A(&world_matrix_);
 }
+
+DirectX::XMMATRIX Camera::GetViewMatrix()
+{
+	return DirectX::XMLoadFloat4x4A(&camera_matrix_.view_matrix);
+}
+
+DirectX::XMMATRIX Camera::GetProjectionMatrix()
+{
+	return DirectX::XMLoadFloat4x4A(&camera_matrix_.projection_matrix);
+}

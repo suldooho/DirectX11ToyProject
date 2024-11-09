@@ -16,7 +16,7 @@ public: // Component´Â public
 protected: 
 	virtual void CreateVertices() override;
 	virtual void CreateIndices() override; 
-
+	virtual void CreateRasterizerState() override;
 public:
 	virtual void Initialize(const std::string& file_name) override;
 };

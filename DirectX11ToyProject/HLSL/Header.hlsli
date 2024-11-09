@@ -5,27 +5,20 @@ static const float kDirectionalLightSpecularPower = 100.0f;
 static const float kPointLightSpecularPower = 1.0f;
 static const float kSpotLightSpecularPower = 1.0f;
 static const float kMinTessFactor = 1.0f;
-static const float kMaxTessDistance = 50.0f;
-static const uint kNumInstances = 25;
+static const float kMaxTessDistance = 50.0f; 
 
 cbuffer WorldMatrix : register(b0)
 {
     matrix World : packoffset(c0);
-};
+}; 
 
-cbuffer InstanceBuffer : register(b0)  
-{
-    matrix InstanceWorldArray[kNumInstances];
-};
-
- 
 cbuffer ViewProjectionMatrix : register(b1)
 {
     matrix View : packoffset(c0);
     matrix Projection : packoffset(c4);
     float3 CameraPosition : packoffset(c8); 
-}; 
-  
+};  
+
 struct PointLight
 {
     float4 color;

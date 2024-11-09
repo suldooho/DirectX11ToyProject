@@ -28,6 +28,13 @@ public:
 	}
 
 private:
+	int client_width_;
+	int client_height_;
+
+	bool mouse_click_;
+	int mouse_x_position_;
+	int mouse_y_position_;
+
 	unsigned int camera_direction_;
 	float camera_yaw_;
 	float camera_pitch_;
@@ -52,6 +59,8 @@ private:
 	void MoveCamera(float delta_time);
 	void RotateCamera(float delta_time);
 	void SetPlayerRotationAndPosition(DirectX::FXMMATRIX camera_world_matrix);
+	DirectX::XMMATRIX ScreenToWorld();
+	void SetBulletPosition();
 
 public:
 	void Initialize(float client_width, float client_height);
@@ -60,12 +69,17 @@ public:
 	void ReleaseButton(unsigned int direction);
 	void SetRotationValue(float yaw, float pitch);
 
+	void PushMouseLeftButton();
+
 public:
 	class ID3D11Buffer** GetCameraConstantBuffer() const;
 
 	void AnimateObjects();
 	void ExecuteCommandList();
 	DirectX::XMVECTOR GetCameraPosition();
+	DirectX::XMVECTOR GetCameraLook();
+	DirectX::XMMATRIX GetCameraView();
+	DirectX::XMMATRIX GetCameraProjection();
 
 public:
 	const unsigned int kVertexShaderSlotWorldMatrix_ = 0;

@@ -29,20 +29,13 @@ void EnemyObject::Initialize()
 			instance.world3 = DirectX::XMFLOAT4(x, y, z, 1.0f); // 위치는 world3에 설정
 
 			// 랜덤 색상 값 설정 (0.0f ~ 1.0f 사이의 값으로 설정)
-			instance.color = DirectX::XMFLOAT3(
-				0.0f, // R
-				static_cast<float>(rand()) / RAND_MAX, // G
-				static_cast<float>(rand()) / RAND_MAX  // B
-			);
+			instance.color = DirectX::XMFLOAT3(static_cast<float>(rand()) / RAND_MAX, static_cast<float>(rand()) / RAND_MAX, static_cast<float>(rand()) / RAND_MAX);
 		}
 
 		return instances; // unique_ptr<std::vector<WorldInstanceData>> 반환
-		});
+		}); 
 
-
-	CreateBuffer();
-
-
+	CreateBuffer(); 
 
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> deferred_context;
 	DeviceManager::GetInstance()->GetD3D11Device()->CreateDeferredContext(0, deferred_context.GetAddressOf());

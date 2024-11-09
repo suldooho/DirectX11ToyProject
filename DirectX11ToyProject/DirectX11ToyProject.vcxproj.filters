@@ -177,6 +177,15 @@
     <ClInclude Include="FrameResources\EnemyShader.h">
       <Filter>헤더 파일\FrameResources</Filter>
     </ClInclude>
+    <ClInclude Include="FrameResources\BulletShader.h">
+      <Filter>헤더 파일\FrameResources</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\BulletObject.h">
+      <Filter>헤더 파일\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshes\BulletMesh.h">
+      <Filter>헤더 파일\Meshes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX11ToyProject.cpp">
@@ -293,6 +302,15 @@
     <ClCompile Include="FrameResources\EnemyShader.cpp">
       <Filter>소스 파일\FrameResources</Filter>
     </ClCompile>
+    <ClCompile Include="FrameResources\BulletShader.cpp">
+      <Filter>소스 파일\FrameResources</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\BulletObject.cpp">
+      <Filter>소스 파일\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshes\BulletMesh.cpp">
+      <Filter>소스 파일\Meshes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectX11ToyProject.rc">
@@ -324,6 +342,9 @@
       <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="HLSL\Enemy.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="HLSL\Bullet.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
   </ItemGroup>

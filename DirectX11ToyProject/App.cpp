@@ -1,6 +1,7 @@
 #include "App.h"
 #include "Objects/ObjectsManager.h"
-#include "Objects/LightsManager.h"
+#include "Objects/LightsManager.h" 
+#include <windowsx.h>
 
 App::App() : window_width_(NULL), window_height_(NULL), hwnd_(NULL)
 {  
@@ -28,7 +29,9 @@ void App::OnProcessingMouseMessage(HWND hwnd, UINT message_id, WPARAM wparam, LP
 
 	switch (message_id)
 	{
-	case WM_LBUTTONDOWN:
+	case WM_LBUTTONDOWN: 
+		ObjectsManager::GetInstance()->PushMouseLeftButton();
+		break;
 	case WM_RBUTTONDOWN:
 		break;
 	case WM_LBUTTONUP:

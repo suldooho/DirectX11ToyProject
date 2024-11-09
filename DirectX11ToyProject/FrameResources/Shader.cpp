@@ -97,6 +97,28 @@ void Shader::CreateDomainShaderFromFile(LPCWSTR shader_file, LPCSTR entry_point)
 	}
 }
 
+void Shader::CreateGeometryShaderFromFile(LPCWSTR shader_file, LPCSTR entry_point)
+{
+	IncludeHandler include_handler;
+	Microsoft::WRL::ComPtr<ID3DBlob> code_blob = nullptr;
+	Microsoft::WRL::ComPtr<ID3DBlob> error_blob = nullptr;
+
+	HRESULT result = D3DCompileFromFile(shader_file, nullptr, &include_handler, entry_point, "gs_5_0", 0, 0, code_blob.GetAddressOf(), error_blob.GetAddressOf());
+
+	if (result != S_OK)
+	{
+		OutputDebugStringA((char*)error_blob->GetBufferPointer());
+		throw std::string("Can Not Compile Geometry Shader");
+	}
+
+	result = DeviceManager::GetInstance()->GetD3D11Device()->CreateGeometryShader(code_blob->GetBufferPointer(), code_blob->GetBufferSize(), nullptr, geometry_shader_.GetAddressOf());
+
+	if (result != S_OK)
+	{
+		throw std::string("Can Not Create Geometry Shader");
+	}
+}
+
 void Shader::CreatePixelShaderFromFile(LPCWSTR shader_file, LPCSTR entry_point)
 {
 	IncludeHandler include_handler;
@@ -136,6 +158,11 @@ ID3D11HullShader* Shader::GetHullShader() const
 ID3D11DomainShader* Shader::GetDomainShader() const
 {
 	return domain_shader_.Get();
+}
+
+ID3D11GeometryShader* Shader::GetGeometryShader() const
+{
+	return geometry_shader_.Get();
 }
 
 ID3D11PixelShader* Shader::GetPixelShader() const

@@ -139,6 +139,7 @@
     <ClInclude Include="Core\SwapChainManager.h" />
     <ClInclude Include="Core\TimerManager.h" />
     <ClInclude Include="DirectX11ToyProject.h" />
+    <ClInclude Include="FrameResources\BulletShader.h" />
     <ClInclude Include="FrameResources\BumpMappingShader.h" />
     <ClInclude Include="FrameResources\ColorShader.h" />
     <ClInclude Include="FrameResources\EnemyShader.h" />
@@ -152,6 +153,7 @@
     <ClInclude Include="FrameResources\SkySphereShader.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Meshes\BoxMesh.h" />
+    <ClInclude Include="Meshes\BulletMesh.h" />
     <ClInclude Include="Meshes\EnemyMesh.h" />
     <ClInclude Include="Meshes\FloorMesh.h" />
     <ClInclude Include="Meshes\Mesh.h" />
@@ -163,6 +165,7 @@
     <ClInclude Include="Meshes\TextureComponent.h" />
     <ClInclude Include="Meshes\Vertices.h" />
     <ClInclude Include="Objects\BoxObject.h" />
+    <ClInclude Include="Objects\BulletObject.h" />
     <ClInclude Include="Objects\Camera.h" />
     <ClInclude Include="Objects\DeferredRenderingSecondPass.h" />
     <ClInclude Include="Objects\EnemyObject.h" />
@@ -184,6 +187,7 @@
     <ClCompile Include="Core\SwapChainManager.cpp" />
     <ClCompile Include="Core\TimerManager.cpp" />
     <ClCompile Include="DirectX11ToyProject.cpp" />
+    <ClCompile Include="FrameResources\BulletShader.cpp" />
     <ClCompile Include="FrameResources\BumpMappingShader.cpp" />
     <ClCompile Include="FrameResources\ColorShader.cpp" />
     <ClCompile Include="FrameResources\EnemyShader.cpp" />
@@ -195,6 +199,7 @@
     <ClCompile Include="FrameResources\Shader.cpp" />
     <ClCompile Include="FrameResources\SkySphereShader.cpp" />
     <ClCompile Include="Meshes\BoxMesh.cpp" />
+    <ClCompile Include="Meshes\BulletMesh.cpp" />
     <ClCompile Include="Meshes\EnemyMesh.cpp" />
     <ClCompile Include="Meshes\FloorMesh.cpp" />
     <ClCompile Include="Meshes\Mesh.cpp" />
@@ -205,6 +210,7 @@
     <ClCompile Include="Meshes\SkySphereMesh.cpp" />
     <ClCompile Include="Meshes\TextureComponent.cpp" />
     <ClCompile Include="Objects\BoxObject.cpp" />
+    <ClCompile Include="Objects\BulletObject.cpp" />
     <ClCompile Include="Objects\Camera.cpp" />
     <ClCompile Include="Objects\DeferredRenderingSecondPass.cpp" />
     <ClCompile Include="Objects\EnemyObject.cpp" />
@@ -225,6 +231,13 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="HLSL\Bullet.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="HLSL\BumpMapping.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>

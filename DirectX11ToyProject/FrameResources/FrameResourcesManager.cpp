@@ -4,6 +4,7 @@
 #include "BumpMappingShader.h"
 #include "FloorShader.h"
 #include "EnemyShader.h"
+#include "BulletShader.h"
 #include "OutputMerger.h"
 #include "SecondPassShader.h"
 
@@ -26,6 +27,10 @@ void FrameResourcesManager::Initialize(unsigned int client_width, unsigned int c
 	frame_resource_container_["EnemyShader"] = std::make_unique<EnemyShader>();
 	EnemyShader* enemy_shader = dynamic_cast<EnemyShader*>(frame_resource_container_["EnemyShader"].get());
 	enemy_shader->Initialize();
+
+	frame_resource_container_["BulletShader"] = std::make_unique<BulletShader>();
+	BulletShader* bullet_shader = dynamic_cast<BulletShader*>(frame_resource_container_["BulletShader"].get());
+	bullet_shader->Initialize();
 
 	frame_resource_container_["OutputMerger"] = std::make_unique<OutputMerger>();
 	OutputMerger* output_merger = dynamic_cast<OutputMerger*>(frame_resource_container_["OutputMerger"].get());
