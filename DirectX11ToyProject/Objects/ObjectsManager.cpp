@@ -127,8 +127,7 @@ DirectX::XMMATRIX ObjectsManager::ScreenToWorld()
 	float clip_x = (client_width_ / 2.0f) / client_width_ * 2.0f - 1.0f;
 	float clip_y = 1.0f - (client_height_ / 2.0f) / client_height_ * 2.0f;
 	DirectX::XMVECTOR ray_clip = DirectX::XMVectorSet(clip_x, clip_y, 0.00f, 1.0f); 
-
-
+	 
 	// 역투영 변환
 	DirectX::XMMATRIX inv_view_projection = DirectX::XMMatrixInverse(nullptr, camera_->GetViewMatrix() * camera_->GetProjectionMatrix());
 	DirectX::XMVECTOR ray_world = DirectX::XMVector3TransformCoord(ray_clip, inv_view_projection);
@@ -155,12 +154,11 @@ DirectX::XMMATRIX ObjectsManager::ScreenToWorld()
 void ObjectsManager::SetBulletPosition()
 { 
 	if (mouse_click_)
-	{
-		  
+	{ 
 		BulletObject* bullet_objects = dynamic_cast<BulletObject*>(forward_rendering_objects_[0].get());
 		if (bullet_objects == nullptr)
 		{
-			throw std::string("ParticleObject dynamic_cast Fail");
+			throw std::string("BulletObject dynamic_cast Fail");
 		} 
 
 		// 비활성화된 총알을 찾는다.
@@ -281,4 +279,15 @@ DirectX::XMMATRIX ObjectsManager::GetCameraView()
 DirectX::XMMATRIX ObjectsManager::GetCameraProjection()
 {
 	return DirectX::XMMATRIX();
+}
+
+BulletObject* ObjectsManager::GetBullets()
+{
+	BulletObject* bullet_objects = dynamic_cast<BulletObject*>(forward_rendering_objects_[0].get());
+	if (bullet_objects == nullptr)
+	{
+		throw std::string("BulletObject dynamic_cast Fail");
+	}
+
+	return bullet_objects;
 }

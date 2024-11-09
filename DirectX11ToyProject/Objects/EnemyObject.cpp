@@ -3,6 +3,7 @@
 #include "../Meshes/EnemyMesh.h"
 #include "../FrameResources/EnemyShader.h"
 #include "../FrameResources/OutputMerger.h"
+#include "BulletObject.h"
 #include <algorithm>
 
 void EnemyObject::Initialize()
@@ -19,7 +20,7 @@ void EnemyObject::Initialize()
 		{
 			// 랜덤 위치 값 설정
 			float x = static_cast<float>(rand() % rand_max_position - rand_max_position / 2); // -50 ~ 50 사이의 랜덤 x 값
-			float y = static_cast<float>(rand() % rand_max_position);       // 0 ~ 100 사이의 랜덤 y 값 (0 이상)
+			float y = static_cast<float>(rand() % rand_max_position / 2);       // 0 ~ 50 사이의 랜덤 y 값 (0 이상)
 			float z = static_cast<float>(rand() % rand_max_position - rand_max_position / 2); // -50 ~ 50 사이의 랜덤 z 값
 
 			// 월드 행렬 구성 (위치를 이동 행렬로 설정)
@@ -121,5 +122,46 @@ void EnemyObject::AnimateObject()
 		DirectX::XMStoreFloat4(&instance.world0, DirectX::XMVectorSetW(rightDir, 0.0f)); // X축 (right 방향)
 		DirectX::XMStoreFloat4(&instance.world1, DirectX::XMVectorSetW(upDir, 0.0f));   // Y축 (up 방향)
 		DirectX::XMStoreFloat4(&instance.world2, DirectX::XMVectorSetW(lookAtDir, 0.0f)); // Z축 (forward 방향) 
+	}
+	 
+	BulletObject* bullets = ObjectsManager::GetInstance()->GetBullets();
+
+	for (unsigned int i = 0; i < bullets->GetBulletCount(); ++i)
+	{
+		if (bullets->GetActiveOfIndex(i))
+		{
+			BulletInstanceData* bullet = bullets->GetBulletDataOfIndex(i);
+			DirectX::XMVECTOR bullet_start = DirectX::XMLoadFloat3(&bullet->position);
+			DirectX::XMVECTOR bullet_end = DirectX::XMLoadFloat3(&bullet->prevPosition);
+
+			for (unsigned int j = 0; j < instances_->size(); ++j)
+			{
+				EnemyInstanceData* enemy = &(*instances_)[j];
+
+				DirectX::XMVECTOR line_dir = DirectX::XMVector3Normalize(DirectX::XMVectorSubtract(bullet_end, bullet_start));
+
+				// 선분 시작점에서 구의 중심까지의 벡터
+				DirectX::XMVECTOR start_to_center = DirectX::XMVectorSubtract(DirectX::XMLoadFloat4(&enemy->world3), bullet_start);
+
+				// 선분의 시작점에서 구 중심으로 향하는 벡터의 투영 길이
+				float projection_length = DirectX::XMVectorGetX(DirectX::XMVector3Dot(start_to_center, line_dir));
+
+				// 투영 길이를 선분 길이 범위 내로 제한
+				float line_length = DirectX::XMVectorGetX(DirectX::XMVector3Length(DirectX::XMVectorSubtract(bullet_end, bullet_start)));
+				projection_length = std::clamp(projection_length, 0.0f, line_length);
+
+				// 투영 점의 위치 계산
+				DirectX::XMVECTOR closest_point = DirectX::XMVectorAdd(bullet_start, DirectX::XMVectorScale(line_dir, projection_length));
+
+				// 구 중심과 투영 점 사이의 거리
+				float distance_to_sphere = DirectX::XMVectorGetX(DirectX::XMVector3Length(DirectX::XMVectorSubtract(DirectX::XMLoadFloat4(&enemy->world3), closest_point)));
+
+				// 거리와 구의 반지름을 비교하여 충돌 여부 반환
+				if (distance_to_sphere <= 2.0f)
+				{
+					(*instances_)[j].world3.y = -100.0f;
+				}
+			}
+		}
 	}
 }

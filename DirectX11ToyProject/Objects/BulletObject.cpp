@@ -107,7 +107,7 @@ void BulletObject::AnimateObject()
 		{
 			bullet_active_manager_[i].elapsed_time += TimerManager::GetInstance()->GetDeltaTime();
 			 
-			if (0.01f <= bullet_active_manager_[i].elapsed_time)
+			if (0.02f <= bullet_active_manager_[i].elapsed_time)
 			{
 				bullet_active_manager_[i].active = false;
 				bullet_active_manager_[i].elapsed_time = 0.0f;
@@ -115,11 +115,7 @@ void BulletObject::AnimateObject()
 				(*instances_)[i].prevPosition = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f); 
 			}
 			else
-			{    
-				//(*instances_)[i].prevPosition.x = (*instances_)[i].world3.x;
-				//(*instances_)[i].prevPosition.y = (*instances_)[i].world3.y;
-				//(*instances_)[i].prevPosition.z = (*instances_)[i].world3.z;
-
+			{     
 				DirectX::XMVECTOR velocity = ObjectsManager::GetInstance()->GetCameraLook();
 				velocity = DirectX::XMVectorScale(velocity, kSpeed_ * TimerManager::GetInstance()->GetDeltaTime());
 				DirectX::XMVECTOR position = DirectX::XMLoadFloat3(&(*instances_)[i].position);

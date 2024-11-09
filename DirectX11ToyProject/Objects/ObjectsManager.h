@@ -81,6 +81,8 @@ public:
 	DirectX::XMMATRIX GetCameraView();
 	DirectX::XMMATRIX GetCameraProjection();
 
+	class BulletObject* GetBullets();
+
 public:
 	const unsigned int kVertexShaderSlotWorldMatrix_ = 0;
 	const unsigned int kInstanceVertexShaderSlotWorldMatrix_ = 0;
