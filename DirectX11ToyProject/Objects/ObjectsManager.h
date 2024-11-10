@@ -27,18 +27,18 @@ public:
 		return instance_;
 	}
 
-private:
+private:  
+	bool test_;
+
 	int client_width_;
 	int client_height_;
 
 	bool mouse_click_;
-	int mouse_x_position_;
-	int mouse_y_position_;
+	float click_elapsed_time_;
 
 	unsigned int camera_direction_;
 	float camera_yaw_;
 	float camera_pitch_;
-	const float kRotationSensitivity_ = 2.0f;
 
 	std::unique_ptr<Player> player_;
 	std::unique_ptr<Camera> camera_;
@@ -51,6 +51,7 @@ private:
 	void CreateObjects();
 	void ExecuteCommandListPlayer();
 	void DeferredRenderingExecuteCommandListObjects();
+	void DeferredRenderingTestExecuteCommandListObjects();
 	void ForwardRenderingExecuteCommandListObjects();
 	void DeferredRenderingExecuteCommandSecondPass();
 
@@ -64,6 +65,8 @@ private:
 
 public:
 	void Initialize(float client_width, float client_height);
+
+	void ActiveTest();
 
 	void PushButton(unsigned int direction);
 	void ReleaseButton(unsigned int direction);
@@ -83,7 +86,11 @@ public:
 
 	class BulletObject* GetBullets();
 
+	void UpBulletSpeed();
+	void DownBulletSpeed();
 public:
+	const float kRotationSensitivity_ = 2.0f;
+
 	const unsigned int kVertexShaderSlotWorldMatrix_ = 0;
 	const unsigned int kInstanceVertexShaderSlotWorldMatrix_ = 0;
 	const unsigned int kCameraShaderSlotWorldMatrix_ = 1;

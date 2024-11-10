@@ -7,6 +7,7 @@
 #include "../FrameResources/OutputMerger.h"
 #include "DeferredRenderingSecondPass.h"
 #include "../Meshes/Vertices.h" 
+#include <random>
 
 ObjectsManager* ObjectsManager::instance_ = nullptr;
 
@@ -18,6 +19,7 @@ void ObjectsManager::CreateObjects()
 
 	FloorObject* floor_object = new FloorObject();
 	floor_object->Initialize();
+	floor_object->TestInitialize();
 	deferred_rendering_objects_.emplace_back(floor_object);
 
 	BulletObject* bullet_object = new BulletObject();
@@ -44,6 +46,16 @@ void ObjectsManager::DeferredRenderingExecuteCommandListObjects()
 		deferred_rendering_objects_[i].get()->UpdateBuffer();
 		deferred_rendering_objects_[i].get()->ExecuteCommandList();
 	}
+}
+
+void ObjectsManager::DeferredRenderingTestExecuteCommandListObjects()
+{
+	deferred_rendering_objects_[0].get()->UpdateBuffer();
+	deferred_rendering_objects_[0].get()->ExecuteCommandList();
+
+	FloorObject* floor_object = dynamic_cast<FloorObject*>(deferred_rendering_objects_[1].get());
+	floor_object->UpdateBuffer();
+	floor_object->ExecuteTestCommandList();
 }
 
 void ObjectsManager::ForwardRenderingExecuteCommandListObjects()
@@ -143,7 +155,7 @@ DirectX::XMMATRIX ObjectsManager::ScreenToWorld()
 	ray_world = DirectX::XMVectorAdd(ray_world, right);
 	DirectX::XMVECTOR up = DirectX::XMVectorScale(bullet_world.r[1], -0.5f);
 	ray_world = DirectX::XMVectorAdd(ray_world, up);
-	DirectX::XMVECTOR look = DirectX::XMVectorScale(bullet_world.r[2], 1.0f);
+	DirectX::XMVECTOR look = DirectX::XMVectorScale(bullet_world.r[2], 1.2f);
 	ray_world = DirectX::XMVectorAdd(ray_world, look);
 
 	bullet_world.r[3] = ray_world;
@@ -153,36 +165,55 @@ DirectX::XMMATRIX ObjectsManager::ScreenToWorld()
 
 void ObjectsManager::SetBulletPosition()
 { 
+	static unsigned int bullet_count = 0; 
+
 	if (mouse_click_)
 	{ 
 		BulletObject* bullet_objects = dynamic_cast<BulletObject*>(forward_rendering_objects_[0].get());
 		if (bullet_objects == nullptr)
 		{
 			throw std::string("BulletObject dynamic_cast Fail");
-		} 
-
-		// 비활성화된 총알을 찾는다.
-		for (unsigned int i = 0; i < bullet_objects->GetBulletCount(); ++i)
-		{
-			if (!bullet_objects->GetActiveOfIndex(i))
-			{
-				DirectX::XMMATRIX new_bullet_world = ScreenToWorld(); 
-				bullet_objects->SetActiveOfIndex(i); 
-				BulletInstanceData* bullet = bullet_objects->GetBulletDataOfIndex(i); 
-				 
-				DirectX::XMStoreFloat3(&bullet->position, new_bullet_world.r[3]);
-				DirectX::XMStoreFloat3(&bullet->prevPosition, new_bullet_world.r[3]);
-
-				break;
-			}
 		}
-		 
-		mouse_click_ = false;
+
+		click_elapsed_time_ += TimerManager::GetInstance()->GetDeltaTime();
+
+		if (0.1f <= click_elapsed_time_)
+		{ 
+			for (unsigned int i = 0; i < bullet_objects->GetBulletCount(); ++i) // 비활성화된 총알을 찾는다.
+			{
+				if (!bullet_objects->GetActiveOfIndex(i))
+				{
+					DirectX::XMMATRIX new_bullet_world = ScreenToWorld();
+					bullet_objects->SetActiveOfIndex(i);
+					BulletInstanceData* bullet = bullet_objects->GetBulletDataOfIndex(i);
+					 
+					DirectX::XMStoreFloat3(&bullet->prevPosition, new_bullet_world.r[3]);
+					DirectX::XMStoreFloat3(&bullet->position, new_bullet_world.r[3]);
+					bullet_objects->SetInitPositionOfIndex(i, bullet->position);
+					   
+					break;
+				}
+			}
+
+			click_elapsed_time_ = 0.0;
+			++bullet_count;
+		}
+		  
+		if (bullet_count == 3)
+		{
+			mouse_click_ = false;
+			bullet_count = 0;
+			click_elapsed_time_ = 0.0; 
+		}
 	}
 }
 
 void ObjectsManager::Initialize(float client_width, float client_height)
 {
+	std::srand(static_cast<unsigned int>(std::time(nullptr)));  
+
+	test_ = false;
+
 	client_width_ = static_cast<int>(client_width);
 	client_height_ = static_cast<int>(client_height);
 
@@ -200,6 +231,11 @@ void ObjectsManager::Initialize(float client_width, float client_height)
 	deferred_rendering_second_pass_->Initialize();
 
 	CreateObjects();
+}
+
+void ObjectsManager::ActiveTest()
+{
+	test_ = !test_;
 }
 
 void ObjectsManager::PushButton(unsigned int direction)
@@ -221,6 +257,7 @@ void ObjectsManager::SetRotationValue(float yaw, float pitch)
 void ObjectsManager::PushMouseLeftButton()
 {
 	mouse_click_ = true; 
+	click_elapsed_time_ = 0.1f;
 } 
 
 ID3D11Buffer** ObjectsManager::GetCameraConstantBuffer() const
@@ -254,7 +291,14 @@ void ObjectsManager::ExecuteCommandList()
 	ClearRenderTargetViewAndDepthStencilView();
 
 	ExecuteCommandListPlayer();
-	DeferredRenderingExecuteCommandListObjects();
+	if (test_)
+	{
+		DeferredRenderingTestExecuteCommandListObjects();
+	}
+	else
+	{
+		DeferredRenderingExecuteCommandListObjects();
+	} 
 	DeferredRenderingExecuteCommandSecondPass();
 	ForwardRenderingExecuteCommandListObjects();
 
@@ -290,4 +334,26 @@ BulletObject* ObjectsManager::GetBullets()
 	}
 
 	return bullet_objects;
+}
+
+void ObjectsManager::UpBulletSpeed()
+{
+	BulletObject* bullet_objects = dynamic_cast<BulletObject*>(forward_rendering_objects_[0].get());
+	if (bullet_objects == nullptr)
+	{
+		throw std::string("BulletObject dynamic_cast Fail");
+	}
+
+	bullet_objects->UpBulletSpeed();
+}
+
+void ObjectsManager::DownBulletSpeed()
+{
+	BulletObject* bullet_objects = dynamic_cast<BulletObject*>(forward_rendering_objects_[0].get());
+	if (bullet_objects == nullptr)
+	{
+		throw std::string("BulletObject dynamic_cast Fail");
+	}
+
+	bullet_objects->DownBulletSpeed();
 }

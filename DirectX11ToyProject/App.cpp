@@ -82,6 +82,15 @@ void App::OnProcessingKeyboardMessage(HWND hwnd, UINT message_id, WPARAM wparam,
 	case WM_KEYUP:
 		switch (wparam)
 		{
+		case 0x70:  // F1 key 
+			ObjectsManager::GetInstance()->ActiveTest(); 
+			break;
+		case 0x31:  // 1 key 
+			ObjectsManager::GetInstance()->DownBulletSpeed();
+			break;
+		case 0x32:  // 2 key 
+			ObjectsManager::GetInstance()->UpBulletSpeed();
+			break; 
 		case 0x41:  // A key
 			ObjectsManager::GetInstance()->ReleaseButton(ObjectsManager::GetInstance()->kAKey_);
 			break;
@@ -108,10 +117,17 @@ void App::OnProcessingKeyboardMessage(HWND hwnd, UINT message_id, WPARAM wparam,
 
 void App::FrameAdvance()
 {
+	static float elapsed_time = 0.0f;
+	static const float kFPS = 1 / 60.0f;
 	TimerManager::GetInstance()->Tick();
+
+	elapsed_time += TimerManager::GetInstance()->GetDeltaTime();
+	 
 	LightsManager::GetInstance()->UpdateLightBuffers();
 	ObjectsManager::GetInstance()->AnimateObjects();
 	ObjectsManager::GetInstance()->ExecuteCommandList();
+
+	elapsed_time = 0.0f; 
 }
 
 POINT App::GetWindowCenter()

@@ -100,14 +100,14 @@ void BulletObject::Initialize()
 }
 
 void BulletObject::AnimateObject()
-{  
+{    
 	for (unsigned int i = 0; i < bullet_active_manager_.size(); ++i)
 	{
 		if (bullet_active_manager_[i].active)
 		{
 			bullet_active_manager_[i].elapsed_time += TimerManager::GetInstance()->GetDeltaTime();
 			 
-			if (0.02f <= bullet_active_manager_[i].elapsed_time)
+			if (3.0f <= bullet_active_manager_[i].elapsed_time)
 			{
 				bullet_active_manager_[i].active = false;
 				bullet_active_manager_[i].elapsed_time = 0.0f;
@@ -115,14 +115,30 @@ void BulletObject::AnimateObject()
 				(*instances_)[i].prevPosition = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f); 
 			}
 			else
-			{     
-				DirectX::XMVECTOR velocity = ObjectsManager::GetInstance()->GetCameraLook();
-				velocity = DirectX::XMVectorScale(velocity, kSpeed_ * TimerManager::GetInstance()->GetDeltaTime());
+			{   
+				DirectX::XMVECTOR init_position = DirectX::XMLoadFloat3(&bullet_active_manager_[i].init_position);
+
 				DirectX::XMVECTOR position = DirectX::XMLoadFloat3(&(*instances_)[i].position);
+				DirectX::XMVECTOR velocity = ObjectsManager::GetInstance()->GetCameraLook();
+				velocity = DirectX::XMVectorScale(velocity, bullet_peed_ * TimerManager::GetInstance()->GetDeltaTime());
 				position = DirectX::XMVectorAdd(position, velocity);
 				DirectX::XMStoreFloat3(&(*instances_)[i].position, position);
+				  
+				float length = DirectX::XMVectorGetX(DirectX::XMVector3Length(DirectX::XMVectorSubtract(position, init_position)));
+				DirectX::XMVECTOR prev_position; 
+				if (length <= 20.0f)
+				{ 
+					prev_position = init_position;
+				}
+				else
+				{
+					DirectX::XMVECTOR direction = DirectX::XMVectorSubtract(init_position, position); 
+					direction = DirectX::XMVector3Normalize(direction);
 
-				DebugLog::GetInstance()->LogFormattedMessage("Prev : %f, %f, %f ¡Ú New : %f, %f, %f\n", (*instances_)[i].prevPosition.x, (*instances_)[i].prevPosition.y, (*instances_)[i].prevPosition.z, (*instances_)[i].position.x, (*instances_)[i].position.y, (*instances_)[i].position.z);
+					prev_position = DirectX::XMVectorScale(direction, 20.0f);
+					prev_position = DirectX::XMVectorAdd(position, prev_position); 
+				} 
+				DirectX::XMStoreFloat3(&(*instances_)[i].prevPosition, prev_position); 
 			}
 		}
 	}
@@ -162,9 +178,29 @@ void BulletObject::SetActiveOfIndex(unsigned int index)
 	bullet_active_manager_[index].active = true;
 }
 
+void BulletObject::SetInitPositionOfIndex(unsigned int index, DirectX::XMFLOAT3 init_position)
+{
+	bullet_active_manager_[index].init_position = init_position;
+}
+
 BulletInstanceData* BulletObject::GetBulletDataOfIndex(unsigned int index)
 { 
 	return &((*instances_)[index]);
+}
+
+void BulletObject::UpBulletSpeed()
+{
+	bullet_peed_ += 100.0f;
+}
+
+void BulletObject::DownBulletSpeed()
+{
+	bullet_peed_ -= 100.0f;
+
+	if (bullet_peed_ <= 100.0f)
+	{
+		bullet_peed_ = 100.0f;
+	}
 }
   
 

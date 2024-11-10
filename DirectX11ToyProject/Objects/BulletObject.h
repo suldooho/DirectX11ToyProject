@@ -7,11 +7,15 @@ struct BulletState
 {
 	bool active;
 	float elapsed_time;
+	DirectX::XMFLOAT3 init_position;
 
 	BulletState()
 	{
 		active = false;
 		elapsed_time = 0.0f;
+		init_position.x = 0.0f;
+		init_position.y = 0.0f;
+		init_position.z = 0.0f;
 	}
 };
 
@@ -30,11 +34,14 @@ public:
 	unsigned int GetBulletCount() const;
 	bool GetActiveOfIndex(unsigned int index);
 	void SetActiveOfIndex(unsigned int index);
+	void SetInitPositionOfIndex(unsigned int index, DirectX::XMFLOAT3 init_position);
 	BulletInstanceData* GetBulletDataOfIndex(unsigned int index);
 	 
+	void UpBulletSpeed();
+	void DownBulletSpeed();
 
 private:
-	const float kSpeed_ = 5000.0f;
+	float bullet_peed_ = 100.0f;
 
 };
 

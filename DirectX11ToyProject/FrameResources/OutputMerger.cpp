@@ -162,15 +162,15 @@ void OutputMerger::CreateDepthStencilStates()
 	depth_stencil_desc2.DepthFunc = D3D11_COMPARISON_LESS;
 
 	depth_stencil_desc2.StencilEnable = true;
-	depth_stencil_desc2.StencilReadMask = 0x01;       // 모든 비트 읽기 허용
-	depth_stencil_desc2.StencilWriteMask = 0x01;
+	depth_stencil_desc2.StencilReadMask = 0xff;
+	depth_stencil_desc2.StencilWriteMask = 0xff;
 
-	depth_stencil_desc2.FrontFace.StencilFunc = D3D11_COMPARISON_GREATER;
-	depth_stencil_desc2.FrontFace.StencilPassOp = D3D11_STENCIL_OP_INCR;
+	depth_stencil_desc2.FrontFace.StencilFunc = D3D11_COMPARISON_GREATER_EQUAL;
+	depth_stencil_desc2.FrontFace.StencilPassOp = D3D11_STENCIL_OP_INCR_SAT;
 	depth_stencil_desc2.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
 	depth_stencil_desc2.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
 
-	depth_stencil_desc2.BackFace.StencilFunc = D3D11_COMPARISON_GREATER;
+	depth_stencil_desc2.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 	depth_stencil_desc2.BackFace.StencilPassOp = D3D11_STENCIL_OP_ZERO;
 	depth_stencil_desc2.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
 	depth_stencil_desc2.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
@@ -193,15 +193,15 @@ void OutputMerger::CreateDepthStencilStates()
 	depth_stencil_desc3.DepthFunc = D3D11_COMPARISON_LESS;
 
 	depth_stencil_desc3.StencilEnable = true;
-	depth_stencil_desc3.StencilReadMask = 0x01;
-	depth_stencil_desc3.StencilWriteMask = 0x01;
+	depth_stencil_desc3.StencilReadMask = 0xff;
+	depth_stencil_desc3.StencilWriteMask = 0xff;
 
 	depth_stencil_desc3.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;
 	depth_stencil_desc3.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 	depth_stencil_desc3.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
 	depth_stencil_desc3.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
 
-	depth_stencil_desc3.BackFace.StencilFunc = D3D11_COMPARISON_EQUAL;
+	depth_stencil_desc3.BackFace.StencilFunc = D3D11_COMPARISON_NEVER;
 	depth_stencil_desc3.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 	depth_stencil_desc3.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
 	depth_stencil_desc3.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
@@ -215,6 +215,37 @@ void OutputMerger::CreateDepthStencilStates()
 		throw std::string("Can Not Create Depth Stencil State");
 	}
 	depth_stencil_state_container_["ForwardPassState"] = depth_stencil_state3;
+
+
+	D3D11_DEPTH_STENCIL_DESC depth_stencil_desc4;
+	ZeroMemory(&depth_stencil_desc4, sizeof(D3D11_DEPTH_STENCIL_DESC));
+	depth_stencil_desc4.DepthEnable = true;
+	depth_stencil_desc4.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	depth_stencil_desc4.DepthFunc = D3D11_COMPARISON_LESS;
+
+	depth_stencil_desc4.StencilEnable = true;
+	depth_stencil_desc4.StencilReadMask = 0xff;
+	depth_stencil_desc4.StencilWriteMask = 0xff;
+
+	depth_stencil_desc4.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	depth_stencil_desc4.FrontFace.StencilPassOp = D3D11_STENCIL_OP_ZERO;
+	depth_stencil_desc4.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depth_stencil_desc4.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+
+	depth_stencil_desc4.BackFace.StencilFunc = D3D11_COMPARISON_NEVER;
+	depth_stencil_desc4.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	depth_stencil_desc4.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depth_stencil_desc4.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+
+	// 깊이 스텐실 상태 객체 생성
+	ID3D11DepthStencilState* depth_stencil_state4 = nullptr;
+	result = DeviceManager::GetInstance()->GetD3D11Device()->CreateDepthStencilState(&depth_stencil_desc4, &depth_stencil_state4);
+
+	if (result != S_OK)
+	{
+		throw std::string("Can Not Create Depth Stencil State");
+	}
+	depth_stencil_state_container_["FloorObjectState"] = depth_stencil_state4;
 }
 
 void OutputMerger::CreateBlendStates()
