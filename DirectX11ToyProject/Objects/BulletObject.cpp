@@ -125,7 +125,7 @@ void BulletObject::AnimateObject()
 				  
 				float length = DirectX::XMVectorGetX(DirectX::XMVector3Length(DirectX::XMVectorSubtract(position, init_position)));
 				DirectX::XMVECTOR prev_position; 
-				if (length <= 20.0f)
+				if (length <= 100.0f)
 				{ 
 					prev_position = init_position;
 				}
@@ -134,7 +134,7 @@ void BulletObject::AnimateObject()
 					DirectX::XMVECTOR direction = DirectX::XMVectorSubtract(init_position, position); 
 					direction = DirectX::XMVector3Normalize(direction);
 
-					prev_position = DirectX::XMVectorScale(direction, 20.0f);
+					prev_position = DirectX::XMVectorScale(direction, 100.0f);
 					prev_position = DirectX::XMVectorAdd(position, prev_position); 
 				} 
 				DirectX::XMStoreFloat3(&(*instances_)[i].prevPosition, prev_position); 
@@ -142,24 +142,30 @@ void BulletObject::AnimateObject()
 		}
 	}
 
-	std::vector<std::pair<BulletState&, BulletInstanceData&>> pairedData;
+	std::vector<std::pair<BulletState, BulletInstanceData>> pairedData;
 
-	// bullet_active_manager와 instances_를 페어로 묶어 새로운 벡터에 참조로 추가
 	for (size_t i = 0; i < bullet_active_manager_.size(); ++i) {
 		pairedData.emplace_back(bullet_active_manager_[i], (*instances_)[i]);
 	}
 
-	// active가 true인 항목을 앞쪽으로, false는 뒤쪽으로 정렬
-	std::sort(pairedData.begin(), pairedData.end(), [](const auto& a, const auto& b) {
-		return a.first.active > b.first.active;
+	// active가 true인 항목을 거리 내림차순으로 정렬하고, false인 항목들은 뒤쪽으로 정렬
+	float camera_position_z = DirectX::XMVectorGetX(ObjectsManager::GetInstance()->GetCameraPosition());
+
+	std::sort(pairedData.begin(), pairedData.end(), [&](const auto& a, const auto& b) {
+		if (a.first.active != b.first.active) {
+			return a.first.active > b.first.active; // active가 true인 항목을 앞으로
+		}
+		// z 축에서 플레이어와의 거리 비교: active가 true인 항목 중 가장 멀리 있는 것부터 정렬
+		float distA = fabs(a.second.position.z - camera_position_z);
+		float distB = fabs(b.second.position.z - camera_position_z);
+		return distA > distB; // 거리 내림차순 정렬
 		});
 
-	// 참조를 이용해 데이터를 직접 bullet_active_manager와 instances_에 재배치
+	// 정렬된 데이터를 bullet_active_manager_와 instances_에 재배치
 	for (size_t i = 0; i < pairedData.size(); ++i) {
-		// 참조이므로 직접 대입 없이 정렬된 순서가 반영됩니다.
 		bullet_active_manager_[i] = pairedData[i].first;
 		(*instances_)[i] = pairedData[i].second;
-	} 
+	}
 }
 
 unsigned int BulletObject::GetBulletCount() const

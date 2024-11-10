@@ -10,6 +10,14 @@ void BulletMesh::CreateIndices()
 {
 }
 
+void BulletMesh::CreateVertexBuffer()
+{
+}
+
+void BulletMesh::CreateIndexBuffer()
+{
+}
+
 void BulletMesh::Initialize(const std::string& file_name)
 {
     Mesh<NullVertex>::Initialize();

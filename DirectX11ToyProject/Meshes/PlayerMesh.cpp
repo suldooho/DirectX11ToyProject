@@ -2,6 +2,7 @@
 
 void PlayerMesh::CreateVertices()
 {
+    primitive_topology_ = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
     vertices_ = obj_importer_component_->LoadVertices(obj_importer_component_->GetAbsolutePathPath() + "/Gun.txt");
 }
 

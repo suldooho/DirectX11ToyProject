@@ -28,8 +28,8 @@ protected:
 public:
 	~Mesh();
 
-private:
-	void CreateVertexBuffer();
+protected:
+	virtual void CreateVertexBuffer();
 	virtual void CreateIndexBuffer();
 
 protected:

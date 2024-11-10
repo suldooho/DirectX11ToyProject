@@ -22,13 +22,13 @@ void ObjectsManager::CreateObjects()
 	floor_object->TestInitialize();
 	deferred_rendering_objects_.emplace_back(floor_object);
 
-	BulletObject* bullet_object = new BulletObject();
-	bullet_object->Initialize();
-	forward_rendering_objects_.emplace_back(bullet_object);
-
 	EnemyObject* enemy_object = new EnemyObject();
 	enemy_object->Initialize();
-	forward_rendering_objects_.emplace_back(enemy_object); 
+	forward_rendering_objects_.emplace_back(enemy_object);
+
+	BulletObject* bullet_object = new BulletObject();
+	bullet_object->Initialize();
+	forward_rendering_objects_.emplace_back(bullet_object); 
 }
 
 void ObjectsManager::ExecuteCommandListPlayer()
@@ -169,7 +169,7 @@ void ObjectsManager::SetBulletPosition()
 
 	if (mouse_click_)
 	{ 
-		BulletObject* bullet_objects = dynamic_cast<BulletObject*>(forward_rendering_objects_[0].get());
+		BulletObject* bullet_objects = dynamic_cast<BulletObject*>(forward_rendering_objects_[1].get());
 		if (bullet_objects == nullptr)
 		{
 			throw std::string("BulletObject dynamic_cast Fail");
@@ -329,7 +329,7 @@ DirectX::XMMATRIX ObjectsManager::GetCameraProjection()
 
 BulletObject* ObjectsManager::GetBullets()
 {
-	BulletObject* bullet_objects = dynamic_cast<BulletObject*>(forward_rendering_objects_[0].get());
+	BulletObject* bullet_objects = dynamic_cast<BulletObject*>(forward_rendering_objects_[1].get());
 	if (bullet_objects == nullptr)
 	{
 		throw std::string("BulletObject dynamic_cast Fail");
@@ -340,7 +340,7 @@ BulletObject* ObjectsManager::GetBullets()
 
 void ObjectsManager::UpBulletSpeed()
 {
-	BulletObject* bullet_objects = dynamic_cast<BulletObject*>(forward_rendering_objects_[0].get());
+	BulletObject* bullet_objects = dynamic_cast<BulletObject*>(forward_rendering_objects_[1].get());
 	if (bullet_objects == nullptr)
 	{
 		throw std::string("BulletObject dynamic_cast Fail");
@@ -351,7 +351,7 @@ void ObjectsManager::UpBulletSpeed()
 
 void ObjectsManager::DownBulletSpeed()
 {
-	BulletObject* bullet_objects = dynamic_cast<BulletObject*>(forward_rendering_objects_[0].get());
+	BulletObject* bullet_objects = dynamic_cast<BulletObject*>(forward_rendering_objects_[1].get());
 	if (bullet_objects == nullptr)
 	{
 		throw std::string("BulletObject dynamic_cast Fail");
