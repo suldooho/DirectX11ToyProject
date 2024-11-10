@@ -29,7 +29,7 @@ void OutputMerger::CreateGBufferTextures(unsigned int client_width, unsigned int
 {
 	ID3D11Texture2D* gbuffer_position = CreateGBufferTexture(DXGI_FORMAT_R32G32B32A32_FLOAT, client_width, client_height);
 	gbuffer_container_["PositionBuffer"] = gbuffer_position; 
-	ID3D11Texture2D* gbuffer_normal = CreateGBufferTexture(DXGI_FORMAT_R16G16B16A16_FLOAT, client_width, client_height);
+	ID3D11Texture2D* gbuffer_normal = CreateGBufferTexture(DXGI_FORMAT_R32G32B32A32_FLOAT, client_width, client_height);
 	gbuffer_container_["NormalBuffer"] = gbuffer_normal;
 	ID3D11Texture2D* gbuffer_diffuse = CreateGBufferTexture(DXGI_FORMAT_R8G8B8A8_UNORM, client_width, client_height);
 	gbuffer_container_["DiffuseBuffer"] = gbuffer_diffuse;

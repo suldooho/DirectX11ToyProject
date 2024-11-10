@@ -189,8 +189,10 @@ void ObjectsManager::SetBulletPosition()
 					 
 					DirectX::XMStoreFloat3(&bullet->prevPosition, new_bullet_world.r[3]);
 					DirectX::XMStoreFloat3(&bullet->position, new_bullet_world.r[3]);
-					bullet_objects->SetInitPositionOfIndex(i, bullet->position);
-					   
+					bullet_objects->SetInitPositionOfIndex(i, bullet->position); 
+					DirectX::XMFLOAT3 camera_look;
+					DirectX::XMStoreFloat3(&camera_look, camera_->GetLook());
+					bullet_objects->SetInitDirectionOfIndex(i, camera_look);
 					break;
 				}
 			}

@@ -36,8 +36,7 @@ void BulletObject::Initialize()
 		{  
 			instance.position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);  
 			instance.prevPosition = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
-
-
+			 
 			float red = static_cast<float>(rand()) / RAND_MAX + 0.7f;
 			red = (red < 1.0f) ? red : 1.0f;
 			float green = static_cast<float>(rand()) / RAND_MAX + 0.7f;
@@ -45,7 +44,7 @@ void BulletObject::Initialize()
 			float blue = static_cast<float>(rand()) / RAND_MAX + 0.7f;
 			blue = (blue < 1.0f) ? blue : 1.0f;
 
-			instance.color = DirectX::XMFLOAT3(red, 0.0f, 0.0f);
+			instance.color = DirectX::XMFLOAT3(red, green, blue);
 		}
 
 		return instances; 
@@ -119,7 +118,7 @@ void BulletObject::AnimateObject()
 				DirectX::XMVECTOR init_position = DirectX::XMLoadFloat3(&bullet_active_manager_[i].init_position);
 
 				DirectX::XMVECTOR position = DirectX::XMLoadFloat3(&(*instances_)[i].position);
-				DirectX::XMVECTOR velocity = ObjectsManager::GetInstance()->GetCameraLook();
+				DirectX::XMVECTOR velocity = DirectX::XMLoadFloat3(&bullet_active_manager_[i].init_direction);
 				velocity = DirectX::XMVectorScale(velocity, bullet_peed_ * TimerManager::GetInstance()->GetDeltaTime());
 				position = DirectX::XMVectorAdd(position, velocity);
 				DirectX::XMStoreFloat3(&(*instances_)[i].position, position);
@@ -181,6 +180,11 @@ void BulletObject::SetActiveOfIndex(unsigned int index)
 void BulletObject::SetInitPositionOfIndex(unsigned int index, DirectX::XMFLOAT3 init_position)
 {
 	bullet_active_manager_[index].init_position = init_position;
+}
+
+void BulletObject::SetInitDirectionOfIndex(unsigned int index, DirectX::XMFLOAT3 init_direction)
+{
+	bullet_active_manager_[index].init_direction = init_direction;
 }
 
 BulletInstanceData* BulletObject::GetBulletDataOfIndex(unsigned int index)
