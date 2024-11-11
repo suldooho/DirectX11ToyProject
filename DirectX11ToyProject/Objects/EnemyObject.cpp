@@ -165,3 +165,13 @@ void EnemyObject::AnimateObject()
 		}
 	}
 }
+
+unsigned int EnemyObject::GetEnemiesCount() const
+{
+	return instances_->size();
+}
+
+EnemyInstanceData* EnemyObject::GetEnemiesDataOfIndex(unsigned int index) const
+{
+	return &(*instances_)[index];
+} 

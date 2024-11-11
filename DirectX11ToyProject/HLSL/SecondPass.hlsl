@@ -51,27 +51,28 @@ float4 PS(PixelInput input) : SV_TARGET
 
     // 2. Point Light 계산
     [loop]
-    for (uint i = 0; i < 0; i++)
-    { 
-        // output.position = mul(worldPosition, View);
-        // output.position = mul(output.position, Projection);
-        float3 lightVec = PointLights[i].position - position; // 스크린 상의 xy좌표값 - 스크린상의 xy좌표값
-        float distance = length(lightVec);
-        float3 pointLightDir = normalize(lightVec);
-        NdotL = saturate(dot(normal, pointLightDir));
-        float attenuation = saturate(1.0 / (distance * distance) / (PointLights[i].range * PointLights[i].range) + 0.1f);
+    for (uint i = 0; i < PointLightCount; i++)
+    {
+        float3 lightVec = PointLights[i].position - position; // 빛 위치에서 현재 위치까지의 벡터
+        float distance = length(lightVec); // 거리 계산
+        float3 pointLightDir = normalize(lightVec); // 정규화된 조명 방향
+        float NdotL = saturate(dot(normal, pointLightDir)); // 법선과 조명 방향의 내적
 
-        // 스펙큘러 계산
-        reflectDir = reflect(-pointLightDir, normal);
-        specular = pow(saturate(dot(viewDir, reflectDir)), kPointLightSpecularPower);
-        specular = PointLights[i].color.rgb * specular * attenuation;
+    // 감쇠 계산
+        float attenuation = saturate(1.0 / (1.0 + 0.1 * distance * distance / (PointLights[i].range * PointLights[i].range)));
 
-        finalColor += PointLights[i].color.rgb * attenuation + (diffuse.rgb * NdotL + specular);
+    // 스펙큘러 계산
+        float3 reflectDir = reflect(-pointLightDir, normal);
+        float specular = pow(saturate(dot(viewDir, reflectDir)), kPointLightSpecularPower);
+        float3 specularColor = PointLights[i].color * specular * attenuation;
+
+    // 색상 누적
+        finalColor += PointLights[i].color * attenuation * (NdotL + diffuse.rgb) + specularColor;
     }
 
     // 3. Spot Light 계산
     [loop]
-    for (uint i = 0; i < 0; i++)
+    for (uint i = 0; i < SpotLightCount; i++)
     {
         float3 lightVec = SpotLights[i].position - position;
         float distance = length(lightVec);

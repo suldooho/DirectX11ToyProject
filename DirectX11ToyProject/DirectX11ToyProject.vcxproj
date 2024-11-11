@@ -151,6 +151,7 @@
     <ClInclude Include="FrameResources\SecondPassShader.h" />
     <ClInclude Include="FrameResources\Shader.h" />
     <ClInclude Include="FrameResources\SkySphereShader.h" />
+    <ClInclude Include="FrameResources\TestScreenShader.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Meshes\BoxMesh.h" />
     <ClInclude Include="Meshes\BulletMesh.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Objects\Player.h" />
     <ClInclude Include="Objects\SingleObject.h" />
     <ClInclude Include="Objects\SkySphereObject.h" />
+    <ClInclude Include="Objects\TestScreenObject.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -198,6 +200,7 @@
     <ClCompile Include="FrameResources\SecondPassShader.cpp" />
     <ClCompile Include="FrameResources\Shader.cpp" />
     <ClCompile Include="FrameResources\SkySphereShader.cpp" />
+    <ClCompile Include="FrameResources\TestScreenShader.cpp" />
     <ClCompile Include="Meshes\BoxMesh.cpp" />
     <ClCompile Include="Meshes\BulletMesh.cpp" />
     <ClCompile Include="Meshes\EnemyMesh.cpp" />
@@ -222,6 +225,7 @@
     <ClCompile Include="Objects\Player.cpp" />
     <ClCompile Include="Objects\SingleObject.cpp" />
     <ClCompile Include="Objects\SkySphereObject.cpp" />
+    <ClCompile Include="Objects\TestScreenObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectX11ToyProject.rc" />
@@ -280,6 +284,13 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="HLSL\TestScreen.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

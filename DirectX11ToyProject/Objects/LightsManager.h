@@ -4,12 +4,19 @@
 #include <wrl.h>
 #include <unordered_map>
 
+struct LightCount
+{
+	unsigned int point_light_count;
+	unsigned int spot_light_count;
+	unsigned int padding1;// 패딩 (4바이트)
+	unsigned int padding2;// 패딩 (4바이트)
+};
+
 struct PointLight
 {
-	DirectX::XMFLOAT4 color;
+	DirectX::XMFLOAT3 color;
 	DirectX::XMFLOAT3 position;
-	float range;
-	float time;
+	float range; 
 };
 
 struct SpotLight
@@ -45,7 +52,7 @@ public:
 	}
 
 private:   
-	std::unordered_map<std::string, Microsoft::WRL::ComPtr<class ID3D11Buffer>> light_buffer_container_;
+	std::unordered_map<std::string, Microsoft::WRL::ComPtr<class ID3D11Buffer>> light_buffer_container_; 
 	std::unordered_map<std::string, Microsoft::WRL::ComPtr<class ID3D11ShaderResourceView>> shader_resource_view_container_;
 	 
 public:
@@ -53,6 +60,7 @@ public:
 	void UpdateLightBuffers();
 
 	class ID3D11ShaderResourceView** GetLightShaderResourceView(std::string view_name);
+	class ID3D11Buffer** GetLightBuffer(std::string buffer_name);
 
 private:
 	const unsigned int kMaxPointLightNum_ = 100;

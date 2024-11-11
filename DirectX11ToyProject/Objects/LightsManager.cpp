@@ -1,11 +1,36 @@
 #include "LightsManager.h"
 #include "../framework.h"
+#include "../Objects/EnemyObject.h"
 
 LightsManager* LightsManager::instance_ = nullptr;
 
 void LightsManager::Initialize()
-{
+{ 
     D3D11_BUFFER_DESC buffer_desc;
+    ZeroMemory(&buffer_desc, sizeof(D3D11_BUFFER_DESC));
+    buffer_desc.Usage = D3D11_USAGE_DYNAMIC;
+    buffer_desc.ByteWidth = sizeof(LightCount);
+    buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+    buffer_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+    buffer_desc.MiscFlags = 0;
+    buffer_desc.StructureByteStride = 0;
+    ID3D11Buffer* light_count_buffer = nullptr; 
+
+    LightCount light_count_data;
+    light_count_data.point_light_count = 0; 
+    light_count_data.spot_light_count = 0;   
+    D3D11_SUBRESOURCE_DATA init_data;
+    ZeroMemory(&init_data, sizeof(D3D11_SUBRESOURCE_DATA));
+    init_data.pSysMem = &light_count_data;
+
+    HRESULT result = DeviceManager::GetInstance()->GetD3D11Device()->CreateBuffer(&buffer_desc, &init_data, &light_count_buffer);
+    if (result != S_OK)
+    {
+        throw std::string("Failed To Create Light Count Buffer");
+    }
+    light_buffer_container_["LightCountBuffer"] = light_count_buffer;
+     
+
     ZeroMemory(&buffer_desc, sizeof(D3D11_BUFFER_DESC));
     buffer_desc.Usage = D3D11_USAGE_DYNAMIC;
     buffer_desc.ByteWidth = sizeof(PointLight) * kMaxPointLightNum_;
@@ -14,7 +39,7 @@ void LightsManager::Initialize()
     buffer_desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
     buffer_desc.StructureByteStride = sizeof(PointLight);
     ID3D11Buffer* point_light_buffer = nullptr;
-    HRESULT result = DeviceManager::GetInstance()->GetD3D11Device()->CreateBuffer(&buffer_desc, nullptr, &point_light_buffer);
+    result = DeviceManager::GetInstance()->GetD3D11Device()->CreateBuffer(&buffer_desc, nullptr, &point_light_buffer);
     if (result != S_OK)
     {
         throw std::string("Failed To Create Point Light Buffer");
@@ -53,28 +78,44 @@ void LightsManager::Initialize()
     {
         throw std::string("Failed to create Spot Light Shader Resource View");
     }
-    shader_resource_view_container_["SpotLightView"] = spot_light_shader_resource_view; 
+    shader_resource_view_container_["SpotLightView"] = spot_light_shader_resource_view;  
 }
 
 void LightsManager::UpdateLightBuffers()
 {
     ID3D11DeviceContext* context = DeviceManager::GetInstance()->GetD3D11ImmediateContext();
 
+    EnemyObject* enemies = ObjectsManager::GetInstance()->GetEnemies();
+     
+    LightCount light_count;
+    if (ObjectsManager::GetInstance()->GetIsStart())
+    {
+        light_count.point_light_count = enemies->GetEnemiesCount();
+        light_count.spot_light_count = 0;
+    }
+    else
+    {
+        light_count.point_light_count = 0;
+        light_count.spot_light_count = 0;
+    }
+
     // 조명 데이터 생성 (예시로 더미 데이터 설정)
-    std::vector<PointLight> pointLights(1);
-    std::vector<SpotLight> spotLights(0);
+    std::vector<PointLight> pointLights(light_count.point_light_count);
+    std::vector<SpotLight> spotLights(light_count.spot_light_count);
 
     static float time = 0.0f; 
     time += TimerManager::GetInstance()->GetDeltaTime();
 
     // Point Light 업데이트
-    for (auto& light : pointLights)
+    for (unsigned int i = 0; i < pointLights.size(); ++i)
     {
-        light.color = DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f); // 예시 값
-        light.position = DirectX::XMFLOAT3(0.0f, 0.0f, 5.0f);    // 예시 값
-        light.range = 3.0f;                                      // 예시 값
-        light.time = time;
-    }
+        const EnemyInstanceData* enemy_data = enemies->GetEnemiesDataOfIndex(i);
+        pointLights[i].color = enemy_data->color; 
+        pointLights[i].position.x = enemy_data->world3.x;
+        pointLights[i].position.y = enemy_data->world3.y;
+        pointLights[i].position.z = enemy_data->world3.z;
+        pointLights[i].range = 3.0f;
+    } 
 
     // Spot Light 업데이트
     for (auto& light : spotLights)
@@ -89,7 +130,14 @@ void LightsManager::UpdateLightBuffers()
 
     // Point Light Buffer에 데이터 전송
     D3D11_MAPPED_SUBRESOURCE mappedResource;
-    HRESULT hr = context->Map(light_buffer_container_["PointLightBuffer"].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+    HRESULT hr = context->Map(light_buffer_container_["LightCountBuffer"].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+    if (SUCCEEDED(hr))
+    {
+        memcpy(mappedResource.pData, &light_count, sizeof(LightCount));
+        context->Unmap(light_buffer_container_["LightCountBuffer"].Get(), 0);
+    }
+
+    hr = context->Map(light_buffer_container_["PointLightBuffer"].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
     if (SUCCEEDED(hr))
     {
         memcpy(mappedResource.pData, pointLights.data(), sizeof(PointLight) * pointLights.size());
@@ -113,4 +161,14 @@ ID3D11ShaderResourceView** LightsManager::GetLightShaderResourceView(std::string
     }
 
     throw std::string("Light Shader Resource View Name Error");
-} 
+}
+ID3D11Buffer** LightsManager::GetLightBuffer(std::string buffer_name)
+{
+    if (light_buffer_container_.find(buffer_name) != light_buffer_container_.end())
+    {
+        return light_buffer_container_[buffer_name].GetAddressOf();
+    }
+
+    throw std::string("Light Shader Resource View Name Error");
+}
+

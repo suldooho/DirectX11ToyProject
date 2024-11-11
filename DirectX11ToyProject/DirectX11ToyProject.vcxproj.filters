@@ -186,6 +186,12 @@
     <ClInclude Include="Meshes\BulletMesh.h">
       <Filter>헤더 파일\Meshes</Filter>
     </ClInclude>
+    <ClInclude Include="FrameResources\TestScreenShader.h">
+      <Filter>헤더 파일\FrameResources</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\TestScreenObject.h">
+      <Filter>헤더 파일\Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX11ToyProject.cpp">
@@ -311,6 +317,12 @@
     <ClCompile Include="Meshes\BulletMesh.cpp">
       <Filter>소스 파일\Meshes</Filter>
     </ClCompile>
+    <ClCompile Include="FrameResources\TestScreenShader.cpp">
+      <Filter>소스 파일\FrameResources</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\TestScreenObject.cpp">
+      <Filter>소스 파일\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectX11ToyProject.rc">
@@ -345,6 +357,9 @@
       <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="HLSL\Bullet.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="HLSL\TestScreen.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
   </ItemGroup>

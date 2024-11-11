@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "Object.h"
 #include "DeferredRenderingSecondPass.h"
+#include "TestScreenObject.h"
 
 class ObjectsManager
 {
@@ -29,6 +30,7 @@ public:
 
 private:  
 	bool test_;
+	bool start_;
 
 	int client_width_;
 	int client_height_;
@@ -46,6 +48,7 @@ private:
 	std::vector<std::unique_ptr<Object>> forward_rendering_objects_;
 	std::vector<std::unique_ptr<Object>> deferred_rendering_objects_;
 	std::unique_ptr<DeferredRenderingSecondPass> deferred_rendering_second_pass_;
+	std::unique_ptr<TestScreenObject> test_screen_object_;
 
 private:
 	void CreateObjects();
@@ -67,6 +70,7 @@ public:
 	void Initialize(float client_width, float client_height);
 
 	void ActiveTest();
+	void ActiveStart();
 
 	void PushButton(unsigned int direction);
 	void ReleaseButton(unsigned int direction);
@@ -74,6 +78,7 @@ public:
 
 	void PushMouseLeftButton();
 
+	bool GetIsStart();
 public:
 	class ID3D11Buffer** GetCameraConstantBuffer() const;
 
@@ -85,6 +90,7 @@ public:
 	DirectX::XMMATRIX GetCameraProjection();
 
 	class BulletObject* GetBullets();
+	class EnemyObject* GetEnemies();
 
 	void UpBulletSpeed();
 	void DownBulletSpeed();

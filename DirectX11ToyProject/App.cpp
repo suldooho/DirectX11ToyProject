@@ -85,6 +85,9 @@ void App::OnProcessingKeyboardMessage(HWND hwnd, UINT message_id, WPARAM wparam,
 		case 0x70:  // F1 key 
 			ObjectsManager::GetInstance()->ActiveTest(); 
 			break;
+		case 0x0D:  // Enter key 
+			ObjectsManager::GetInstance()->ActiveStart();
+			break;
 		case 0x31:  // 1 key 
 			ObjectsManager::GetInstance()->DownBulletSpeed();
 			break;
@@ -123,8 +126,8 @@ void App::FrameAdvance()
 
 	elapsed_time += TimerManager::GetInstance()->GetDeltaTime();
 	 
-	LightsManager::GetInstance()->UpdateLightBuffers();
 	ObjectsManager::GetInstance()->AnimateObjects();
+	LightsManager::GetInstance()->UpdateLightBuffers();
 	ObjectsManager::GetInstance()->ExecuteCommandList();
 
 	elapsed_time = 0.0f; 

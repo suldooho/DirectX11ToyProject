@@ -7,6 +7,7 @@
 #include "BulletShader.h"
 #include "OutputMerger.h"
 #include "SecondPassShader.h"
+#include "TestScreenShader.h"
 
 FrameResourcesManager* FrameResourcesManager::instance_ = nullptr;
 
@@ -39,6 +40,10 @@ void FrameResourcesManager::Initialize(unsigned int client_width, unsigned int c
 	frame_resource_container_["SecondPassShader"] = std::make_unique<SecondPassShader>();
 	SecondPassShader* second_pass_shader = dynamic_cast<SecondPassShader*>(frame_resource_container_["SecondPassShader"].get());
 	second_pass_shader->Initialize();
+
+	frame_resource_container_["TestScreenShader"] = std::make_unique<TestScreenShader>();
+	TestScreenShader* test_screen_shader = dynamic_cast<TestScreenShader*>(frame_resource_container_["TestScreenShader"].get());
+	test_screen_shader->Initialize();
 }
 
 FrameResource* FrameResourcesManager::GetFrameResource(std::string class_name)

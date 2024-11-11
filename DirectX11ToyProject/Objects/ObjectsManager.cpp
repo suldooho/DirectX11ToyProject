@@ -60,16 +60,24 @@ void ObjectsManager::DeferredRenderingTestExecuteCommandListObjects()
 
 void ObjectsManager::ForwardRenderingExecuteCommandListObjects()
 {
-	for (unsigned int i = 0; i < forward_rendering_objects_.size(); ++i)
+	if (start_)
 	{
-		forward_rendering_objects_[i].get()->UpdateBuffer();
-		forward_rendering_objects_[i].get()->ExecuteCommandList();
+		for (unsigned int i = 0; i < forward_rendering_objects_.size(); ++i)
+		{
+			forward_rendering_objects_[i].get()->UpdateBuffer();
+			forward_rendering_objects_[i].get()->ExecuteCommandList();
+		}
 	}
 }
 
 void ObjectsManager::DeferredRenderingExecuteCommandSecondPass()
 {
 	deferred_rendering_second_pass_->ExecuteCommandList();
+
+	if (test_)
+	{
+		test_screen_object_->ExecuteCommandList();
+	}
 }
 
 void ObjectsManager::ClearRenderTargetViewAndDepthStencilView()
@@ -215,6 +223,7 @@ void ObjectsManager::Initialize(float client_width, float client_height)
 	std::srand(static_cast<unsigned int>(std::time(nullptr)));  
 
 	test_ = false;
+	start_ = false;
 
 	client_width_ = static_cast<int>(client_width);
 	client_height_ = static_cast<int>(client_height);
@@ -232,12 +241,21 @@ void ObjectsManager::Initialize(float client_width, float client_height)
 	deferred_rendering_second_pass_ = std::make_unique<DeferredRenderingSecondPass>();
 	deferred_rendering_second_pass_->Initialize();
 
+	test_screen_object_ = std::make_unique<TestScreenObject>();
+	test_screen_object_->Initialize();
+
 	CreateObjects();
 }
 
 void ObjectsManager::ActiveTest()
 {
 	test_ = !test_;
+}
+
+void ObjectsManager::ActiveStart()
+{
+	start_ = true;
+	test_ = false;
 }
 
 void ObjectsManager::PushButton(unsigned int direction)
@@ -260,7 +278,13 @@ void ObjectsManager::PushMouseLeftButton()
 {
 	mouse_click_ = true; 
 	click_elapsed_time_ = 0.1f;
-} 
+}
+
+bool ObjectsManager::GetIsStart()
+{
+	return start_;
+}
+
 
 ID3D11Buffer** ObjectsManager::GetCameraConstantBuffer() const
 {
@@ -336,6 +360,17 @@ BulletObject* ObjectsManager::GetBullets()
 	}
 
 	return bullet_objects;
+}
+
+EnemyObject* ObjectsManager::GetEnemies()
+{
+	EnemyObject* enemy_objects = dynamic_cast<EnemyObject*>(forward_rendering_objects_[0].get());
+	if (enemy_objects == nullptr)
+	{
+		throw std::string("EnemyObject dynamic_cast Fail");
+	}
+
+	return enemy_objects;
 }
 
 void ObjectsManager::UpBulletSpeed()

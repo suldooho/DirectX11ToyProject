@@ -19,12 +19,17 @@ cbuffer ViewProjectionMatrix : register(b1)
     float3 CameraPosition : packoffset(c8); 
 };  
 
+cbuffer LightCount : register(b2)
+{
+    unsigned int PointLightCount : packoffset(c0);
+    unsigned int SpotLightCount : packoffset(c1);
+}; 
+
 struct PointLight
 {
-    float4 color;
+    float3 color;
     float3 position;
-    float range;
-    float time;
+    float range; 
 };
  
 struct SpotLight
